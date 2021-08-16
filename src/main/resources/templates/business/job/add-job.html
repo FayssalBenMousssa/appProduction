@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: myheader">
+</head>
+<body>
+<div th:insert="fragments/navigation :: nav"></div>
+<div class="container-fluid">
+    <div class="row mt-5">
+        <div th:insert="fragments/sidebarmenu :: #sidebarMenu"></div>
+        <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2" th:text="${#messages.msg('label.group')} "> group </h1>
+            </div>
+
+            <form action="#" method="post" th:action="@{/business/job/addjob}" th:object="${job}">
+                <div class="row">
+                    <div class="form-group  col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                        <label for="name">Name</label>
+                        <input class="form-control" id="name" placeholder="Name" th:field="*{name}"
+                               type="text">
+                        <span th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></span>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="form-group   col-sm-12 col-sm-6 col-md-3">
+                        <input class="btn btn-primary mt-5" type="submit" value="add">
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+<div th:insert="fragments/footer :: foot"></div>
+</body>
+</html>

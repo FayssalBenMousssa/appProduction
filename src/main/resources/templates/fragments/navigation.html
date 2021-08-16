@@ -1,0 +1,24 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<body>
+
+<nav class="navbar fixed-top navbar-dark   bg-dark flex-md-nowrap p-0  shadow" id="navigation" th:fragment="nav">
+    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3 text-uppercase" href="#" th:href="@{/}"
+       th:utext="${data.getAuth().getName()}">name</a>
+    <button aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation"
+            class="navbar-toggler position-absolute d-md-none collapsed" data-target="#sidebarMenu"
+            data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="/login" th:if="!${data.isAuth()}"><span data-feather="log-in"></span> <span
+                    th:text="${#messages.msg('button.logIn')} "> login</span></a>
+            <a class="nav-link" href="#" th:href="@{/logout}" th:if="${data.isAuth()}"><span
+                    data-feather="log-out"></span> <span th:text="${#messages.msg('button.logOut')}"> Log Out</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+</body>
+</html>

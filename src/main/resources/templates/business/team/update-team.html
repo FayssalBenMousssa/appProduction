@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: myheader">
+</head>
+<body>
+<div th:insert="fragments/navigation :: nav"></div>
+<div class="container-fluid">
+    <div class="row mt-5">
+        <div th:insert="fragments/sidebarmenu :: #sidebarMenu"></div>
+        <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Team</h1>
+            </div>
+
+
+            <form action="#" enctype="multipart/form-data" method="post"
+                  th:action="@{/business/team/update/{id}(id=${team.id})}" th:object="${team}">
+                <div class="row ">
+                    <div class="form-group  col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                        <label for="name">Name</label>
+                        <input class="form-control" id="name" placeholder="Name" th:field="*{name}"
+                               type="text">
+                        <span th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></span>
+                    </div>
+
+                    <div class="form-group  col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                        <label for="leader">Leader</label>
+                        <select class="form-control" id="leader" name="leader">
+                            <option value=""> &#45;&#45;</option>
+                            <option th:each="person : ${persons}"
+                                    th:selected="${person.id} == *{leader?.id}"
+                                    th:utext="${person.firstName + ' ' + person.lastName }"
+                                    th:value="${person.id}"/>
+                        </select>
+                        <span class="text-danger" th:errors="*{leader}" th:if="${#fields.hasErrors('leader')}"></span>
+                    </div>
+
+
+                </div>
+                <div class="row">
+
+                    <div class="col-12  text-light bg-dark p-3">
+                        <label class="text-capitalize" for="people">people</label>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3 col-xl-2 border border-primary rounded m-1 p-1"
+                         th:each="person , rowStat  : ${persons}">
+
+                        <input id="people" name="people" th:checked="${selected?.contains(person.id)}"
+                               th:value="${person.id}"
+                               type="checkbox"/>
+                        <label class="text-capitalize" th:text="${person.firstName + ' ' + person.lastName }"></label>
+                    </div>
+
+                    <span th:errors="*{people}" th:if="${#fields.hasErrors('people')}"></span>
+                </div>
+                <div class="row">
+                    <div class="form-group   col-sm-12 col-sm-6 col-md-3">
+                        <input class="btn btn-primary mt-5" th:value="${#messages.msg('button.add')}" type="submit"
+                               value="add">
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+<div th:insert="fragments/footer :: foot"></div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: myheader">
+</head>
+<body>
+<div th:insert="fragments/navigation :: nav"></div>
+<div class="container-fluid">
+    <div class="row mt-5">
+        <div th:insert="fragments/sidebarmenu :: #sidebarMenu"></div>
+        <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Staff</h1>
+            </div>
+
+            <form action="#" enctype="multipart/form-data" method="post"
+                  th:action="@{/business/staff/update/{id}(id=${staff.id})}" th:object="${staff}">
+                <div class="row">
+                    <div class="form-group  col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                        <label for="job">job</label>
+                        <select class="form-control" id="job" name="job">
+                            <option value=""> --</option>
+                            <option th:each="item_job : ${jobs}"
+                                    th:selected="${item_job.id} == *{job?.id}"
+                                    th:utext="${item_job.name}"
+                                    th:value="${item_job.id}"/>
+                        </select>
+                        <span th:errors="*{job}" th:if="${#fields.hasErrors('job')}"></span>
+                    </div>
+
+
+                    <div class="form-group  col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                        <label for="personnel">personnel</label>
+                        <select class="form-control" id="personnel" name="personnel">
+
+                            <option value=""> --</option>
+                            <option th:each="person : ${persons}"
+                                    th:selected="${person.id} == *{personnel?.id}"
+                                    th:utext="${person.firstName + ' ' + person.lastName }"
+                                    th:value="${person.id}"/>
+                        </select>
+                        <span th:errors="*{personnel}" th:if="${#fields.hasErrors('personnel')}"></span>
+                    </div>
+
+
+                    <div class="form-group  col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                        <label for="startDate">startDate</label>
+                        <input class="form-control" id="startDate" placeholder="startDate" th:field="*{startDate}"
+                               type="date">
+                        <span th:errors="*{startDate}" th:if="${#fields.hasErrors('startDate')}"></span>
+                    </div>
+                    <div class="form-group  col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                        <label for="endDate">endDate</label>
+                        <input class="form-control" id="endDate" placeholder="endDate" th:field="*{endDate}"
+                               type="date">
+                        <span th:errors="*{endDate}" th:if="${#fields.hasErrors('endDate')}"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group   col-sm-12 col-sm-6 col-md-3">
+                        <input class="btn btn-primary mt-5" th:value="${#messages.msg('button.edit')}" type="submit"
+                               value="add">
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+<div th:insert="fragments/footer :: foot"></div>
+</body>
+</html>

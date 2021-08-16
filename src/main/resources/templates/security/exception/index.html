@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: myheader">
+
+</head>
+<body>
+<div th:insert="fragments/navigation :: nav"></div>
+<div class="container-fluid">
+    <div class="row mt-5">
+        <div th:insert="fragments/sidebarmenu :: #sidebarMenu"></div>
+        <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+
+
+            <div class="card mb-3 mt-5 shadow-sm bg-white">
+                <div class="card-body row ">
+                    <div class="col-sm-4"><h3 th:text="${#messages.msg('label.exception')}"> Team</h3></div>
+                    <div class="col-sm-8">
+                        <div class="btn-toolbar justify-content-between" role="toolbar"
+                             aria-label="Toolbar with button groups">
+                            <div class="btn-group" role="group" aria-label="First group">
+                            </div>
+                            <div class="input-group">
+                                <h4 class="text-secondary"
+                                    th:text="${count} +' '+ ${#messages.msg('label.exception')} ">
+                                    exception</h4>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div th:switch="${page.totalElements}">
+
+                <div class="alert alert-success" role="alert" th:case="0"
+                     th:text="${#messages.msg('info.no_recording')}">
+                    No yet!
+                </div>
+
+                <div th:case="*">
+                    <div class="table-responsive">
+
+
+                        <div class="alert alert-warning shadow-sm p-3 mb-5" role="alert" th:each="exception : ${page}">
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h4 class="alert-heading">
+                                        <span class="badge badge-warning" th:text="${exception.error}">error</span>
+                                    </h4>
+                                </div>
+                                <div class="col-sm">
+                                    <h4 class="alert-heading">
+                                        <span class="badge badge-secondary" th:text="${exception.status}">status</span>
+                                    </h4>
+                                </div>
+                            </div>
+                            <hr>
+                            <h6 th:text="${exception.message}">message</h6>
+
+
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <p class="mb-0"
+                                       th:text="${#dates.format( exception.timestamp , 'dd-MM-yyy hh:mm aaa')}"></p>
+                                </div>
+                                <div class="col-sm">
+                                    <a class="mb-0" th:href="${exception.path}" th:text="${exception.path}"></a>
+                                </div>
+                                <div class="col-sm">
+                                    <p class="mb-0" th:if="${exception.user != null}"
+                                       th:text="${exception.user.userName}"></p>
+                                </div>
+                            </div>
+
+
+                            <hr>
+
+
+                            <p th:if="${exception.trace != null}">
+                                <a aria-expanded="false" class="btn   btn-sm   btn-link"
+                                   data-toggle="collapse" role="button"
+                                   th:attr="aria-controls = @{'collapse_'+${exception.id}}"
+                                   th:href="@{'#collapse_'+${exception.id}}"
+                                   th:text="${#messages.msg('label.see_the_details')} ">
+                                    see the details
+                                </a>
+                            </p>
+                            <div class="collapse" th:id="@{'collapse_'+${exception.id}}">
+                                <div class="card card-body">
+                                    <pre><code th:text="${exception.trace}"></code></pre>
+
+                                </div>
+                            </div>
+
+
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="row mt-1">
+                            <ul class="pagination mx-auto shadow-sm  pagination-sm">
+                                <li class="page-item " th:if="${page.hasPrevious()}">
+                                    <a class="page-link"
+                                       th:text="${#messages.msg('button.previous')}"
+                                       th:href="@{/security/exception/index(page=${page.number-1},size=${page.size})}">Previous</a>
+                                </li>
+                                <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
+                                    <li class="page-item" th:if="${page.number == i}"><a
+                                            class="page-link text-white bg-secondary" href="#">[[${i}+1]]</a></li>
+                                    <li class="page-item" th:unless="${page.number == i}"><a class="page-link" href="#"
+                                                                                             th:href="@{/security/exception/index(page=${i},size=${page.size})}">[[${i}+1]]</a>
+                                    </li>
+                                </th:block>
+                                <li class="page-item" th:if="${page.hasNext()}">
+                                    <a class="page-link"
+                                       th:text="${#messages.msg('button.next')}"
+                                       th:href="@{/security/exception/index(page=${page.number+1},size=${page.size})}">Next</a>
+                                </li>
+                            </ul>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- https://stackoverflow.com/questions/41968801/pagination-thymeleaf-3-0-spring-mvc  -->
+        </main>
+    </div>
+</div>
+<div th:insert="fragments/footer :: foot"></div>
+</body>
+</html>

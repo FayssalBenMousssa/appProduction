@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: myheader">
+
+</head>
+<body class="bg-animated ">
+
+<div class="container-fluid h-100   ">
+    <div class="row justify-content-center align-items-center h-100 m-5">
+        <div class="bg-pattern col col-sm-12 col-md-8 col-lg-6 col-xl-3 bg-white text-dark shadow p-3  bg-white rounded">
+            <form method="post" th:action="@{/login}">
+                <div class="form-group">
+                    <label for="username" th:text="${#messages.msg('user.userName')}">Username</label>
+                    <input autofocus="autofocus" class="form-control" id="username" name="username" type="text"/>
+                </div>
+                <div class="form-group">
+                    <label for="password" th:text="${#messages.msg('user.password')}">Password</label>
+                    <input class="form-control" id="password" name="password" type="password"/>
+                </div>
+
+                <p class="alert alert-danger text-center" th:if="${param.error}"
+                   th:text="${#messages.msg('info.wrongPassword')}">Wrong user or password</p>
+                <p class="alert alert-danger text-center" th:if="${param.logout}"
+                   th:text="${#messages.msg('info.loggedOut')}">You have been logged out</p>
+
+                <input class="btn btn-primary btn-block " id="submit" th:value=" ${#messages.msg('button.logIn')} "
+                       type="submit" value="Log in"/>
+
+
+                <div class="form-group  text-center row mt-5">
+
+                    <div class="col">
+                        <a th:href="@{/forgot_password}">
+                            <span data-feather="user-plus"></span>
+                            <span th:text="${#messages.msg('button.forgotPassword')}"> Forgot your password ? </span>
+                        </a>
+                    </div>
+
+                    <div class="col">
+                        <a href="#" th:href="@{/security/signup}">
+                            <span data-feather="user-plus"></span>
+                            <span th:text="${#messages.msg('label.signup')}">Signup </span>
+                        </a>
+                    </div>
+
+                </div>
+
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<div th:insert="fragments/footer :: foot"></div>
+</body>
+</html>
+
+
+

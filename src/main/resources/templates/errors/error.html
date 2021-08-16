@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>404 - resource not found</title>
+</head>
+<body>
+
+<h2>404 - Resource not found</h2>
+
+<p>
+    Nous regrettons de ne pas pouvoir traiter votre demande pour l'instant. Nos techniciens ont été informés de ce
+    problème et vont s'efforcer de le résoudre dans les meilleurs délais.
+</p>
+
+<p th:text="${error}">Error Info</p>
+<p th:text="${status}">Status</p>
+<a href="/home">Back</a>
+
+</body>
+</html>

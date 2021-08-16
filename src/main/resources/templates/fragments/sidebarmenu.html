@@ -1,0 +1,81 @@
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<body>
+<div th:fragment="sidebarMenu">
+
+
+    <nav class="col-md-3 col-lg-2 d-md-block bg-pattern sidebar collapse" id="sidebarMenu">
+        <div class="sidebar-sticky pt-3 sc">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/}" href="#">
+                        <span data-feather="home"></span>
+                        <span th:text="${#messages.msg('label.dashboard')}">Dashboard </span>
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" sec:authorize-url="/security/index" th:href="@{/security/index}">
+                        <span data-feather="key"></span>
+                        <span th:text="${#messages.msg('label.users')}">Users </span>
+                    </a>
+                </li>
+
+                <li class="nav-item" th:if="!${data.isAuth()}">
+                    <a class="nav-link" href="#" sec:authorize-url="/security/signup" th:href="@{/security/signup}">
+                        <span data-feather="user-plus"></span>
+                        <span th:text="${#messages.msg('label.signup')}">Signup </span>
+                    </a>
+                </li>
+
+                <!-- https://feathericons.com/ -->
+            </ul>
+
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"
+                sec:authorize-url="/business/staff/index">
+                <span th:text="${#messages.msg('label.business')}">Business </span>
+            </h6>
+            <ul class="nav flex-column mb-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" sec:authorize-url="/business/job/index"
+                       th:href="@{/business/job/index}">
+                        <span data-feather="briefcase"></span>
+
+                        <span th:text="${#messages.msg('label.job')}">Job </span>
+
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" sec:authorize-url="/business/staff/index"
+                       th:href="@{/business/staff/index}">
+                        <span data-feather="user-check"></span>
+                        <span th:text="${#messages.msg('label.staff')}">Staff </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" sec:authorize-url="/business/team/index"
+                       th:href="@{/business/team/index}">
+                        <span data-feather="circle"></span>
+                        <span th:text="${#messages.msg('label.team')}">Team </span>
+                    </a>
+                </li>
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"
+                    sec:authorize-url="/security/exception">
+                    <span th:text="${#messages.msg('label.settings')}"> </span>
+                </h6>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" sec:authorize-url="/security/exception/index"
+                       th:href="@{/security/exception/index}">
+                        <span data-feather="alert-triangle"></span>
+                        <span th:text="${#messages.msg('label.exception')}">exception </span>
+
+                    </a>
+                </li>
+
+
+            </ul>
+        </div>
+    </nav>
+</div>
+</body>
+</html>

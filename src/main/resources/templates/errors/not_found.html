@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: myheader">
+
+</head>
+<body>
+<div class="container-fluid h-100">
+
+
+    <div class="row justify-content-center align-items-center h-100 m-5">
+        <div class="col col-sm-12 col-md-8 col-lg-6 col-xl-5  text-dark shadow p-3  bg-warning rounded">
+
+
+            <h1 th:text="${exception.error}">error</h1>
+            <h4 th:text="${exception.status}">Status</h4>
+            <p th:text="${#messages.msg('info.exception')} "></p>
+            <h4 th:if="${exception.user}" th:text="${exception.user.person.fullName}"></h4>
+            <hr class="my-4">
+            <h6 th:text="${exception.message}">Error Info</h6>
+            <hr class="my-4">
+            <h6 th:text="${exception.path}">Error Info</h6>
+            <h6 th:text="${#dates.format( exception.timestamp , 'dd-MM-yyy hh:mm aaa')}">Error Info</h6>
+
+
+            <p>
+                <a class="btn btn-success" href="/home" th:text="${#messages.msg('button.back')} ">Back</a>
+                <a aria-controls="collapseExample" aria-expanded="false"
+                   class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button"
+                   th:if="${exception.trace}" th:text="${#messages.msg('button.see_the_details')} ">
+                    see_the_details
+                </a>
+
+            </p>
+            <div class="collapse" id="collapseExample" th:if="${exception.trace}">
+                <div class="card card-body">
+                    <per th:text="${exception.trace}">trace</per>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div th:insert="fragments/footer :: foot"></div>
+</body>
+</html>
