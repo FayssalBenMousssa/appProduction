@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @Setter
-@Table(name = "pro__product")
+@Table(name = "prds__product")
 public class Product {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,6 +21,8 @@ public class Product {
   @NotNull(message = "Please enter the code")
   private String code;
 
+  @NotNull(message = "Please enter the code")
+  private String codeDes;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "product_line_id", referencedColumnName = "id")

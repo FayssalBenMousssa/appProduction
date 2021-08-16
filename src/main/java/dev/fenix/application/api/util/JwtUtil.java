@@ -11,11 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-/// https://www.youtube.com/watch?v=X80nJ5T7YpE
-/// https://github.com/koushikkothagal/spring-security-jwt
+
 @Service
 public class JwtUtil {
-  private final String SECRET_KEY = "vPWcpWUBoXPU55UhHHN9eT2JRPgqjQZYAxMJVrgGQtDiK";
+  private final String SECRET_KEY = "vPWcpWUBoXPU55UhHHN9eT2JRPsdjQZYAxMJVrgGQtDiK";
 
   public String extractUsername(String token) {
     return extractClaim(token, Claims::getSubject);

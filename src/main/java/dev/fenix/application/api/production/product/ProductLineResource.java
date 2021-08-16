@@ -14,15 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductLineResource {
   private static final Logger log = LoggerFactory.getLogger(Application.class);
 
-
   @RequestMapping(
-      value = "/",
+      value = {"/", ""},
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public String index() {
-    return JSONObject.quote("Api");
+    return JSONObject.quote("Api :" + this.getClass().getSimpleName());
   }
-
-
 }
-

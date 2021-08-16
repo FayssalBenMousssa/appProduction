@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @Setter
-@Table(name = "pro__line")
+@Table(name = "prds__line")
 public class ProductLine {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,12 +20,12 @@ public class ProductLine {
 
 
   @NotNull(message = "Please enter the codeDes")
-  private String codeDes;
+  private String code;
 
   public ProductLine(Long id, @NotNull(message = "Please enter the name") String name, @NotNull(message = "Please enter the codeDes") String codeDes) {
     this.id = id;
     this.name = name;
-    this.codeDes = codeDes;
+    this.code = code;
   }
 
   public ProductLine() {}
