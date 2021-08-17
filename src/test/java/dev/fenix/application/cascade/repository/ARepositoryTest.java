@@ -54,6 +54,10 @@ public class ARepositoryTest {
         assertThat(getFromDb).isEqualTo(savedInDb);
     }
 
-
+    @Test
+    public void whenSaved_thenFindsByName() {
+        aRepository.save(new A("Zaphod Beeblebrox"));
+        assertThat(aRepository.findByName("Zaphod Beeblebrox")).isNotNull();
+    }
 
 }
