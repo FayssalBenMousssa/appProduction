@@ -25,12 +25,12 @@ public class Classification {
   @NotNull(message = "Please enter the code")
   private String code;
 
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @ManyToOne(cascade =  CascadeType.PERSIST, fetch = FetchType.EAGER)
   @JoinColumn(name = "parent_id", referencedColumnName = "id")
   private Classification parent;
 
   /* fetch = FetchType.LAZY is default in one:many */
-  @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "parent")
+  @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "parent")
   private Set<Classification> children;
 
   public Classification(

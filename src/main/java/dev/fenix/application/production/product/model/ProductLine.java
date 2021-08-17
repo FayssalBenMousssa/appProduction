@@ -2,6 +2,8 @@ package dev.fenix.application.production.product.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -22,11 +24,22 @@ public class ProductLine {
   @NotNull(message = "Please enter the codeDes")
   private String code;
 
-  public ProductLine(Long id, @NotNull(message = "Please enter the name") String name, @NotNull(message = "Please enter the codeDes") String codeDes) {
+  public ProductLine(Long id, @NotNull(message = "Please enter the name") String name) {
     this.id = id;
     this.name = name;
-    this.code = code;
   }
 
   public ProductLine() {}
+
+  public JSONObject toJson() {
+    JSONObject personJSON = new JSONObject();
+    try {
+      personJSON.put("id", this.getId());
+      personJSON.put("name", this.getName());
+      personJSON.put("code", this.getCode());
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return personJSON;
+  }
 }

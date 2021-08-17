@@ -2,6 +2,8 @@ package dev.fenix.application.production.product.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -24,4 +26,15 @@ public class Packaging {
   }
 
   public Packaging() {}
+
+  public JSONObject toJson() {
+    JSONObject personJSON = new JSONObject();
+    try {
+      personJSON.put("id", this.getId());
+      personJSON.put("name", this.getName());
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return personJSON;
+  }
 }
