@@ -13,18 +13,19 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.persistence.EntityManager;
+import javax.sql.DataSource;
 import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Repository.class))
-@ActiveProfiles("test")
-@Transactional
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 
 
@@ -32,23 +33,27 @@ public class ARepositoryTest {
 
     @Autowired
     TestEntityManager entityManager;
-
     @Autowired
-
     private ARepository aRepository;
+    @Autowired private DataSource dataSource;
+    @Autowired private JdbcTemplate jdbcTemplate;
+
+    @Test
+    public void injectedComponentsAreNotNull(){
+        assertThat(dataSource).isNotNull();
+        assertThat(jdbcTemplate).isNotNull();
+        assertThat(entityManager).isNotNull();
+        assertThat(aRepository).isNotNull();
+    }
 
     @Test
     public void testSaveA(){
-
-
         A a = new A("Hello");
         A savedInDb = entityManager.persist(a);
         A getFromDb = aRepository.getOne(savedInDb.getId());
-
-       System.out.printf("-----------------------> " + getFromDb.getName());
-       System.out.printf("-----------------------> " + savedInDb.getName());
-
         assertThat(getFromDb).isEqualTo(savedInDb);
-
     }
+
+
+
 }
