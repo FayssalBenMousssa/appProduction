@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-
 @Service
 public class JwtUtil {
   private final String SECRET_KEY = "vPWcpWUBoXPU55UhHHN9eT2JRPsdjQZYAxMJVrgGQtDiK";
@@ -30,6 +29,7 @@ public class JwtUtil {
   }
 
   private Claims extractAllClaims(String token) {
+
     return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
   }
 

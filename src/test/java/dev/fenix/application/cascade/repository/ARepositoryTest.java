@@ -15,12 +15,16 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
+
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,17 +51,15 @@ public class ARepositoryTest {
     }
 
     @Test
+    @Rollback(value = false)
     public void testSaveA(){
-        A a = new A("Hello");
+        A a = new A(UUID.randomUUID().toString());
+
         A savedInDb = entityManager.persist(a);
+
         A getFromDb = aRepository.getOne(savedInDb.getId());
         assertThat(getFromDb).isEqualTo(savedInDb);
     }
 
-    @Test
-    public void whenSaved_thenFindsByName() {
-        aRepository.save(new A("Zaphod Beeblebrox"));
-        assertThat(aRepository.findByName("Zaphod Beeblebrox")).isNotNull();
-    }
 
 }

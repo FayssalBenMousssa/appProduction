@@ -2,9 +2,7 @@ package dev.fenix.application.api.production.product;
 
 import dev.fenix.application.Application;
 import dev.fenix.application.production.product.model.ProductLine;
-import dev.fenix.application.production.product.model.ProductType;
 import dev.fenix.application.production.product.repository.ProductLineRepository;
-import dev.fenix.application.production.product.repository.ProductionUnitRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -21,8 +19,7 @@ import javax.validation.Valid;
 @RequestMapping("/api/product/line")
 public class ProductLineResource {
   private static final Logger log = LoggerFactory.getLogger(Application.class);
-  @Autowired
-  private ProductLineRepository productLineRepository;
+  @Autowired private ProductLineRepository productLineRepository;
 
   @RequestMapping(
       value = {"/", ""},
@@ -33,9 +30,9 @@ public class ProductLineResource {
   }
 
   @RequestMapping(
-          value = "/index",
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/index",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public String index(HttpServletRequest request) {
     JSONArray jArray = new JSONArray();
     Iterable<ProductLine> productLines = productLineRepository.findAll();
@@ -46,19 +43,18 @@ public class ProductLineResource {
   }
 
   @RequestMapping(
-          value = "/save",
-          method = RequestMethod.POST,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/save",
+      method = RequestMethod.POST,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> save(@Valid @RequestBody ProductLine productLine, HttpServletRequest request) {
+  public ResponseEntity<?> save(
+      @Valid @RequestBody ProductLine productLine, HttpServletRequest request) {
 
-
-  /*  if (task.getAssignedTo() == null) {
+    /*  if (task.getAssignedTo() == null) {
       throw new RuntimeException("AssignedTo is mandatory");
     }*/
 
     ProductLine saveProductLine = productLineRepository.save(productLine);
     return ResponseEntity.ok(saveProductLine.toJson().toString());
   }
-
 }

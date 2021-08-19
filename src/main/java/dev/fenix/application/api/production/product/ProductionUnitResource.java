@@ -1,9 +1,7 @@
 package dev.fenix.application.api.production.product;
 
 import dev.fenix.application.Application;
-import dev.fenix.application.production.product.model.Packaging;
 import dev.fenix.application.production.product.model.ProductionUnit;
-import dev.fenix.application.production.product.repository.PackagingRepository;
 import dev.fenix.application.production.product.repository.ProductionUnitRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,8 +20,7 @@ import javax.validation.Valid;
 public class ProductionUnitResource {
   private static final Logger log = LoggerFactory.getLogger(Application.class);
 
-  @Autowired
-  private ProductionUnitRepository productionUnitRepository;
+  @Autowired private ProductionUnitRepository productionUnitRepository;
 
   @RequestMapping(
       value = {"/", ""},
@@ -34,9 +31,9 @@ public class ProductionUnitResource {
   }
 
   @RequestMapping(
-          value = "/index",
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/index",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public String index(HttpServletRequest request) {
     JSONArray jArray = new JSONArray();
     Iterable<ProductionUnit> productionUnits = productionUnitRepository.findAll();
@@ -47,19 +44,18 @@ public class ProductionUnitResource {
   }
 
   @RequestMapping(
-          value = "/save",
-          method = RequestMethod.POST,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/save",
+      method = RequestMethod.POST,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> save(@Valid @RequestBody ProductionUnit productionUnit, HttpServletRequest request) {
+  public ResponseEntity<?> save(
+      @Valid @RequestBody ProductionUnit productionUnit, HttpServletRequest request) {
     ProductionUnit savedProductionUnit = productionUnitRepository.save(productionUnit);
 
-  /*  if (task.getAssignedTo() == null) {
+    /*  if (task.getAssignedTo() == null) {
       throw new RuntimeException("AssignedTo is mandatory");
     }*/
 
-
     return ResponseEntity.ok(savedProductionUnit.toJson().toString());
   }
-
 }

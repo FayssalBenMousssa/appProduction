@@ -20,7 +20,6 @@ public class ProductLine {
   @NotNull(message = "Please enter the name")
   private String name;
 
-
   @NotNull(message = "Please enter the codeDes")
   private String code;
 

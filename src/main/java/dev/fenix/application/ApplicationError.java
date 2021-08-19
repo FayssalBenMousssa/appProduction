@@ -45,17 +45,14 @@ public class ApplicationError implements ErrorController {
     User user = userRepository.findOneByUserName(username);
     Exception exception = new Exception(errors, user);
     exception = exceptionRepository.save(exception);
-
     String[] paths = exception.getPath().split("\\/", -1);
-
-    if (!paths[1].equals("messages")) {
+    if (!paths[1].equals("api")) {
       ModelAndView modelAndView = new ModelAndView();
       modelAndView.addObject("exception", exception);
       if (exception.getStatus() != null) {
         Integer statusCode = Integer.valueOf(exception.getStatus());
         if (statusCode == HttpStatus.NOT_FOUND.value()) {
           modelAndView.addObject("status", HttpStatus.NOT_FOUND);
-
           modelAndView.setViewName("errors/not_found");
           return modelAndView;
         } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {

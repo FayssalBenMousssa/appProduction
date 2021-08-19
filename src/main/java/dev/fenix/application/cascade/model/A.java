@@ -6,7 +6,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
-
 @Entity
 @Table(name = "dev__a")
 @Getter
@@ -14,12 +13,13 @@ import javax.persistence.*;
 @ToString
 public class A {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
-    public A(String name) {
-        this.name = name;
-    }
+  private String name;
+
+  public A(String name) {
+    this.name = name;
+  }
 }

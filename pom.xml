@@ -195,11 +195,13 @@ http://maven.apache.org/POM/4.0.0 ">
             <artifactId>junit-jupiter-api</artifactId>
         </dependency>
 
+
         <!-- MySQL -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+
 
     </dependencies>
 

@@ -15,14 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-
 @RestController()
 @RequestMapping("/api/product/type")
 public class ProductTypeResource {
   private static final Logger log = LoggerFactory.getLogger(Application.class);
-  @Autowired
-  private ProductTypeRepository productTypeRepository;
-
+  @Autowired private ProductTypeRepository productTypeRepository;
 
   @RequestMapping(
       value = {"/", ""},
@@ -33,9 +30,9 @@ public class ProductTypeResource {
   }
 
   @RequestMapping(
-          value = "/index",
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/index",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public String index(HttpServletRequest request) {
     JSONArray jArray = new JSONArray();
     Iterable<ProductType> productTypes = productTypeRepository.findAll();
@@ -46,19 +43,18 @@ public class ProductTypeResource {
   }
 
   @RequestMapping(
-          value = "/save",
-          method = RequestMethod.POST,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/save",
+      method = RequestMethod.POST,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> save(@Valid @RequestBody ProductType productType, HttpServletRequest request) {
+  public ResponseEntity<?> save(
+      @Valid @RequestBody ProductType productType, HttpServletRequest request) {
     ProductType savedType = productTypeRepository.save(productType);
 
-  /*  if (task.getAssignedTo() == null) {
+    /*  if (task.getAssignedTo() == null) {
       throw new RuntimeException("AssignedTo is mandatory");
     }*/
 
-
     return ResponseEntity.ok(savedType.toJson().toString());
   }
-
 }
