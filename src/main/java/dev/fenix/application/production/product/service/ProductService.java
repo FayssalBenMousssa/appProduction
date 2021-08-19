@@ -40,37 +40,23 @@ public class ProductService {
     Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(orders));
     List<Product> filteringProducts = new ArrayList<Product>();
 
+
+
     if (filters != null && filters.size() != 0) {
       for (Map.Entry<String, String> entry : filters.entrySet()) {
         String key = entry.getKey();
         String value = entry.getValue();
-        log.info(key + " -> " + value);
-
         switch (key) {
           case "name":
             filteringProducts.addAll(
-                productRepository.findAllByNameContains(value, paging).getContent());
-            log.info(
-                "  key : " + key + "  value : " + value + " size : " + (filteringProducts.size()));
-            filteringProducts.forEach(
-                item -> {
-                  log.info(item.getName());
-                });
-            break;
+                productRepository.findAllByNameContains(value));
+            log.info("key : " + key + "  value : " + value + " size : " + (filteringProducts.size()));
+
           case "id":
             filteringProducts.addAll(
-                productRepository.findAllByNameContains(value, paging).getContent());
-            log.info(
-                "  key id: "
-                    + key
-                    + "  value : "
-                    + value
-                    + " size : "
-                    + (filteringProducts.size()));
-            filteringProducts.forEach(
-                item -> {
-                  log.info(item.getName());
-                });
+                    productRepository.findAllByNameContains(value));
+            log.info("key id: " + key + "  value : " + value + " size : " + (filteringProducts.size()));
+
             break;
           default:
             log.info("default");
@@ -79,9 +65,9 @@ public class ProductService {
     }
 
     if (filteringProducts.size() != 0) {
+
       filteringProducts.forEach(
           item -> {
-
             log.info(filteringProducts.indexOf(item) + " " + item.getName());
           });
       Page<Product> page = new PageImpl<>(filteringProducts, paging, filteringProducts.size());
@@ -111,6 +97,7 @@ public class ProductService {
       for (String keyValue : query) {
         String[] _sort = keyValue.split(":");
         hashMap.put(_sort[0], _sort[1]);
+        log.info(_sort[0] + " -> " +  _sort[1]);
       }
       return hashMap;
     } else {

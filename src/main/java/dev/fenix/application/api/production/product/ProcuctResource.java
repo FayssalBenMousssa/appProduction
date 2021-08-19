@@ -1,5 +1,7 @@
 package dev.fenix.application.api.production.product;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.fenix.application.Application;
 import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.repository.ProductRepository;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 @RestController()
 @RequestMapping("/api/product")
@@ -46,11 +50,6 @@ public class ProcuctResource {
       @RequestParam(defaultValue = "50") Integer size,
       @RequestParam(defaultValue = "id,desc") String[] sort,
       @RequestParam(required=false) String[] query) {
-
-
-
-
-
     JSONArray jArray = new JSONArray();
     Iterable<Product> products = productService.getAllProducts(page, size, sort , query);
     for (Product product : products) {
