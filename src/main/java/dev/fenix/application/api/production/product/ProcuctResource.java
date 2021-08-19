@@ -4,6 +4,7 @@ import dev.fenix.application.Application;
 import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.repository.ProductRepository;
 import dev.fenix.application.production.product.service.ProductService;
+import org.jetbrains.annotations.ApiStatus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Locale;
 
 @RestController()
 @RequestMapping("/api/product")
@@ -41,15 +43,16 @@ public class ProcuctResource {
   public ResponseEntity<String> index(
       HttpServletRequest request,
       @RequestParam(defaultValue = "0") Integer page,
-      @RequestParam(defaultValue = "10") Integer size,
+      @RequestParam(defaultValue = "50") Integer size,
       @RequestParam(defaultValue = "id,desc") String[] sort,
       @RequestParam(required=false) String[] query) {
 
 
 
+
+
     JSONArray jArray = new JSONArray();
     Iterable<Product> products = productService.getAllProducts(page, size, sort , query);
-
     for (Product product : products) {
       jArray.put(product.toJson());
     }
