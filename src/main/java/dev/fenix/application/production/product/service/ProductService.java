@@ -49,12 +49,12 @@ public class ProductService {
         switch (key) {
           case "name":
             filteringProducts.addAll(
-                productRepository.findAllByNameContains(value));
+                productRepository.findAllByNameContains(value,paging).getContent());
             log.info("key : " + key + "  value : " + value + " size : " + (filteringProducts.size()));
 
           case "id":
             filteringProducts.addAll(
-                    productRepository.findAllByNameContains(value));
+                    productRepository.findAllByNameContains(value,paging).getContent());
             log.info("key id: " + key + "  value : " + value + " size : " + (filteringProducts.size()));
 
             break;
@@ -64,22 +64,22 @@ public class ProductService {
       }
     }
 
-    if (filteringProducts.size() != 0) {
+    if (filteringProducts.size() != 0)   {
 
       filteringProducts.forEach(
           item -> {
             log.info(filteringProducts.indexOf(item) + " " + item.getName());
           });
-      Page<Product> page = new PageImpl<>(filteringProducts, paging, filteringProducts.size());
+      Page<Product> page = new PageImpl<>(filteringProducts, paging, pageSize);
       return page.getContent();
-    } else {
+    }
       Page<Product> pagedResult = productRepository.findAll(paging);
       if (pagedResult.hasContent()) {
         return pagedResult.getContent();
       } else {
         return new ArrayList<Product>();
       }
-    }
+
   }
 
   private Sort.Direction getSortDirection(String direction) {
