@@ -1,12 +1,10 @@
 package dev.fenix.application.api.production.product;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.fenix.application.Application;
 import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.repository.ProductRepository;
 import dev.fenix.application.production.product.service.ProductService;
-import org.jetbrains.annotations.ApiStatus;
+import javassist.NotFoundException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -20,9 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 @RestController()
 @RequestMapping("/api/product")
@@ -49,13 +44,28 @@ public class ProcuctResource {
       @RequestParam(defaultValue = "0") Integer page,
       @RequestParam(defaultValue = "50") Integer size,
       @RequestParam(defaultValue = "id,desc") String[] sort,
-      @RequestParam(required=false) String[] query) {
+      @RequestParam(required = false) String[] query) {
     JSONArray jArray = new JSONArray();
-    Iterable<Product> products = productService.getAllProducts(page, size, sort , query);
+    Iterable<Product> products = productService.getAllProducts(page, size, sort, query);
     for (Product product : products) {
       jArray.put(product.toJson());
     }
     return new ResponseEntity<>(jArray.toString(), HttpStatus.OK);
+  }
+
+  @RequestMapping(
+      value = "/detail/{id}",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> detail(HttpServletRequest request, @PathVariable Long id)
+      throws NotFoundException {
+
+    Product product =
+        productRepository
+            .findById(id)
+            .orElseThrow(() -> new NotFoundException("Product  not found"));
+
+    return new ResponseEntity<>(product.toJson().toString(), HttpStatus.OK);
   }
 
   @RequestMapping(

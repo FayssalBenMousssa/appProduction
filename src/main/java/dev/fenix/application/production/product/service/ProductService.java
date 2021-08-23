@@ -10,10 +10,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.util.ArrayUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -51,12 +48,10 @@ public class ProductService {
             filteringProducts.addAll(
                 productRepository.findAllByNameContains(value,paging).getContent());
             log.info("key : " + key + "  value : " + value + " size : " + (filteringProducts.size()));
-
           case "id":
             filteringProducts.addAll(
                     productRepository.findAllByNameContains(value,paging).getContent());
             log.info("key id: " + key + "  value : " + value + " size : " + (filteringProducts.size()));
-
             break;
           default:
             log.info("default");
@@ -105,4 +100,6 @@ public class ProductService {
       return null;
     }
   }
+
+
 }
