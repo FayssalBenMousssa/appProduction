@@ -20,6 +20,7 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/business/job")
 public class JobController {
+
   @Autowired private JobRepository jobRepository;
 
   @GetMapping("/index")

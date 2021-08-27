@@ -876,7 +876,7 @@ CREATE TABLE `sl__territorie` (
 --
 -- Dumping data for table `sl__territorie`
 --
-
+prds__classification
 LOCK TABLES `sl__territorie` WRITE;
 /*!40000 ALTER TABLE `sl__territorie` DISABLE KEYS */;
 /*!40000 ALTER TABLE `sl__territorie` ENABLE KEYS */;

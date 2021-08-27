@@ -3,6 +3,8 @@ package dev.fenix.application.cascade.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -19,7 +21,15 @@ public class A {
 
   private String name;
 
-  public A(String name) {
+  @Column
+  @Type(type = "text")
+  @ColumnTransformer(read = "UPPER(creditCardNumber)" , write = "LOWER(?)")
+
+  private String creditCardNumber;
+
+
+  public A(String name, String creditCardNumber) {
     this.name = name;
+    this.creditCardNumber = creditCardNumber;
   }
 }

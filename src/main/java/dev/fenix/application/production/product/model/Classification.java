@@ -33,6 +33,9 @@ public class Classification {
   @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "parent")
   private Set<Classification> children;
 
+  @Column(columnDefinition="tinyint(1) default 1")
+  private boolean active;
+
   public Classification(
       Long id,
       @NotNull(message = "Please enter the Name") String name,

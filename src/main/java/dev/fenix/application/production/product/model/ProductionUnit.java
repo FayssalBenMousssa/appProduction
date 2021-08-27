@@ -25,6 +25,9 @@ public class ProductionUnit {
     this.name = name;
   }
 
+  @Column(columnDefinition="tinyint(1) default 1")
+  private boolean active;
+
   public JSONObject toJson() {
     JSONObject personJSON = new JSONObject();
     try {

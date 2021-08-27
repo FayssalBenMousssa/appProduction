@@ -28,6 +28,9 @@ public class ProductLine {
     this.name = name;
   }
 
+  @Column(columnDefinition="tinyint(1) default 1")
+  private boolean active;
+
   public ProductLine() {}
 
   public JSONObject toJson() {

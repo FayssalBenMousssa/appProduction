@@ -54,6 +54,9 @@ public class Product {
   @JoinColumn(name = "production_unit_id", referencedColumnName = "id")
   private ProductionUnit productionUnit;
 
+  @Column(columnDefinition="tinyint(1) default 1")
+  private boolean active;
+
   public Product() {}
 
   public JSONObject toJson() {

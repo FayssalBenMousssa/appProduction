@@ -20,6 +20,9 @@ public class Packaging {
   @NotNull(message = "Please enter the name")
   private String name;
 
+  @Column(columnDefinition="tinyint(1) default 1")
+  private boolean active;
+
   public Packaging(Long id, String name) {
     this.id = id;
     this.name = name;

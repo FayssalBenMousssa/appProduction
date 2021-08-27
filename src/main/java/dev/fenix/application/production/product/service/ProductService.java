@@ -15,12 +15,13 @@ import java.util.*;
 @Service
 public class ProductService {
   @Autowired private ProductRepository productRepository;
+
   private static final Logger log = LoggerFactory.getLogger(Application.class);
 
-  public List<Product> getAllProducts(
-      Integer pageNo, Integer pageSize, String[] sortBy, String[] query) {
+  public List<Product> getAllProducts(Integer pageNo, Integer pageSize, String[] sortBy, String[] query) {
 
     List<Sort.Order> orders = new ArrayList<Sort.Order>();
+
     if (sortBy[0].contains(",")) {
       // will sort more than 2 columns
       for (String sortOrder : sortBy) {
@@ -68,7 +69,7 @@ public class ProductService {
       Page<Product> page = new PageImpl<>(filteringProducts, paging, pageSize);
       return page.getContent();
     }
-      Page<Product> pagedResult = productRepository.findAll(paging);
+      Page<Product> pagedResult = productRepository.findByActiveTrue(paging);
       if (pagedResult.hasContent()) {
         return pagedResult.getContent();
       } else {

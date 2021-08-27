@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +24,7 @@ public class ProcuctResource {
   private static final Logger log = LoggerFactory.getLogger(Application.class);
 
   @Autowired private ProductRepository productRepository;
+
   @Autowired private ProductService productService;
 
   @RequestMapping(
@@ -42,9 +42,10 @@ public class ProcuctResource {
   public ResponseEntity<String> index(
       HttpServletRequest request,
       @RequestParam(defaultValue = "0") Integer page,
-      @RequestParam(defaultValue = "50") Integer size,
+      @RequestParam(defaultValue = "200") Integer size,
       @RequestParam(defaultValue = "id,desc") String[] sort,
       @RequestParam(required = false) String[] query) {
+
     JSONArray jArray = new JSONArray();
     Iterable<Product> products = productService.getAllProducts(page, size, sort, query);
     for (Product product : products) {
@@ -54,12 +55,11 @@ public class ProcuctResource {
   }
 
   @RequestMapping(
-      value = "/detail/{id}",
+      value = "/get/{id}",
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> detail(HttpServletRequest request, @PathVariable Long id)
+  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-
     Product product =
         productRepository
             .findById(id)
@@ -74,23 +74,45 @@ public class ProcuctResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> save(@Valid @RequestBody Product product, HttpServletRequest request) {
-
     try {
+      product.setActive(true);
+      Product savedProduct = productRepository.save(product);
+      return new ResponseEntity<>(savedProduct.toJson().toString(), HttpStatus.OK);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResponseEntity<>("Not saved", HttpStatus.BAD_REQUEST);
+    }
+  }
 
+  @RequestMapping(
+      value = "/update",
+      method = RequestMethod.PUT,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseBody
+  public ResponseEntity<?> update(@Valid @RequestBody Product product, HttpServletRequest request) {
+    try {
+      product.setActive(true);
+      Product updatedProduct = productRepository.save(product);
+      return new ResponseEntity<>(updatedProduct.toJson().toString(), HttpStatus.OK);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResponseEntity<>("Not saved", HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @RequestMapping(
+      value = "/delete/{id}",
+      method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+    Product product = productRepository.getOne(id);
+    try {
+      product.setActive(false);
       Product savedProduct = productRepository.save(product);
       return ResponseEntity.ok(savedProduct.toJson().toString());
     } catch (Exception e) {
       e.printStackTrace();
+      return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
     }
-    return null;
-  }
-
-  private Sort.Direction getSortDirection(String direction) {
-    if (direction.equals("asc")) {
-      return Sort.Direction.ASC;
-    } else if (direction.equals("desc")) {
-      return Sort.Direction.DESC;
-    }
-    return Sort.Direction.ASC;
   }
 }
