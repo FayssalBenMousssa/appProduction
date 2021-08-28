@@ -4,6 +4,7 @@ import dev.fenix.application.Application;
 import dev.fenix.application.production.product.model.Classification;
 import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.repository.ClassificationRepository;
+import javassist.NotFoundException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -52,6 +53,7 @@ public class ClassificationResource {
   @ResponseBody
   public ResponseEntity<?> save(
       @Valid @RequestBody Classification classification, HttpServletRequest request) {
+    classification.setActive(true);
     Classification savedClassification = classificationRepository.save(classification);
 
     /*  if (task.getAssignedTo() == null) {
@@ -61,6 +63,20 @@ public class ClassificationResource {
     return ResponseEntity.ok(savedClassification.toJson().toString());
   }
 
+
+  @RequestMapping(
+          value = "/get/{id}",
+          method = RequestMethod.GET,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
+          throws NotFoundException {
+    Classification classification=
+            classificationRepository
+                    .findById(id)
+                    .orElseThrow(() -> new NotFoundException("Product  not found"));
+
+    return new ResponseEntity<>(classification.toJson().toString(), HttpStatus.OK);
+  }
 
   @RequestMapping(
           value = "/update",

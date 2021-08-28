@@ -56,7 +56,7 @@ public class ProductTypeResource {
     /*  if (task.getAssignedTo() == null) {
       throw new RuntimeException("AssignedTo is mandatory");
     }*/
-
+productType.setActive(true);
     return ResponseEntity.ok(savedType.toJson().toString());
   }
 

@@ -55,7 +55,7 @@ public class ProductLineResource {
     /*  if (task.getAssignedTo() == null) {
       throw new RuntimeException("AssignedTo is mandatory");
     }*/
-
+    productLine.setActive(true);
     ProductLine saveProductLine = productLineRepository.save(productLine);
     return ResponseEntity.ok(saveProductLine.toJson().toString());
   }

@@ -52,6 +52,7 @@ public class PackagingResource {
   @ResponseBody
   public ResponseEntity<?> save(
       @Valid @RequestBody Packaging packaging, HttpServletRequest request) {
+    packaging.setActive(true);
     Packaging savedPackaging = packagingRepository.save(packaging);
     return ResponseEntity.ok(savedPackaging.toJson().toString());
   }
