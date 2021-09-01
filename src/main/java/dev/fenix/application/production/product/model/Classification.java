@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Locale;
 import java.util.Set;
 
 @Entity
@@ -33,6 +34,10 @@ public class Classification {
   @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "parent")
   private Set<Classification> children;
 
+  @Column(columnDefinition="int default 1")
+  private long level;
+
+
   @Column(columnDefinition="tinyint(1) default 1")
   private boolean active;
 
@@ -54,12 +59,14 @@ public class Classification {
     try {
       classificationJSON.put("id", this.getId());
       classificationJSON.put("name", this.getName());
-      classificationJSON.put("code", this.getCode());
+      classificationJSON.put("code", this.getCode().toUpperCase(Locale.ROOT));
+      classificationJSON.put("level", this.getLevel());
       if (this.getParent() != null) {
         JSONObject parent = new JSONObject();
         parent.put("id", this.getParent().getId());
         parent.put("name", this.getParent().getName());
-        parent.put("code", this.getParent().getCode());
+        parent.put("code", this.getParent().getCode().toUpperCase(Locale.ROOT));
+        parent.put("level", this.getParent().getLevel());
         classificationJSON.put("parent", parent);
       }
       if (this.getChildren() != null) {
@@ -68,7 +75,8 @@ public class Classification {
           JSONObject child = new JSONObject();
           child.put("id", classification.getId());
           child.put("name", classification.getName());
-          child.put("code", classification.getCode());
+          child.put("code", classification.getCode().toUpperCase(Locale.ROOT));
+          child.put("level", classification.getLevel());
           children.put(child);
         }
         classificationJSON.put("children", children);

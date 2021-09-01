@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Locale;
 
 @Entity
 @Getter
@@ -54,6 +55,14 @@ public class Product {
   @JoinColumn(name = "production_unit_id", referencedColumnName = "id")
   private ProductionUnit productionUnit;
 
+
+  @NotNull(message = "Please enter the productType")
+  @ManyToOne(
+          cascade = {CascadeType.DETACH},
+          fetch = FetchType.EAGER)
+  @JoinColumn(name = "product_type_id", referencedColumnName = "id")
+  private ProductType productType;
+
   @Column(columnDefinition="tinyint(1) default 1")
   private boolean active;
 
@@ -64,12 +73,13 @@ public class Product {
     try {
       productJSON.put("id", this.getId());
       productJSON.put("name", this.getName());
-      productJSON.put("code", this.getCode());
+      productJSON.put("code", this.getCode().toUpperCase(Locale.ROOT));
       productJSON.put("codeDes", this.getCodeDes());
       productJSON.put("productLine", this.getProductLine().toJson());
       productJSON.put("classification", this.getClassification().toJson());
       productJSON.put("packaging", this.getPackaging().toJson());
       productJSON.put("productionUnit", this.getProductionUnit().toJson());
+      productJSON.put("productType", this.getProductType().toJson());
 
     } catch (JSONException e) {
       e.printStackTrace();

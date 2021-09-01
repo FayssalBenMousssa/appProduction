@@ -37,7 +37,7 @@ public class ProductTypeResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public String index(HttpServletRequest request) {
     JSONArray jArray = new JSONArray();
-    Iterable<ProductType> productTypes = productTypeRepository.findAll();
+    Iterable<ProductType> productTypes = productTypeRepository.findByActiveTrue();
     for (ProductType productType : productTypes) {
       jArray.put(productType.toJson());
     }
@@ -51,12 +51,12 @@ public class ProductTypeResource {
   @ResponseBody
   public ResponseEntity<?> save(
       @Valid @RequestBody ProductType productType, HttpServletRequest request) {
+    productType.setActive(true);
     ProductType savedType = productTypeRepository.save(productType);
 
     /*  if (task.getAssignedTo() == null) {
       throw new RuntimeException("AssignedTo is mandatory");
     }*/
-productType.setActive(true);
     return ResponseEntity.ok(savedType.toJson().toString());
   }
 

@@ -2,23 +2,29 @@ package dev.fenix.application.production.product.service;
 
 import dev.fenix.application.Application;
 import dev.fenix.application.production.product.model.Product;
+import dev.fenix.application.production.product.model.ProductType;
 import dev.fenix.application.production.product.repository.ProductRepository;
+import dev.fenix.application.production.product.repository.ProductTypeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-import org.yaml.snakeyaml.util.ArrayUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductService {
   @Autowired private ProductRepository productRepository;
+  @Autowired private ProductTypeRepository productTypeRepository ;
 
   private static final Logger log = LoggerFactory.getLogger(Application.class);
 
-  public List<Product> getAllProducts(Integer pageNo, Integer pageSize, String[] sortBy, String[] query) {
+  public List<Product> getAllProducts(
+      Integer pageNo, Integer pageSize, String[] sortBy, String[] query ,Long type) {
 
     List<Sort.Order> orders = new ArrayList<Sort.Order>();
 
@@ -38,8 +44,6 @@ public class ProductService {
     Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(orders));
     List<Product> filteringProducts = new ArrayList<Product>();
 
-
-
     if (filters != null && filters.size() != 0) {
       for (Map.Entry<String, String> entry : filters.entrySet()) {
         String key = entry.getKey();
@@ -47,12 +51,15 @@ public class ProductService {
         switch (key) {
           case "name":
             filteringProducts.addAll(
-                productRepository.findAllByNameContains(value,paging).getContent());
-            log.info("key : " + key + "  value : " + value + " size : " + (filteringProducts.size()));
+                productRepository.findAllByNameContains(value, paging).getContent());
+
+            // log.info("key : " + key + "  value : " + value + " size : " +
+            // (filteringProducts.size()));
           case "id":
             filteringProducts.addAll(
-                    productRepository.findAllByNameContains(value,paging).getContent());
-            log.info("key id: " + key + "  value : " + value + " size : " + (filteringProducts.size()));
+                productRepository.findAllByNameContains(value, paging).getContent());
+            //  log.info("key id: " + key + "  value : " + value + " size : " +
+            // (filteringProducts.size()));
             break;
           default:
             log.info("default");
@@ -60,7 +67,7 @@ public class ProductService {
       }
     }
 
-    if (filteringProducts.size() != 0)   {
+    if (filteringProducts.size() != 0) {
 
       filteringProducts.forEach(
           item -> {
@@ -69,13 +76,29 @@ public class ProductService {
       Page<Product> page = new PageImpl<>(filteringProducts, paging, pageSize);
       return page.getContent();
     }
-      Page<Product> pagedResult = productRepository.findByActiveTrue(paging);
-      if (pagedResult.hasContent()) {
-        return pagedResult.getContent();
-      } else {
-        return new ArrayList<Product>();
-      }
 
+    Page<Product> pagedResult;
+
+    if(type != null) {
+     ProductType productType =  productTypeRepository.findOneById(type);
+
+     log.info(productType.getName());
+
+       pagedResult = productRepository.findByActiveTrueAndProductType(productType,paging);
+   //  List<Product> list = productRepository.findByActiveTrueAndProductType(productType);
+      log.info( "size : " + pagedResult.getContent().size() );
+    }else {
+      pagedResult = productRepository.findByActiveTrue(paging);
+    }
+
+
+
+
+    if (pagedResult.hasContent()) {
+      return pagedResult.getContent();
+    } else {
+      return new ArrayList<Product>();
+    }
   }
 
   private Sort.Direction getSortDirection(String direction) {
@@ -93,7 +116,7 @@ public class ProductService {
       for (String keyValue : query) {
         String[] _sort = keyValue.split(":");
         hashMap.put(_sort[0], _sort[1]);
-        log.info(_sort[0] + " -> " +  _sort[1]);
+        log.info(_sort[0] + " -> " + _sort[1]);
       }
       return hashMap;
     } else {
@@ -101,6 +124,4 @@ public class ProductService {
       return null;
     }
   }
-
-
 }

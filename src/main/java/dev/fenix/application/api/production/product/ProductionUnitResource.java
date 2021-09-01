@@ -38,7 +38,7 @@ public class ProductionUnitResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public String index(HttpServletRequest request) {
     JSONArray jArray = new JSONArray();
-    Iterable<ProductionUnit> productionUnits = productionUnitRepository.findAll();
+    Iterable<ProductionUnit> productionUnits = productionUnitRepository.findByActiveTrue();
     for (ProductionUnit productionUnit : productionUnits) {
       jArray.put(productionUnit.toJson());
     }
@@ -52,6 +52,7 @@ public class ProductionUnitResource {
   @ResponseBody
   public ResponseEntity<?> save(
       @Valid @RequestBody ProductionUnit productionUnit, HttpServletRequest request) {
+    productionUnit.setActive(true);
     ProductionUnit savedProductionUnit = productionUnitRepository.save(productionUnit);
 
     /*  if (task.getAssignedTo() == null) {

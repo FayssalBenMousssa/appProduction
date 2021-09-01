@@ -37,7 +37,7 @@ public class ProductLineResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public String index(HttpServletRequest request) {
     JSONArray jArray = new JSONArray();
-    Iterable<ProductLine> productLines = productLineRepository.findAll();
+    Iterable<ProductLine> productLines = productLineRepository.findByActiveTrue();
     for (ProductLine productLine : productLines) {
       jArray.put(productLine.toJson());
     }
@@ -84,9 +84,9 @@ public class ProductLineResource {
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 
     try {
-      ProductLine productionUnit = productLineRepository.getOne(id);
-      productionUnit.setActive(false);
-      ProductLine savedProductUnit = productLineRepository.save(productionUnit);
+      ProductLine productLine = productLineRepository.getOne(id);
+      productLine.setActive(false);
+      ProductLine savedProductUnit = productLineRepository.save(productLine);
       return ResponseEntity.ok(savedProductUnit.toJson().toString());
     } catch (Exception e) {
       e.printStackTrace();

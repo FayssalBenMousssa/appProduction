@@ -2,7 +2,6 @@ package dev.fenix.application.api.production.product;
 
 import dev.fenix.application.Application;
 import dev.fenix.application.production.product.model.Classification;
-import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.repository.ClassificationRepository;
 import javassist.NotFoundException;
 import org.json.JSONArray;
@@ -37,10 +36,24 @@ public class ClassificationResource {
       value = "/index",
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public String index(HttpServletRequest request) {
+  public String index(HttpServletRequest request, @RequestParam(defaultValue = "0") Long level) throws NotFoundException {
     JSONArray jArray = new JSONArray();
-    Iterable<Classification> classifications = classificationRepository.findByActiveTrue();
+    Iterable<Classification> classifications;
+
+
+    if (level != 0) {
+      Classification parent =  classificationRepository.findById(level).orElseThrow(() -> new NotFoundException("Product  not found"));
+      classifications = classificationRepository.findByActiveTrueAndLevel(level);
+    } else {
+      classifications = classificationRepository.findByActiveTrue();
+    }
+
+
+
+
+
     for (Classification classification : classifications) {
+      // log.info("Level : " + classification.getLevel());
       jArray.put(classification.toJson());
     }
     return jArray.toString();
@@ -63,27 +76,27 @@ public class ClassificationResource {
     return ResponseEntity.ok(savedClassification.toJson().toString());
   }
 
-
   @RequestMapping(
-          value = "/get/{id}",
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/get/{id}",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
-          throws NotFoundException {
-    Classification classification=
-            classificationRepository
-                    .findById(id)
-                    .orElseThrow(() -> new NotFoundException("Product  not found"));
+      throws NotFoundException {
+    Classification classification =
+        classificationRepository
+            .findById(id)
+            .orElseThrow(() -> new NotFoundException("Product  not found"));
 
     return new ResponseEntity<>(classification.toJson().toString(), HttpStatus.OK);
   }
 
   @RequestMapping(
-          value = "/update",
-          method = RequestMethod.PUT,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/update",
+      method = RequestMethod.PUT,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> update(@Valid @RequestBody Classification classification, HttpServletRequest request) {
+  public ResponseEntity<?> update(
+      @Valid @RequestBody Classification classification, HttpServletRequest request) {
     try {
       classification.setActive(true);
       Classification updatedClassification = classificationRepository.save(classification);
@@ -95,9 +108,9 @@ public class ClassificationResource {
   }
 
   @RequestMapping(
-          value = "/delete/{id}",
-          method = RequestMethod.DELETE,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/delete/{id}",
+      method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
     Classification classification = classificationRepository.getOne(id);
     try {

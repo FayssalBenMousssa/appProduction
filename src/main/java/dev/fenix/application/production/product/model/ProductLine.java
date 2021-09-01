@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Locale;
 
 @Entity
 @Getter
@@ -23,6 +24,7 @@ public class ProductLine {
   @NotNull(message = "Please enter the codeDes")
   private String code;
 
+
   public ProductLine(Long id, @NotNull(message = "Please enter the name") String name) {
     this.id = id;
     this.name = name;
@@ -38,7 +40,7 @@ public class ProductLine {
     try {
       personJSON.put("id", this.getId());
       personJSON.put("name", this.getName());
-      personJSON.put("code", this.getCode());
+      personJSON.put("code", this.getCode().toUpperCase(Locale.ROOT));
     } catch (JSONException e) {
       e.printStackTrace();
     }
