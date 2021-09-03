@@ -2,6 +2,7 @@ package dev.fenix.application.production.product.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,6 +14,7 @@ import java.util.Locale;
 @Getter
 @Setter
 @Table(name = "prds__product")
+@ToString
 public class Product {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,17 +29,10 @@ public class Product {
   @NotNull(message = "Please enter the code")
   private String codeDes;
 
-  @NotNull(message = "Please enter the productLine")
-  @ManyToOne(
-      cascade = {CascadeType.DETACH},
-      fetch = FetchType.EAGER)
-  @JoinColumn(name = "product_line_id", referencedColumnName = "id")
-  private ProductLine productLine;
+
 
   @NotNull(message = "Please enter the classification")
-  @ManyToOne(
-      cascade = {CascadeType.DETACH},
-      fetch = FetchType.EAGER)
+  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "classification_id", referencedColumnName = "id")
   private Classification classification;
 
@@ -68,6 +63,8 @@ public class Product {
 
   public Product() {}
 
+
+
   public JSONObject toJson() {
     JSONObject productJSON = new JSONObject();
     try {
@@ -75,7 +72,6 @@ public class Product {
       productJSON.put("name", this.getName());
       productJSON.put("code", this.getCode().toUpperCase(Locale.ROOT));
       productJSON.put("codeDes", this.getCodeDes());
-      productJSON.put("productLine", this.getProductLine().toJson());
       productJSON.put("classification", this.getClassification().toJson());
       productJSON.put("packaging", this.getPackaging().toJson());
       productJSON.put("productionUnit", this.getProductionUnit().toJson());

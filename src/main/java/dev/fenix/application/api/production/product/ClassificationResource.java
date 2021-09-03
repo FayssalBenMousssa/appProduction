@@ -41,8 +41,8 @@ public class ClassificationResource {
     Iterable<Classification> classifications;
 
 
-    if (level != 0) {
-      Classification parent =  classificationRepository.findById(level).orElseThrow(() -> new NotFoundException("Product  not found"));
+    if (level != null) {
+    //  Classification parent =  classificationRepository.findById(level).orElseThrow(() -> new NotFoundException("Classification  not found"));
       classifications = classificationRepository.findByActiveTrueAndLevel(level);
     } else {
       classifications = classificationRepository.findByActiveTrue();

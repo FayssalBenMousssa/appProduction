@@ -1,7 +1,6 @@
 package dev.fenix.application.api.production.product;
 
 import dev.fenix.application.Application;
-import dev.fenix.application.production.product.model.ProductLine;
 import dev.fenix.application.production.product.model.ProductType;
 import dev.fenix.application.production.product.repository.ProductTypeRepository;
 import org.json.JSONArray;
@@ -53,6 +52,8 @@ public class ProductTypeResource {
       @Valid @RequestBody ProductType productType, HttpServletRequest request) {
     productType.setActive(true);
     ProductType savedType = productTypeRepository.save(productType);
+
+
 
     /*  if (task.getAssignedTo() == null) {
       throw new RuntimeException("AssignedTo is mandatory");

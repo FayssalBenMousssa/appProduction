@@ -23,8 +23,7 @@ public class ProductService {
 
   private static final Logger log = LoggerFactory.getLogger(Application.class);
 
-  public List<Product> getAllProducts(
-      Integer pageNo, Integer pageSize, String[] sortBy, String[] query ,Long type) {
+  public List<Product> getAllProducts(Integer pageNo, Integer pageSize, String[] sortBy, String[] query ,Long type) {
 
     List<Sort.Order> orders = new ArrayList<Sort.Order>();
 
@@ -100,6 +99,8 @@ public class ProductService {
       return new ArrayList<Product>();
     }
   }
+
+  
 
   private Sort.Direction getSortDirection(String direction) {
     if (direction.equals("asc")) {

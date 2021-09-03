@@ -26,6 +26,8 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 
     long countByActiveTrueAndProductType(ProductType productType);
 
+    Product findOneById(Long id);
+
     // Page<Product> findByProductType(ProductType productType, Pageable paging);
  //  Page<Product> findByActiveTrueAndProductType(ProductType productType);
     //Page<Product> findByActiveTrueAndProductIdProductType(ProductType productType, Pageable paging);

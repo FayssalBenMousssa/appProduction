@@ -51,7 +51,7 @@ public class ProcuctResource {
       @RequestParam(defaultValue = "id,desc") String[] sort,
       @RequestParam(required = false) String[] query) throws InterruptedException {
 
-     TimeUnit.SECONDS.sleep(2);
+    // TimeUnit.SECONDS.sleep(2);
 
     JSONArray jArray = new JSONArray();
     Iterable<Product> products = productService.getAllProducts(page, size, sort, query ,type );
@@ -105,6 +105,14 @@ public class ProcuctResource {
     try {
       product.setActive(true);
       Product savedProduct = productRepository.save(product);
+
+
+
+    //  if you want to get all data
+   //   savedProduct =  productRepository.findOneById(savedProduct.getId());
+
+
+
       return new ResponseEntity<>(savedProduct.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();

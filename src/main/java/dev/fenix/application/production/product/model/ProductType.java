@@ -2,6 +2,7 @@ package dev.fenix.application.production.product.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @Table(name = "prds__type")
+@ToString
 public class ProductType {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

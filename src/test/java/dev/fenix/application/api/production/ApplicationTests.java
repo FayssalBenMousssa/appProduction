@@ -2,7 +2,6 @@ package dev.fenix.application.api.production;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.fenix.application.production.product.model.ProductLine;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,13 +44,6 @@ public class ApplicationTests {
 
     @Test
     public void addLineTest() throws Exception {
-        ProductLine line = new ProductLine();
-        line.setName("Basant");
-        line.setActive(true);
-
-        String jsonRequest = om.writeValueAsString(line);
-        MvcResult result = mockMvc.perform(post("/api/product/line/save").content(jsonRequest)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk()).andReturn();
 
 
 

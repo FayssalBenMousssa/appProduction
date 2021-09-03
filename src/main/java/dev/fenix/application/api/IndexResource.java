@@ -33,13 +33,20 @@ public class IndexResource {
   @Autowired private UserRepository userRepository;
   @Autowired private UserDetailsService userDetailsService;
 
+
   @RequestMapping(
       value = "/",
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public String index() {
-    return JSONObject.quote("Api");
+
+    userRepository.count();
+
+    return JSONObject.quote( "Users : " +  userRepository.count());
   }
+
+
+
 
   @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
   public ResponseEntity<?> createAuthenticationToken(
