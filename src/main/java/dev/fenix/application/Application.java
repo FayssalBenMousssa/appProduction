@@ -86,9 +86,9 @@ public class Application {
         Date date = new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime();
 
         User users = userRepository.findOneByUserName("admin");
-        Role role1 = roleRepository.findByRole("ROLE_USER");
-        Role role2 = roleRepository.findByRole("ROLE_ADMIN");
-        if (users == null & role1 == null  & role2 == null ) {
+        Role roleuser = roleRepository.findByRole("ROLE_USER");
+        Role roleadmin = roleRepository.findByRole("ROLE_ADMIN");
+        if (users == null & roleuser == null & roleadmin == null) {
             Role role = new Role();
             role.setRole("ROLE_USER");
             role.setName("admin");
@@ -99,7 +99,8 @@ public class Application {
             roles.setRole("ROLE_ADMIN");
             roles.setName("admin");
             roleRepository.save(roles);
-
+            Role role1 = roleRepository.findByRole("ROLE_USER");
+            Role role2 = roleRepository.findByRole("ROLE_ADMIN");
 
             Set<Role> vowelsSet = new HashSet<>();
             vowelsSet.add(role1);
