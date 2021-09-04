@@ -93,7 +93,6 @@ public class Application {
 /**  add ROLE_ADMIN */
         if (roleadmin == null) {
             Role roles = new Role();
-
             roles.setRole("ROLE_ADMIN");
             roles.setName("admin");
             roleRepository.save(roles);
