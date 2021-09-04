@@ -84,28 +84,39 @@ public class Application {
     @PostConstruct
     private void insertDbDefault() {
         Date date = new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime();
-
-        User users = userRepository.findOneByUserName("admin");
+/**  find User by Name  admin */
+        User admin = userRepository.findOneByUserName("admin");
+/**  find role name  ROLE_USER */
         Role roleuser = roleRepository.findByRole("ROLE_USER");
+/**  find role name ROLE_ADMIN */
         Role roleadmin = roleRepository.findByRole("ROLE_ADMIN");
-        if (users == null & roleuser == null & roleadmin == null) {
-            Role role = new Role();
-            role.setRole("ROLE_USER");
-            role.setName("admin");
-            roleRepository.save(role);
-
+/**  add ROLE_ADMIN */
+        if (roleadmin == null) {
             Role roles = new Role();
 
             roles.setRole("ROLE_ADMIN");
             roles.setName("admin");
             roleRepository.save(roles);
-            Role role1 = roleRepository.findByRole("ROLE_USER");
-            Role role2 = roleRepository.findByRole("ROLE_ADMIN");
+        }
+ /**  add ROLE_USER */
+        if (roleuser == null) {
+            Role role = new Role();
+            role.setRole("ROLE_USER");
+            role.setName("admin");
+            roleRepository.save(role);
+        }
+/**  insert admin   if not exists  */
+        if (admin == null) {
 
+/**  find role  */
+            Role user_role = roleRepository.findByRole("ROLE_USER");
+            Role admin_role = roleRepository.findByRole("ROLE_ADMIN");
+/**  create array role role  */
             Set<Role> vowelsSet = new HashSet<>();
-            vowelsSet.add(role1);
-            vowelsSet.add(role2);
 
+            vowelsSet.add(user_role);
+            vowelsSet.add(admin_role);
+/**  create new User */
             User user = new User();
             user.setRoles(vowelsSet);
             user.setCreateDate(date);
@@ -116,7 +127,7 @@ public class Application {
             user.setActive(true);
             user.setResetPasswordToken("456454564");
 
-
+/**  create new Person */
             Person person = new Person();
             person.setFirstName("admin");
             person.setLastName("admin");
@@ -126,6 +137,7 @@ public class Application {
             person.setModifyDate(date);
             user.CryptPassword();
             person.setUser(user);
+/**  save all  */
             Person savedPerson = personRepository.save(person);
         }
     }
