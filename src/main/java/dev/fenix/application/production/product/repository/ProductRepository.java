@@ -1,5 +1,6 @@
 package dev.fenix.application.production.product.repository;
 
+import dev.fenix.application.production.product.model.Classification;
 import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.model.ProductType;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,8 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
     long countByActiveTrueAndProductType(ProductType productType);
 
     Product findOneById(Long id);
+
+    long countByActiveTrueAndClassification(Classification oneById);
 
     // Page<Product> findByProductType(ProductType productType, Pageable paging);
  //  Page<Product> findByActiveTrueAndProductType(ProductType productType);

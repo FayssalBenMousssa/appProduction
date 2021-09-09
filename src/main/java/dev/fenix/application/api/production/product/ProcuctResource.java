@@ -2,6 +2,7 @@ package dev.fenix.application.api.production.product;
 
 import dev.fenix.application.Application;
 import dev.fenix.application.production.product.model.Product;
+import dev.fenix.application.production.product.model.ProductType;
 import dev.fenix.application.production.product.repository.ProductRepository;
 import dev.fenix.application.production.product.repository.ProductTypeRepository;
 import dev.fenix.application.production.product.service.ProductService;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.concurrent.TimeUnit;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @RestController()
 @RequestMapping("/api/product")
@@ -149,6 +152,30 @@ public class ProcuctResource {
     } catch (Exception e) {
       e.printStackTrace();
       return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @RequestMapping(
+      value = {"/info", ""},
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity info() {
+    try {
+      JSONObject information = new JSONObject();
+      SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+      Date date = new Date();
+      information.put("date", formatter.format(date));
+      List<ProductType> listProductType = productTypeRepository.findAll();
+      for (ProductType type : listProductType) {
+        information.put(
+            type.getName(),
+            productRepository.countByActiveTrueAndProductType(
+                productTypeRepository.findOneById(type.getId())));
+      }
+      return new ResponseEntity<>(information.toString(), HttpStatus.OK);
+    } catch (JSONException e) {
+      e.printStackTrace();
+      return new ResponseEntity<>("BAD_REQUEST", HttpStatus.BAD_REQUEST);
     }
   }
 }

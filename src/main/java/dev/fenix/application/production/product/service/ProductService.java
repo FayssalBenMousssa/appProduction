@@ -1,5 +1,4 @@
 package dev.fenix.application.production.product.service;
-
 import dev.fenix.application.Application;
 import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.model.ProductType;
@@ -10,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,14 +17,14 @@ import java.util.Map;
 @Service
 public class ProductService {
   @Autowired private ProductRepository productRepository;
-  @Autowired private ProductTypeRepository productTypeRepository ;
+  @Autowired private ProductTypeRepository productTypeRepository;
 
   private static final Logger log = LoggerFactory.getLogger(Application.class);
 
-  public List<Product> getAllProducts(Integer pageNo, Integer pageSize, String[] sortBy, String[] query ,Long type) {
+  public List<Product> getAllProducts(
+      Integer pageNo, Integer pageSize, String[] sortBy, String[] query, Long type) {
 
     List<Sort.Order> orders = new ArrayList<Sort.Order>();
-
     if (sortBy[0].contains(",")) {
       // will sort more than 2 columns
       for (String sortOrder : sortBy) {
@@ -64,34 +62,25 @@ public class ProductService {
             log.info("default");
         }
       }
-    }
 
-    if (filteringProducts.size() != 0) {
-
-      filteringProducts.forEach(
-          item -> {
-            log.info(filteringProducts.indexOf(item) + " " + item.getName());
-          });
       Page<Product> page = new PageImpl<>(filteringProducts, paging, pageSize);
       return page.getContent();
+
     }
+
+
 
     Page<Product> pagedResult;
 
-    if(type != null) {
-     ProductType productType =  productTypeRepository.findOneById(type);
+    if (type != null) {
+      ProductType productType = productTypeRepository.findOneById(type);
 
-     log.info(productType.getName());
-
-       pagedResult = productRepository.findByActiveTrueAndProductType(productType,paging);
-   //  List<Product> list = productRepository.findByActiveTrueAndProductType(productType);
-      log.info( "size : " + pagedResult.getContent().size() );
-    }else {
+      log.info(productType.getName());
+      pagedResult = productRepository.findByActiveTrueAndProductType(productType, paging);
+      log.info("size : " + pagedResult.getContent().size());
+    } else {
       pagedResult = productRepository.findByActiveTrue(paging);
     }
-
-
-
 
     if (pagedResult.hasContent()) {
       return pagedResult.getContent();
@@ -99,8 +88,6 @@ public class ProductService {
       return new ArrayList<Product>();
     }
   }
-
-  
 
   private Sort.Direction getSortDirection(String direction) {
     if (direction.equals("asc")) {
