@@ -417,3 +417,68 @@
 2021-09-10 16:55:45 - [INFO ] - 177 products active in DB
 2021-09-10 16:55:45 - [INFO ] - we have just type
 2021-09-10 16:55:45 - [INFO ] - 111 Products of typeProduits Finis
+2021-09-10 16:56:13 - [INFO ] - validateToken for : issam
+2021-09-10 16:56:13 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:56:13 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:56:13 - [TRACE] - pageNo : 0
+2021-09-10 16:56:13 - [TRACE] - pageSize : 200
+2021-09-10 16:56:13 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:56:13 - [TRACE] - query : no query
+2021-09-10 16:56:13 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:56:13 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:56:13 - [INFO ] - No filter found
+2021-09-10 16:56:13 - [INFO ] - 177 products active in DB
+2021-09-10 16:56:13 - [INFO ] - we have just type
+2021-09-10 16:56:13 - [INFO ] - 111 Products of typeProduits Finis
+2021-09-10 16:56:17 - [INFO ] - validateToken for : issam
+2021-09-10 16:56:17 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:56:17 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:56:17 - [TRACE] - pageNo : 0
+2021-09-10 16:56:17 - [TRACE] - pageSize : 200
+2021-09-10 16:56:17 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:56:17 - [TRACE] - query : no query
+2021-09-10 16:56:17 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:56:17 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:56:17 - [INFO ] - No filter found
+2021-09-10 16:56:17 - [INFO ] - 177 products active in DB
+2021-09-10 16:56:17 - [INFO ] - we have just type
+2021-09-10 16:56:17 - [INFO ] - 111 Products of typeProduits Finis
+2021-09-10 16:56:18 - [INFO ] - validateToken for : issam
+2021-09-10 16:56:18 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:56:18 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:56:18 - [TRACE] - pageNo : 0
+2021-09-10 16:56:18 - [TRACE] - pageSize : 200
+2021-09-10 16:56:18 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:56:18 - [TRACE] - query : no query
+2021-09-10 16:56:18 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:56:18 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:56:18 - [INFO ] - No filter found
+2021-09-10 16:56:18 - [INFO ] - 177 products active in DB
+2021-09-10 16:56:18 - [INFO ] - we have just type
+2021-09-10 16:56:18 - [INFO ] - 111 Products of typeProduits Finis
+2021-09-10 16:56:18 - [INFO ] - validateToken for : issam
+2021-09-10 16:56:18 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:56:18 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:56:18 - [TRACE] - pageNo : 0
+2021-09-10 16:56:18 - [TRACE] - pageSize : 200
+2021-09-10 16:56:18 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:56:18 - [TRACE] - query : no query
+2021-09-10 16:56:18 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:56:18 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:56:18 - [INFO ] - No filter found
+2021-09-10 16:56:18 - [INFO ] - 177 products active in DB
+2021-09-10 16:56:18 - [INFO ] - we have just type
+2021-09-10 16:56:19 - [INFO ] - 111 Products of typeProduits Finis
+2021-09-10 16:56:20 - [INFO ] - validateToken for : issam
+2021-09-10 16:56:20 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:56:20 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:56:20 - [TRACE] - pageNo : 0
+2021-09-10 16:56:20 - [TRACE] - pageSize : 200
+2021-09-10 16:56:20 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:56:20 - [TRACE] - query : no query
+2021-09-10 16:56:20 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:56:20 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:56:20 - [INFO ] - No filter found
+2021-09-10 16:56:20 - [INFO ] - 177 products active in DB
+2021-09-10 16:56:20 - [INFO ] - we have just type
+2021-09-10 16:56:20 - [INFO ] - 111 Products of typeProduits Finis
