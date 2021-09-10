@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping("/api/product/classification")
 public class ClassificationResource {
 
-  private static final Logger log = LoggerFactory.getLogger(Application.class);
+  private static final Logger log = LoggerFactory.getLogger(ClassificationResource.class);
   @Autowired private ClassificationRepository classificationRepository;
   @Autowired private ProductRepository productRepository;
 

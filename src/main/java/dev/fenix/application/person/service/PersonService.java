@@ -16,7 +16,7 @@ import java.util.List;
 @Service("PersonService")
 public class PersonService {
 
-  private static final Logger log = LoggerFactory.getLogger(Application.class);
+  private static final Logger log = LoggerFactory.getLogger(PersonService.class);
 
   @PersistenceContext(type = PersistenceContextType.EXTENDED)
   private EntityManager entityManager;

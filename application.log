@@ -1,0 +1,419 @@
+2021-09-10 16:36:37 - [INFO ] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-09-10 16:36:37 - [INFO ] - Finished Spring Data repository scanning in 462 ms. Found 23 JPA repository interfaces.
+2021-09-10 16:36:39 - [INFO ] - Tomcat initialized with port(s): 80 (http)
+2021-09-10 16:36:39 - [INFO ] - Starting service [Tomcat]
+2021-09-10 16:36:39 - [INFO ] - Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-09-10 16:36:39 - [INFO ] - Initializing Spring embedded WebApplicationContext
+2021-09-10 16:36:39 - [INFO ] - Root WebApplicationContext: initialization completed in 4703 ms
+2021-09-10 16:36:40 - [INFO ] - HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-09-10 16:36:40 - [INFO ] - HHH000412: Hibernate ORM core version 5.4.25.Final
+2021-09-10 16:36:40 - [INFO ] - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-09-10 16:36:40 - [INFO ] - HikariPool-1 - Starting...
+2021-09-10 16:36:41 - [INFO ] - HikariPool-1 - Start completed.
+2021-09-10 16:36:41 - [INFO ] - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2021-09-10 16:36:41 - [INFO ] - Envers integration enabled? : true
+2021-09-10 16:36:46 - [INFO ] - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-09-10 16:36:46 - [INFO ] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-09-10 16:36:47 - [DEBUG] - Filter 'jwtRequestFilter' configured for use
+2021-09-10 16:36:47 - [TRACE] - Application.runDbBackup method accessed
+2021-09-10 16:36:47 - [TRACE] - 443 min  to start Backup
+2021-09-10 16:36:47 - [TRACE] - insertDbDefault method accessed
+2021-09-10 16:36:47 - [TRACE] - find User with Name admin
+2021-09-10 16:36:47 - [TRACE] - find role name ROLE_USER
+2021-09-10 16:36:47 - [TRACE] - find role name ROLE_ADMIN
+2021-09-10 16:36:48 - [INFO ] - Will secure Ant [pattern='/resources/**'] with []
+2021-09-10 16:36:48 - [INFO ] - Will secure Ant [pattern='/static/**'] with []
+2021-09-10 16:36:48 - [INFO ] - Will secure Ant [pattern='/css/**'] with []
+2021-09-10 16:36:48 - [INFO ] - Will secure Ant [pattern='/js/**'] with []
+2021-09-10 16:36:48 - [INFO ] - Will secure Ant [pattern='/img/**'] with []
+2021-09-10 16:36:48 - [INFO ] - Will secure Ant [pattern='/icon/**'] with []
+2021-09-10 16:36:49 - [INFO ] - Will secure Ant [pattern='/api/**'] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4205d1c9, org.springframework.security.web.context.SecurityContextPersistenceFilter@7894a250, org.springframework.security.web.header.HeaderWriterFilter@6195ce27, org.springframework.web.filter.CorsFilter@4512f5f1, org.springframework.security.web.authentication.logout.LogoutFilter@4865434e, dev.fenix.application.api.filters.JwtRequestFilter@14745c3c, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@779cda39, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@38affd02, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@18356d9e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2a22e7e2, org.springframework.security.web.session.SessionManagementFilter@2040732f, org.springframework.security.web.access.ExceptionTranslationFilter@65cf8da0, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3d84f113]
+2021-09-10 16:36:49 - [INFO ] - Will secure Ant [pattern='/**'] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2b71a12e, org.springframework.security.web.context.SecurityContextPersistenceFilter@167ccc3c, org.springframework.security.web.header.HeaderWriterFilter@6ba516ff, org.springframework.security.web.csrf.CsrfFilter@672549f3, org.springframework.security.web.authentication.logout.LogoutFilter@55b7f9f1, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@6bb46040, org.springframework.security.web.session.ConcurrentSessionFilter@52cda4bd, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@292b7a02, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3e242137, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@41c56930, org.springframework.security.web.session.SessionManagementFilter@3bbb3c84, org.springframework.security.web.access.ExceptionTranslationFilter@4791d904, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3b446d7]
+2021-09-10 16:36:49 - [INFO ] - Initializing ExecutorService 'applicationTaskExecutor'
+2021-09-10 16:36:50 - [INFO ] - Tomcat started on port(s): 80 (http) with context path ''
+2021-09-10 16:37:00 - [INFO ] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-09-10 16:37:00 - [INFO ] - Initializing Servlet 'dispatcherServlet'
+2021-09-10 16:37:00 - [INFO ] - Completed initialization in 1 ms
+2021-09-10 16:37:00 - [INFO ] - validateToken for : fenix
+2021-09-10 16:37:08 - [INFO ] - validateToken for : fenix
+2021-09-10 16:37:18 - [INFO ] - generateToken for : fenix
+2021-09-10 16:37:31 - [INFO ] - validateToken for : admin
+2021-09-10 16:37:31 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:37:31 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:37:31 - [TRACE] - pageNo : 0
+2021-09-10 16:37:31 - [TRACE] - pageSize : 200
+2021-09-10 16:37:31 - [TRACE] - sortBy : [name,desc, id,asc]
+2021-09-10 16:37:31 - [TRACE] - query : no query
+2021-09-10 16:37:31 - [TRACE] - we will sort more than 2 columns 
+2021-09-10 16:37:31 - [TRACE] - sortOrder : desc name
+2021-09-10 16:37:31 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:37:31 - [TRACE] - sortOrder : asc id
+2021-09-10 16:37:31 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:37:31 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:37:31 - [INFO ] - No filter found
+2021-09-10 16:37:32 - [INFO ] - 177 products active in DB
+2021-09-10 16:37:32 - [INFO ] - all active products
+2021-09-10 16:37:33 - [INFO ] - 177 Products 
+2021-09-10 16:38:48 - [INFO ] - validateToken for : fenix
+2021-09-10 16:39:00 - [INFO ] - validateToken for : issam
+2021-09-10 16:39:00 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:39:00 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:39:00 - [TRACE] - pageNo : 0
+2021-09-10 16:39:00 - [TRACE] - pageSize : 200
+2021-09-10 16:39:00 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:39:00 - [TRACE] - query : [name:a]
+2021-09-10 16:39:00 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:39:00 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:39:00 - [INFO ] - Filter found : name:a
+2021-09-10 16:39:00 - [INFO ] - 177 products active in DB
+2021-09-10 16:39:00 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:39:00 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:42:17 - [INFO ] - validateToken for : fenix
+2021-09-10 16:42:20 - [INFO ] - validateToken for : issam
+2021-09-10 16:42:20 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:42:20 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:42:20 - [TRACE] - pageNo : 0
+2021-09-10 16:42:20 - [TRACE] - pageSize : 200
+2021-09-10 16:42:20 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:42:20 - [TRACE] - query : [name:a]
+2021-09-10 16:42:20 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:42:20 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:42:20 - [INFO ] - Filter found : name:a
+2021-09-10 16:42:20 - [INFO ] - 177 products active in DB
+2021-09-10 16:42:20 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:42:20 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:43:18 - [INFO ] - validateToken for : fenix
+2021-09-10 16:43:33 - [INFO ] - validateToken for : issam
+2021-09-10 16:43:33 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:43:33 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:43:33 - [TRACE] - pageNo : 0
+2021-09-10 16:43:33 - [TRACE] - pageSize : 200
+2021-09-10 16:43:33 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:43:33 - [TRACE] - query : [name:a]
+2021-09-10 16:43:33 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:43:33 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:43:33 - [INFO ] - Filter found : name:a
+2021-09-10 16:43:33 - [INFO ] - 177 products active in DB
+2021-09-10 16:43:33 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:43:34 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:44:18 - [INFO ] - validateToken for : issam
+2021-09-10 16:44:18 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:44:18 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:44:18 - [TRACE] - pageNo : 0
+2021-09-10 16:44:18 - [TRACE] - pageSize : 200
+2021-09-10 16:44:18 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:44:18 - [TRACE] - query : [name:a]
+2021-09-10 16:44:18 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:44:18 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:44:18 - [INFO ] - Filter found : name:a
+2021-09-10 16:44:18 - [INFO ] - 177 products active in DB
+2021-09-10 16:44:18 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:44:18 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:44:19 - [INFO ] - validateToken for : issam
+2021-09-10 16:44:19 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:44:19 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:44:19 - [TRACE] - pageNo : 0
+2021-09-10 16:44:19 - [TRACE] - pageSize : 200
+2021-09-10 16:44:19 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:44:19 - [TRACE] - query : [name:a]
+2021-09-10 16:44:19 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:44:19 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:44:19 - [INFO ] - Filter found : name:a
+2021-09-10 16:44:19 - [INFO ] - 177 products active in DB
+2021-09-10 16:44:19 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:44:19 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:45:16 - [INFO ] - validateToken for : fenix
+2021-09-10 16:46:50 - [INFO ] - validateToken for : issam
+2021-09-10 16:46:50 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:46:50 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:46:50 - [TRACE] - pageNo : 0
+2021-09-10 16:46:50 - [TRACE] - pageSize : 200
+2021-09-10 16:46:50 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:46:50 - [TRACE] - query : [name:a]
+2021-09-10 16:46:50 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:46:50 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:46:50 - [INFO ] - Filter found : name:a
+2021-09-10 16:46:50 - [INFO ] - 177 products active in DB
+2021-09-10 16:46:50 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:46:50 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:46:57 - [INFO ] - validateToken for : issam
+2021-09-10 16:47:00 - [INFO ] - validateToken for : issam
+2021-09-10 16:47:00 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:47:00 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:47:00 - [TRACE] - pageNo : 0
+2021-09-10 16:47:00 - [TRACE] - pageSize : 200
+2021-09-10 16:47:00 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:47:00 - [TRACE] - query : [name:a]
+2021-09-10 16:47:00 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:47:00 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:47:00 - [INFO ] - Filter found : name:a
+2021-09-10 16:47:00 - [INFO ] - 177 products active in DB
+2021-09-10 16:47:00 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:47:00 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:47:38 - [INFO ] - validateToken for : issam
+2021-09-10 16:47:38 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:47:38 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:47:38 - [TRACE] - pageNo : 0
+2021-09-10 16:47:38 - [TRACE] - pageSize : 200
+2021-09-10 16:47:38 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:47:38 - [TRACE] - query : [name:a]
+2021-09-10 16:47:38 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:47:38 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:47:38 - [INFO ] - Filter found : name:a
+2021-09-10 16:47:38 - [INFO ] - 177 products active in DB
+2021-09-10 16:47:38 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:47:38 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:48:54 - [INFO ] - validateToken for : issam
+2021-09-10 16:48:54 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:48:54 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:48:54 - [TRACE] - pageNo : 0
+2021-09-10 16:48:54 - [TRACE] - pageSize : 200
+2021-09-10 16:48:54 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:48:54 - [TRACE] - query : [name:a]
+2021-09-10 16:48:54 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:48:54 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:48:54 - [INFO ] - Filter found : name:a
+2021-09-10 16:48:54 - [INFO ] - 177 products active in DB
+2021-09-10 16:48:54 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:48:55 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:49:00 - [INFO ] - validateToken for : issam
+2021-09-10 16:49:00 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:49:00 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:49:00 - [TRACE] - pageNo : 0
+2021-09-10 16:49:00 - [TRACE] - pageSize : 200
+2021-09-10 16:49:00 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:49:00 - [TRACE] - query : [name:a]
+2021-09-10 16:49:00 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:49:00 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:49:00 - [INFO ] - Filter found : name:a
+2021-09-10 16:49:00 - [INFO ] - 177 products active in DB
+2021-09-10 16:49:00 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:49:00 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:49:01 - [INFO ] - validateToken for : issam
+2021-09-10 16:49:01 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:49:01 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:49:01 - [TRACE] - pageNo : 0
+2021-09-10 16:49:01 - [TRACE] - pageSize : 200
+2021-09-10 16:49:01 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:49:01 - [TRACE] - query : [name:a]
+2021-09-10 16:49:01 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:49:01 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:49:01 - [INFO ] - Filter found : name:a
+2021-09-10 16:49:01 - [INFO ] - 177 products active in DB
+2021-09-10 16:49:01 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:49:01 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:49:02 - [INFO ] - validateToken for : issam
+2021-09-10 16:49:02 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:49:02 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:49:02 - [TRACE] - pageNo : 0
+2021-09-10 16:49:02 - [TRACE] - pageSize : 200
+2021-09-10 16:49:02 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:49:02 - [TRACE] - query : [name:a]
+2021-09-10 16:49:02 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:49:02 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:49:02 - [INFO ] - Filter found : name:a
+2021-09-10 16:49:02 - [INFO ] - 177 products active in DB
+2021-09-10 16:49:02 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:49:02 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:49:03 - [INFO ] - validateToken for : issam
+2021-09-10 16:49:03 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:49:03 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:49:03 - [TRACE] - pageNo : 0
+2021-09-10 16:49:03 - [TRACE] - pageSize : 200
+2021-09-10 16:49:03 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:49:03 - [TRACE] - query : [name:a]
+2021-09-10 16:49:03 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:49:03 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:49:03 - [INFO ] - Filter found : name:a
+2021-09-10 16:49:03 - [INFO ] - 177 products active in DB
+2021-09-10 16:49:03 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:49:03 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:49:25 - [INFO ] - validateToken for : issam
+2021-09-10 16:49:25 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:49:25 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:49:25 - [TRACE] - pageNo : 0
+2021-09-10 16:49:25 - [TRACE] - pageSize : 200
+2021-09-10 16:49:25 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:49:25 - [TRACE] - query : [name:a]
+2021-09-10 16:49:25 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:49:25 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:49:25 - [INFO ] - Filter found : name:a
+2021-09-10 16:49:25 - [INFO ] - 177 products active in DB
+2021-09-10 16:49:25 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:49:25 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:49:27 - [INFO ] - validateToken for : issam
+2021-09-10 16:49:27 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:49:27 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:49:27 - [TRACE] - pageNo : 0
+2021-09-10 16:49:27 - [TRACE] - pageSize : 200
+2021-09-10 16:49:27 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:49:27 - [TRACE] - query : [name:a]
+2021-09-10 16:49:27 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:49:27 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:49:27 - [INFO ] - Filter found : name:a
+2021-09-10 16:49:27 - [INFO ] - 177 products active in DB
+2021-09-10 16:49:27 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:49:27 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:49:33 - [INFO ] - validateToken for : issam
+2021-09-10 16:49:33 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:49:33 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:49:33 - [TRACE] - pageNo : 0
+2021-09-10 16:49:33 - [TRACE] - pageSize : 200
+2021-09-10 16:49:33 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:49:33 - [TRACE] - query : [name:a]
+2021-09-10 16:49:33 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:49:33 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:49:33 - [INFO ] - Filter found : name:a
+2021-09-10 16:49:33 - [INFO ] - 177 products active in DB
+2021-09-10 16:49:33 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:49:34 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:51:03 - [INFO ] - validateToken for : fenix
+2021-09-10 16:51:44 - [INFO ] - validateToken for : issam
+2021-09-10 16:51:44 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:51:44 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:51:44 - [TRACE] - pageNo : 0
+2021-09-10 16:51:44 - [TRACE] - pageSize : 200
+2021-09-10 16:51:44 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:51:44 - [TRACE] - query : [name:a]
+2021-09-10 16:51:44 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:51:44 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:51:44 - [INFO ] - Filter found : name:a
+2021-09-10 16:51:44 - [INFO ] - 177 products active in DB
+2021-09-10 16:51:44 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:51:45 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:51:46 - [INFO ] - validateToken for : issam
+2021-09-10 16:51:46 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:51:46 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:51:46 - [TRACE] - pageNo : 0
+2021-09-10 16:51:46 - [TRACE] - pageSize : 200
+2021-09-10 16:51:46 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:51:46 - [TRACE] - query : [name:a]
+2021-09-10 16:51:46 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:51:46 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:51:46 - [INFO ] - Filter found : name:a
+2021-09-10 16:51:46 - [INFO ] - 177 products active in DB
+2021-09-10 16:51:46 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:51:46 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:51:51 - [INFO ] - validateToken for : issam
+2021-09-10 16:51:51 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:51:51 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:51:51 - [TRACE] - pageNo : 0
+2021-09-10 16:51:51 - [TRACE] - pageSize : 200
+2021-09-10 16:51:51 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:51:51 - [TRACE] - query : [name:a]
+2021-09-10 16:51:51 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:51:51 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:51:51 - [INFO ] - Filter found : name:a
+2021-09-10 16:51:51 - [INFO ] - 177 products active in DB
+2021-09-10 16:51:51 - [INFO ] - We have filters and type : Produits Finis
+2021-09-10 16:51:51 - [INFO ] - 108 Products by name [a] found of Type :Produits Finis
+2021-09-10 16:52:15 - [INFO ] - validateToken for : issam
+2021-09-10 16:52:15 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:52:15 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:52:15 - [TRACE] - pageNo : 0
+2021-09-10 16:52:15 - [TRACE] - pageSize : 200
+2021-09-10 16:52:15 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:52:15 - [TRACE] - query : no query
+2021-09-10 16:52:15 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:52:15 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:52:15 - [INFO ] - No filter found
+2021-09-10 16:52:15 - [INFO ] - 177 products active in DB
+2021-09-10 16:52:15 - [INFO ] - we have just type
+2021-09-10 16:52:15 - [INFO ] - 111 Products of typeProduits Finis
+2021-09-10 16:52:27 - [INFO ] - validateToken for : issam
+2021-09-10 16:52:30 - [INFO ] - validateToken for : issam
+2021-09-10 16:52:30 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:52:30 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:52:30 - [TRACE] - pageNo : 0
+2021-09-10 16:52:30 - [TRACE] - pageSize : 200
+2021-09-10 16:52:30 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:52:30 - [TRACE] - query : no query
+2021-09-10 16:52:30 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:52:30 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:52:30 - [INFO ] - No filter found
+2021-09-10 16:52:30 - [INFO ] - 177 products active in DB
+2021-09-10 16:52:30 - [INFO ] - we have just type
+2021-09-10 16:52:31 - [INFO ] - 111 Products of typeProduits Finis
+2021-09-10 16:52:52 - [INFO ] - validateToken for : issam
+2021-09-10 16:52:54 - [INFO ] - validateToken for : issam
+2021-09-10 16:52:57 - [INFO ] - validateToken for : issam
+2021-09-10 16:53:52 - [INFO ] - validateToken for : issam
+2021-09-10 16:53:52 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:53:52 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:53:52 - [TRACE] - pageNo : 0
+2021-09-10 16:53:52 - [TRACE] - pageSize : 200
+2021-09-10 16:53:52 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:53:52 - [TRACE] - query : no query
+2021-09-10 16:53:52 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:53:52 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:53:52 - [INFO ] - No filter found
+2021-09-10 16:53:52 - [INFO ] - 177 products active in DB
+2021-09-10 16:53:52 - [INFO ] - we have just type
+2021-09-10 16:53:52 - [INFO ] - 111 Products of typeProduits Finis
+2021-09-10 16:54:15 - [INFO ] - validateToken for : issam
+2021-09-10 16:54:18 - [INFO ] - validateToken for : issam
+2021-09-10 16:54:18 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:54:18 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:54:18 - [TRACE] - pageNo : 0
+2021-09-10 16:54:18 - [TRACE] - pageSize : 200
+2021-09-10 16:54:18 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:54:18 - [TRACE] - query : no query
+2021-09-10 16:54:18 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:54:18 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:54:18 - [INFO ] - No filter found
+2021-09-10 16:54:18 - [INFO ] - 177 products active in DB
+2021-09-10 16:54:18 - [INFO ] - we have just type
+2021-09-10 16:54:18 - [INFO ] - 111 Products of typeProduits Finis
+2021-09-10 16:54:24 - [INFO ] - validateToken for : issam
+2021-09-10 16:54:27 - [INFO ] - validateToken for : issam
+2021-09-10 16:54:27 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:54:27 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:54:27 - [TRACE] - pageNo : 0
+2021-09-10 16:54:27 - [TRACE] - pageSize : 200
+2021-09-10 16:54:27 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:54:27 - [TRACE] - query : no query
+2021-09-10 16:54:27 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:54:27 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:54:27 - [INFO ] - No filter found
+2021-09-10 16:54:27 - [INFO ] - 177 products active in DB
+2021-09-10 16:54:27 - [INFO ] - we have just type
+2021-09-10 16:54:27 - [INFO ] - 111 Products of typeProduits Finis
+2021-09-10 16:54:58 - [INFO ] - validateToken for : issam
+2021-09-10 16:54:58 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:54:58 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:54:58 - [TRACE] - pageNo : 0
+2021-09-10 16:54:58 - [TRACE] - pageSize : 200
+2021-09-10 16:54:58 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:54:58 - [TRACE] - query : no query
+2021-09-10 16:54:58 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:54:58 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:54:58 - [INFO ] - No filter found
+2021-09-10 16:54:58 - [INFO ] - 177 products active in DB
+2021-09-10 16:54:58 - [INFO ] - we have just type
+2021-09-10 16:54:58 - [INFO ] - 111 Products of typeProduits Finis
+2021-09-10 16:55:14 - [INFO ] - validateToken for : issam
+2021-09-10 16:55:14 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:55:14 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:55:14 - [TRACE] - pageNo : 0
+2021-09-10 16:55:14 - [TRACE] - pageSize : 200
+2021-09-10 16:55:14 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:55:14 - [TRACE] - query : no query
+2021-09-10 16:55:14 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:55:14 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:55:14 - [INFO ] - No filter found
+2021-09-10 16:55:14 - [INFO ] - 177 products active in DB
+2021-09-10 16:55:14 - [INFO ] - we have just type
+2021-09-10 16:55:14 - [INFO ] - 111 Products of typeProduits Finis
+2021-09-10 16:55:45 - [INFO ] - validateToken for : issam
+2021-09-10 16:55:45 - [TRACE] - ProductResource.index method accessed
+2021-09-10 16:55:45 - [TRACE] - ProductService.getAllProducts method accessed
+2021-09-10 16:55:45 - [TRACE] - pageNo : 0
+2021-09-10 16:55:45 - [TRACE] - pageSize : 200
+2021-09-10 16:55:45 - [TRACE] - sortBy : [name, asc]
+2021-09-10 16:55:45 - [TRACE] - query : no query
+2021-09-10 16:55:45 - [TRACE] - ProductService.getSortDirection method accessed
+2021-09-10 16:55:45 - [TRACE] - ProductService.getFilters method accessed
+2021-09-10 16:55:45 - [INFO ] - No filter found
+2021-09-10 16:55:45 - [INFO ] - 177 products active in DB
+2021-09-10 16:55:45 - [INFO ] - we have just type
+2021-09-10 16:55:45 - [INFO ] - 111 Products of typeProduits Finis

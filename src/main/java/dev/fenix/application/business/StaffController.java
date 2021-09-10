@@ -28,7 +28,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("business/staff")
 public class StaffController {
-  private static final Logger log = LoggerFactory.getLogger(UserController.class);
+  private static final Logger log = LoggerFactory.getLogger(StaffController.class);
 
   @Autowired private StaffRepository staffRepository;
 

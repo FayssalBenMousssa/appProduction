@@ -70,7 +70,7 @@ public class SecurityConfiguration {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-      //   log.info("-------------> configure WebSecurityConfig");
+
 
       http.antMatcher("/**")
           .authorizeRequests()
@@ -108,7 +108,9 @@ public class SecurityConfiguration {
                     throws IOException, ServletException {
                   UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                   String username = userDetails.getUsername();
+
                   User user = userRepository.findOneByUserName(username);
+                  log.info("The user " + username + " has logged out");
                   activityRepository.save(
                       new Activity(
                           user,
@@ -135,6 +137,7 @@ public class SecurityConfiguration {
                   UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                   String username = userDetails.getUsername();
                   User user = userRepository.findOneByUserName(username);
+                  log.info("The user " + username + " has logged in.");
                   activityRepository.save(
                       new Activity(
                           user,
@@ -161,6 +164,7 @@ public class SecurityConfiguration {
                   String username = request.getParameter("username");
                   // String password = request.getParameter("password");
                   String error = exception.getMessage();
+                  log.info("Failed login attempt with username : " + username + ". Reason: " + error);
                   activityRepository.save(
                       new Activity(
                           null,

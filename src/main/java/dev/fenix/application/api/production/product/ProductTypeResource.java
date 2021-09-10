@@ -24,7 +24,7 @@ import java.util.List;
 @RestController()
 @RequestMapping("/api/product/type")
 public class ProductTypeResource {
-  private static final Logger log = LoggerFactory.getLogger(Application.class);
+  private static final Logger log = LoggerFactory.getLogger(ProductTypeResource.class);
   @Autowired private ProductTypeRepository productTypeRepository;
   @Autowired private ProductRepository productRepository;
 

@@ -6,6 +6,8 @@ import dev.fenix.application.app.model.Exception;
 import dev.fenix.application.app.repository.AppExceptionRepository;
 import dev.fenix.application.security.model.User;
 import dev.fenix.application.security.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -28,10 +30,12 @@ public class ApplicationError implements ErrorController {
   @Autowired private AppExceptionRepository exceptionRepository;
   @Autowired private UserRepository userRepository;
 
+  private static final Logger log = LoggerFactory.getLogger(ErrorController.class);
+
   @RequestMapping("/error")
   public @ResponseBody Object handleError(HttpServletRequest request) {
     ServletWebRequest webRequest = new ServletWebRequest(request);
-
+    log.trace("ApplicationError.handleError method accessed");
     @SuppressWarnings("deprecation")
     Map<String, Object> errors = errorAttributes.getErrorAttributes(webRequest, true);
     String username = null;
@@ -43,6 +47,8 @@ public class ApplicationError implements ErrorController {
     }
 
     User user = userRepository.findOneByUserName(username);
+    log.trace("UserName : " +  username   );
+
     Exception exception = new Exception(errors, user);
     exception = exceptionRepository.save(exception);
     String[] paths = exception.getPath().split("\\/", -1);
@@ -51,6 +57,7 @@ public class ApplicationError implements ErrorController {
       modelAndView.addObject("exception", exception);
       if (exception.getStatus() != null) {
         Integer statusCode = Integer.valueOf(exception.getStatus());
+        log.trace("StatusCode : " + statusCode  );
         if (statusCode == HttpStatus.NOT_FOUND.value()) {
           modelAndView.addObject("status", HttpStatus.NOT_FOUND);
           modelAndView.setViewName("errors/not_found");

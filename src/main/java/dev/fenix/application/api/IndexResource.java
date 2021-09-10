@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController()
 @RequestMapping("/api")
 public class IndexResource {
-  private static final Logger log = LoggerFactory.getLogger(Application.class);
+  private static final Logger log = LoggerFactory.getLogger(IndexResource.class);
   @Autowired private AuthenticationManager authenticationManager;
   @Autowired private JwtUtil jwtTokenUtil;
   @Autowired private PersonRepository personRepository;

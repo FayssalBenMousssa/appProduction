@@ -12,7 +12,7 @@ import java.util.Date;
 
 public final class DatabaseUtil {
 
-  private static final Logger log = LoggerFactory.getLogger(Application.class);
+  private static final Logger log = LoggerFactory.getLogger(DatabaseUtil.class);
 
   public static boolean backup(
       String dbUsername, String dbPassword, String dbName, String outputFile)

@@ -27,7 +27,7 @@ import java.util.List;
 @Controller
 @RequestMapping("business/team")
 public class TeamController {
-  private static final Logger log = LoggerFactory.getLogger(UserController.class);
+  private static final Logger log = LoggerFactory.getLogger(TeamController.class);
   @Autowired private TeamRepository teamRepository;
   @Autowired private PersonRepository personRepository;
   @Autowired private PersonService personService;

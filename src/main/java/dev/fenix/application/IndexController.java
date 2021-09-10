@@ -17,7 +17,7 @@ import java.util.Map;
 @RequestMapping(value = "/", method = RequestMethod.GET)
 public class IndexController {
 
-  private static final Logger log = LoggerFactory.getLogger(Application.class);
+  private static final Logger log = LoggerFactory.getLogger(IndexController.class);
   @Autowired private ApplicationContext appContext;
 
   @RequestMapping(value = {"/", "home"})
