@@ -2,8 +2,10 @@ package dev.fenix.application.api.production.product;
 
 import dev.fenix.application.Application;
 import dev.fenix.application.production.product.model.ProductType;
+import dev.fenix.application.production.product.repository.ProductRepository;
 import dev.fenix.application.production.product.repository.ProductTypeRepository;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +17,17 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @RestController()
 @RequestMapping("/api/product/type")
 public class ProductTypeResource {
-  private static final Logger log = LoggerFactory.getLogger(Application.class);
+  private static final Logger log = LoggerFactory.getLogger(ProductTypeResource.class);
   @Autowired private ProductTypeRepository productTypeRepository;
+  @Autowired private ProductRepository productRepository;
+
 
   @RequestMapping(
       value = {"/", ""},
@@ -95,6 +102,30 @@ public class ProductTypeResource {
     }
   }
 
+
+  @RequestMapping(
+          value = {"/info", ""},
+          method = RequestMethod.GET,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity info() {
+    try {
+      JSONObject information = new JSONObject();
+      SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      Date date = new Date();
+      information.put("date", formatter.format(date));
+      List<ProductType> listProductType = productTypeRepository.findAll();
+      for (ProductType type : listProductType) {
+        information.put(
+                type.getName(),
+                productRepository.countByActiveTrueAndProductType(
+                        productTypeRepository.findOneById(type.getId())));
+      }
+      return new ResponseEntity<>(information.toString(), HttpStatus.OK);
+    } catch (JSONException e) {
+      e.printStackTrace();
+      return new ResponseEntity<>("BAD_REQUEST", HttpStatus.BAD_REQUEST);
+    }
+  }
 
 
 }

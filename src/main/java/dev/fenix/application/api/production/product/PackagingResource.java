@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @RestController()
 @RequestMapping("/api/product/packaging")
 public class PackagingResource {
-  private static final Logger log = LoggerFactory.getLogger(Application.class);
+  private static final Logger log = LoggerFactory.getLogger(PackagingResource.class);
 
   @Autowired private PackagingRepository packagingRepository;
 

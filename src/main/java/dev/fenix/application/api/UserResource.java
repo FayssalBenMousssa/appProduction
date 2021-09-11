@@ -27,7 +27,7 @@ import java.security.Principal;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserResource {
 
-  private static final Logger log = LoggerFactory.getLogger(Application.class);
+  private static final Logger log = LoggerFactory.getLogger(UserResource.class);
   @Autowired private PersonRepository personRepository;
   @Autowired private UserRepository userRepository;
 

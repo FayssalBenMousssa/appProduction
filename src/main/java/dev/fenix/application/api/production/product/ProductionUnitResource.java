@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @RestController()
 @RequestMapping("/api/product/unit")
 public class ProductionUnitResource {
-  private static final Logger log = LoggerFactory.getLogger(Application.class);
+  private static final Logger log = LoggerFactory.getLogger(ProductionUnitResource.class);
 
   @Autowired private ProductionUnitRepository productionUnitRepository;
 

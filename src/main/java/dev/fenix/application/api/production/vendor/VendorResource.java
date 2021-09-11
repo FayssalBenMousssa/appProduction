@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController()
 @RequestMapping("/api/vendor")
 public class VendorResource {
-  private static final Logger log = LoggerFactory.getLogger(Application.class);
+  private static final Logger log = LoggerFactory.getLogger(VendorResource.class);
 
   @Autowired private VendorRepository vendorRepository;
 

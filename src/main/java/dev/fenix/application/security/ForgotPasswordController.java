@@ -28,7 +28,7 @@ import java.io.UnsupportedEncodingException;
 @Controller
 @RequestMapping("/")
 public class ForgotPasswordController {
-  private static final Logger log = LoggerFactory.getLogger(Application.class);
+  private static final Logger log = LoggerFactory.getLogger(ForgotPasswordController.class);
   @Autowired private JavaMailSender mailSender;
   @Autowired private UserService userService;
   @Autowired private ApplicationContext appContext;

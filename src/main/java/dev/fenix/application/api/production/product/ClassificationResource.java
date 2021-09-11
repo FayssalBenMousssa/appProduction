@@ -3,8 +3,10 @@ package dev.fenix.application.api.production.product;
 import dev.fenix.application.Application;
 import dev.fenix.application.production.product.model.Classification;
 import dev.fenix.application.production.product.repository.ClassificationRepository;
+import dev.fenix.application.production.product.repository.ProductRepository;
 import javassist.NotFoundException;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +18,17 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @RestController()
 @RequestMapping("/api/product/classification")
 public class ClassificationResource {
 
-  private static final Logger log = LoggerFactory.getLogger(Application.class);
+  private static final Logger log = LoggerFactory.getLogger(ClassificationResource.class);
   @Autowired private ClassificationRepository classificationRepository;
+  @Autowired private ProductRepository productRepository;
 
   @RequestMapping(
       value = {"/", ""},
@@ -36,21 +42,18 @@ public class ClassificationResource {
       value = "/index",
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public String index(HttpServletRequest request, @RequestParam(defaultValue = "0") Long level) throws NotFoundException {
+  public String index(HttpServletRequest request, @RequestParam(defaultValue = "0") Long level)
+      throws NotFoundException {
     JSONArray jArray = new JSONArray();
     Iterable<Classification> classifications;
 
-
     if (level != null) {
-    //  Classification parent =  classificationRepository.findById(level).orElseThrow(() -> new NotFoundException("Classification  not found"));
+      //  Classification parent =  classificationRepository.findById(level).orElseThrow(() -> new
+      // NotFoundException("Classification  not found"));
       classifications = classificationRepository.findByActiveTrueAndLevel(level);
     } else {
       classifications = classificationRepository.findByActiveTrue();
     }
-
-
-
-
 
     for (Classification classification : classifications) {
       // log.info("Level : " + classification.getLevel());
@@ -67,6 +70,16 @@ public class ClassificationResource {
   public ResponseEntity<?> save(
       @Valid @RequestBody Classification classification, HttpServletRequest request) {
     classification.setActive(true);
+
+
+    if(classification.getParent() != null){
+      Classification parent = classificationRepository.getOne(classification.getParent().getId());
+      classification.setLevel(parent.getLevel() + 1);
+    }else {
+      classification.setLevel(0);
+    }
+
+
     Classification savedClassification = classificationRepository.save(classification);
 
     /*  if (task.getAssignedTo() == null) {
@@ -99,6 +112,14 @@ public class ClassificationResource {
       @Valid @RequestBody Classification classification, HttpServletRequest request) {
     try {
       classification.setActive(true);
+
+      if(classification.getParent() != null){
+        classification.setLevel(classification.getParent().getLevel() + 1);
+      }else {
+        classification.setLevel(0);
+      }
+
+
       Classification updatedClassification = classificationRepository.save(classification);
       return new ResponseEntity<>(updatedClassification.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
@@ -120,6 +141,64 @@ public class ClassificationResource {
     } catch (Exception e) {
       e.printStackTrace();
       return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @RequestMapping(
+      value = {"/info", ""},
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity info() {
+    try {
+      JSONArray info = new JSONArray();
+      JSONObject information = new JSONObject();
+      SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+      Date date = new Date();
+      information.put("date", formatter.format(date));
+      List<Classification> listClassification = classificationRepository.findAllByLevel(0l);
+
+      /// start level 0
+      for (Classification classification : listClassification) {
+
+        JSONObject classificationInfo = new JSONObject();
+        // classificationInfo.put("count",
+        // productRepository.countByActiveTrueAndClassification(classificationRepository.findOneById(classification.getId())));
+        classificationInfo.put("name", classification.getName());
+        classificationInfo.put("id", classification.getId());
+        //  classificationInfo.put("level", classification.getLevel());
+
+        /// start level 1
+        JSONObject classificationLevel1 = new JSONObject();
+        for (Classification level1 : classification.getChildren()) {
+          // classificationLevel1.put("count",
+          // productRepository.countByActiveTrueAndClassification(classificationRepository.findOneById(level.getId())));
+          classificationLevel1.put("name", level1.getName());
+          classificationLevel1.put("id", level1.getId());
+          classificationLevel1.put("level", level1.getLevel());
+
+          JSONObject classificationLevel2 = new JSONObject();
+          for (Classification level2 : classification.getChildren()) {
+            classificationLevel2.put(
+                "count",
+                productRepository.countByActiveTrueAndClassification(
+                    classificationRepository.findOneById(level2.getId())));
+            classificationLevel2.put("name", level2.getName());
+            classificationLevel2.put("id", level2.getId());
+            classificationLevel2.put("level", level2.getLevel());
+          }
+        }
+        /// end level 1
+
+        classificationInfo.put("children", classificationLevel1);
+
+        info.put(classificationInfo);
+      }
+      /// end level 0
+
+      return new ResponseEntity<>(info.toString(), HttpStatus.OK);
+    } catch (JSONException e) {
+      e.printStackTrace();
+      return new ResponseEntity<>("BAD_REQUEST", HttpStatus.BAD_REQUEST);
     }
   }
 }
