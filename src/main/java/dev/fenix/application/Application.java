@@ -47,7 +47,6 @@ public class Application {
   @Autowired private Environment env;
 
   @PostConstruct
-
   private void runDbBackup() {
     log.trace("Application.runDbBackup method accessed");
     LocalDateTime now = LocalDateTime.now(); // current date and time
@@ -74,7 +73,6 @@ public class Application {
             } catch (InterruptedException e) {
               log.error("catch Exception");
               e.printStackTrace();
-
             }
           }
         },
@@ -82,7 +80,6 @@ public class Application {
         Long.parseLong(env.getProperty("app.backup.period")),
         TimeUnit.MINUTES);
   }
-
 
   @PostConstruct
   private void insertDbDefault() {
@@ -98,7 +95,6 @@ public class Application {
     log.trace("find role name ROLE_ADMIN");
     Role roleAdmin = roleRepository.findByRole("ROLE_ADMIN");
     /** add ROLE_ADMIN */
-
     if (roleAdmin == null) {
       Role roles = new Role();
       roles.setRole("ROLE_ADMIN");
@@ -150,58 +146,43 @@ public class Application {
     }
   }
 
-
-
-
- /// @PostConstruct
-  private void cleanUp(){
-
+  /// @PostConstruct
+  private void cleanUp() {
     List<Classification> allClassification = classNameRepository.findAll();
     for (Classification classification : allClassification) {
       classification.setName(
-              classification.getName()
-              .replaceAll("\\n","")
-              .replaceAll(",","")
-              .trim());
+          classification.getName().replaceAll("\\n", "").replaceAll(",", "").trim());
 
       if (classification.getLevel() != 2) {
         String initials = "";
         for (String src : classification.getName().split(" ")) {
-          if(!src.isEmpty()){
-            initials+=src.charAt(0);
+          if (!src.isEmpty()) {
+            initials += src.charAt(0);
           }
         }
-         initials = initials.replaceAll(" " ,"");
+        initials = initials.replaceAll(" ", "");
         log.info(initials);
-        if(classification.getLevel() == 0) {
+        if (classification.getLevel() == 0) {
           classification.setCode("G" + initials.toUpperCase());
-        }else if(classification.getLevel() ==1 ) {
+        } else if (classification.getLevel() == 1) {
           classification.setCode("F" + initials.toUpperCase());
         }
-
       }
 
-
       classNameRepository.save(classification);
-    };
+    }
+    ;
 
     Iterable<Product> allProducts = productRepository.findAll();
     for (Product product : allProducts) {
-      product.setName(
-              product.getName()
-                      .replaceAll("\\n","")
-                      .replaceAll(",","")
-                      .trim());
+      product.setName(product.getName().replaceAll("\\n", "").replaceAll(",", "").trim());
 
       productRepository.save(product);
-    };
-
-
+    }
+    ;
   }
 
-
   public static void main(String[] args) {
-
     log.trace("Application.main method accessed");
     SpringApplication.run(Application.class, args);
   }

@@ -1,11 +1,11 @@
 package dev.fenix.application.api;
 
-import dev.fenix.application.Application;
 import dev.fenix.application.api.models.AuthenticationRequest;
 import dev.fenix.application.api.models.AuthenticationResponse;
 import dev.fenix.application.api.util.JwtUtil;
 import dev.fenix.application.person.repository.PersonRepository;
 import dev.fenix.application.security.repository.UserRepository;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,16 +35,14 @@ public class IndexResource {
 
 
   @RequestMapping(
-      value = "/",
-      method = RequestMethod.GET,
-      produces = MediaType.APPLICATION_JSON_VALUE)
-  public String index() {
-
-    userRepository.count();
-
-    return JSONObject.quote( "Users : " +  userRepository.count());
+          value = "/",
+          method = RequestMethod.GET,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> index() throws JSONException {
+    JSONObject jObject = new JSONObject();
+    jObject.put("api",1);
+    return ResponseEntity.ok(jObject.toString());
   }
-
 
 
 

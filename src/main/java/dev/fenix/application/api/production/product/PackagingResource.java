@@ -1,8 +1,6 @@
 package dev.fenix.application.api.production.product;
 
-import dev.fenix.application.Application;
 import dev.fenix.application.production.product.model.Packaging;
-import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.repository.PackagingRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
