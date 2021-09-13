@@ -4772,3 +4772,17 @@ io.jsonwebtoken.ExpiredJwtException: JWT expired at 2021-09-09T18:10:36Z. Curren
 2021-09-13 14:17:02.696  INFO 11032 --- [http-nio-80-exec-10] d.f.a.p.product.service.ProductService   : 179 products active in DB
 2021-09-13 14:17:02.696  INFO 11032 --- [http-nio-80-exec-10] d.f.a.p.product.service.ProductService   : we have just type
 2021-09-13 14:17:02.875  INFO 11032 --- [http-nio-80-exec-10] d.f.a.p.product.service.ProductService   : 112 Products of typeProduits Finis
+2021-09-13 14:18:45.318  INFO 11032 --- [http-nio-80-exec-7] dev.fenix.application.api.util.JwtUtil   : validateToken for : issam
+2021-09-13 14:18:45.326 TRACE 11032 --- [http-nio-80-exec-7] d.f.a.a.p.product.ProductResource        : ProductResource.index method accessed
+2021-09-13 14:18:45.326 TRACE 11032 --- [http-nio-80-exec-7] d.f.a.p.product.service.ProductService   : ProductService.getAllProducts method accessed
+2021-09-13 14:18:45.326 TRACE 11032 --- [http-nio-80-exec-7] d.f.a.p.product.service.ProductService   : pageNo : 0
+2021-09-13 14:18:45.327 TRACE 11032 --- [http-nio-80-exec-7] d.f.a.p.product.service.ProductService   : pageSize : 50
+2021-09-13 14:18:45.327 TRACE 11032 --- [http-nio-80-exec-7] d.f.a.p.product.service.ProductService   : sortBy : [name, asc]
+2021-09-13 14:18:45.327 TRACE 11032 --- [http-nio-80-exec-7] d.f.a.p.product.service.ProductService   : query : no query
+2021-09-13 14:18:45.327 TRACE 11032 --- [http-nio-80-exec-7] d.f.a.p.product.service.ProductService   : ProductService.getSortDirection method accessed
+2021-09-13 14:18:45.327 TRACE 11032 --- [http-nio-80-exec-7] d.f.a.p.product.service.ProductService   : ProductService.getFilters method accessed
+2021-09-13 14:18:45.327  INFO 11032 --- [http-nio-80-exec-7] d.f.a.p.product.service.ProductService   : No filter found
+2021-09-13 14:18:45.339  INFO 11032 --- [http-nio-80-exec-7] d.f.a.p.product.service.ProductService   : 179 products active in DB
+2021-09-13 14:18:45.340  INFO 11032 --- [http-nio-80-exec-7] d.f.a.p.product.service.ProductService   : we have just type
+2021-09-13 14:18:45.636  INFO 11032 --- [http-nio-80-exec-7] d.f.a.p.product.service.ProductService   : 112 Products of typeProduits Finis
+2021-09-13 14:18:50.350  INFO 11032 --- [http-nio-80-exec-4] dev.fenix.application.api.util.JwtUtil   : validateToken for : issam
