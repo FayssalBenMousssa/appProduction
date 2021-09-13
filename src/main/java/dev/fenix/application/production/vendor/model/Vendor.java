@@ -82,7 +82,7 @@ public class Vendor {
             vendorJSON.put("email", this.getEmail());
             vendorJSON.put("socialReason", this.getSocialReason());
             vendorJSON.put("address", this.getVendorAddress().toJson());
-            vendorJSON.put("contacts", this.get().toJson());
+
             vendorJSON.put("contact", this.getVendorAddress().toJson());
 
 

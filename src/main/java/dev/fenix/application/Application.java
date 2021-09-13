@@ -146,7 +146,7 @@ public class Application {
     }
   }
 
-  /// @PostConstruct
+  @PostConstruct
   private void cleanUp() {
     List<Classification> allClassification = classNameRepository.findAll();
     for (Classification classification : allClassification) {
@@ -176,7 +176,7 @@ public class Application {
     Iterable<Product> allProducts = productRepository.findAll();
     for (Product product : allProducts) {
       product.setName(product.getName().replaceAll("\\n", "").replaceAll(",", "").trim());
-
+      product.setCodeDes(product.getCodeDes().replaceAll("\\n", "").replaceAll(",", "").trim());
       productRepository.save(product);
     }
     ;

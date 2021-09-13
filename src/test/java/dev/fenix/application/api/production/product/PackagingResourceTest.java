@@ -1,7 +1,6 @@
 package dev.fenix.application.api.production.product;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.mail.iap.Response;
 import dev.fenix.application.production.product.model.Packaging;
 import org.junit.Assert;
 import org.junit.Before;
@@ -52,11 +51,8 @@ class PackagingResourceTest {
   @WithMockUser(username = "fenix", roles = {"USER", "ADMIN"})
   void save() throws Exception {
     Packaging requestPackaging = new Packaging();
-
-
     int random_int = (int)Math.floor(Math.random()*(100000000-0+1));
     requestPackaging.setName("Packaging " + random_int);
-
     String jsonRequest = om.writeValueAsString(requestPackaging);
     MvcResult result =
         mockMvc
