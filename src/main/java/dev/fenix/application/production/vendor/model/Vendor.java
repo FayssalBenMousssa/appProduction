@@ -28,13 +28,16 @@ public class Vendor {
     private String socialReason;
 
 
-    @NotNull(message = "Please enter the address")
-    private String address;
+    @NotNull(message = "Please enter the Address")
+    @ManyToOne(
+            cascade = {CascadeType.DETACH},
+            fetch = FetchType.EAGER)
+
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private VendorAddress vendorAddress;
 
     @NotNull(message = "Please enter the telephone")
     private String telephone;
-
-
 
 
     @NotNull(message = "Please enter the email")
@@ -65,22 +68,28 @@ public class Vendor {
     private VendorClassification classement;
 
 
-
     @NotNull(message = "Please enter the note")
     private String note;
     @NotNull(message = "Please enter the active")
     private String active;
+
     public JSONObject toJson() {
-        JSONObject productJSON = new JSONObject();
+        JSONObject vendorJSON = new JSONObject();
         try {
-            productJSON.put("id", this.getId());
-            productJSON.put("code", this.getCode());
+            vendorJSON.put("id", this.getId());
+            vendorJSON.put("code", this.getCode());
+            vendorJSON.put("telephone", this.getTelephone());
+            vendorJSON.put("email", this.getEmail());
+            vendorJSON.put("socialReason", this.getSocialReason());
+            vendorJSON.put("address", this.getVendorAddress().toJson());
+            vendorJSON.put("contacts", this.get().toJson());
+            vendorJSON.put("contact", this.getVendorAddress().toJson());
 
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return productJSON;
+        return vendorJSON;
     }
 
 }

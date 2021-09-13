@@ -2,6 +2,8 @@ package dev.fenix.application.production.vendor.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -39,6 +41,16 @@ public class VendorAddress {
 
     @NotNull(message = "Please enter the active")
     private String active;
+    public JSONObject toJson() {
+        JSONObject addresstJSON = new JSONObject();
+        try {
+            addresstJSON.put("id", this.getId());
+            addresstJSON.put("code", this.getAddressOne());
 
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return addresstJSON;
+    }
 
 }
