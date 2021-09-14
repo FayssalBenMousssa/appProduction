@@ -146,7 +146,7 @@ public class Application {
     }
   }
 
-  @PostConstruct
+///  @PostConstruct
   private void cleanUp() {
     List<Classification> allClassification = classNameRepository.findAll();
     for (Classification classification : allClassification) {

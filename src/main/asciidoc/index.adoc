@@ -1,0 +1,14 @@
+= Prodction
+
+This is an example output for a service running at http://localhost:
+
+== Save
+
+.request
+include::{snippets}/save/http-request.adoc[]
+
+.response
+include::{snippets}/save/http-response.adoc[]
+
+
+The data which we can see as part of documentation will loaded from MockMvc Test case data

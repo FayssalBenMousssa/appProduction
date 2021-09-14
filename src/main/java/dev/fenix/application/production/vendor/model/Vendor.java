@@ -43,14 +43,12 @@ public class Vendor {
     @NotNull(message = "Please enter the email")
     private String email;
 
-
     @NotNull(message = "Please enter the contacts")
     @ManyToOne(
             cascade = {CascadeType.DETACH},
             fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_id", referencedColumnName = "id")
     private VendorContact vendorContact;
-
 
     @NotNull(message = "Please enter the contacts")
     @ManyToOne(
@@ -59,14 +57,12 @@ public class Vendor {
     @JoinColumn(name = "main_contact_id", referencedColumnName = "id")
     private VendorContact vendorMainContact;
 
-
     @NotNull(message = "Please enter the classement")
     @ManyToOne(
             cascade = {CascadeType.DETACH},
             fetch = FetchType.EAGER)
     @JoinColumn(name = "classement_id", referencedColumnName = "id")
     private VendorClassification classement;
-
 
     @NotNull(message = "Please enter the note")
     private String note;
