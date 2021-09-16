@@ -4,6 +4,7 @@ This is an example output for a service running at http://localhost:
 
 == Save
 
+
 .request
 include::{snippets}/save/http-request.adoc[]
 

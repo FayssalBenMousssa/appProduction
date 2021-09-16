@@ -1,8 +1,6 @@
 package dev.fenix.application.production.product.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,6 +11,8 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @Table(name = "prds__packaging")
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 public class Packaging {
   @Id
@@ -30,7 +30,7 @@ public class Packaging {
     this.name = name;
   }
 
-  public Packaging() {}
+
 
   public JSONObject toJson() {
     JSONObject personJSON = new JSONObject();

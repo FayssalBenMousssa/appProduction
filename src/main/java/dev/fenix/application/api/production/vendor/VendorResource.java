@@ -1,6 +1,6 @@
 package dev.fenix.application.api.production.vendor;
 
-import dev.fenix.application.Application;
+import dev.fenix.application.production.vendor.model.Address;
 import dev.fenix.application.production.vendor.model.Vendor;
 import dev.fenix.application.production.vendor.repository.VendorRepository;
 import org.json.JSONArray;
@@ -13,8 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController()
 @RequestMapping("/api/vendor")
@@ -22,9 +23,6 @@ public class VendorResource {
   private static final Logger log = LoggerFactory.getLogger(VendorResource.class);
 
   @Autowired private VendorRepository vendorRepository;
-
-
-
 
   @RequestMapping(
       value = {"/", ""},
@@ -40,39 +38,40 @@ public class VendorResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> index(
       HttpServletRequest request,
-      @RequestParam (required = false)  Long type,
+      @RequestParam(required = false) Long type,
       @RequestParam(defaultValue = "0") Integer page,
       @RequestParam(defaultValue = "200") Integer size,
       @RequestParam(defaultValue = "id,desc") String[] sort,
-      @RequestParam(required = false) String[] query) throws InterruptedException {
-
-    // TimeUnit.SECONDS.sleep(2);
-
+      @RequestParam(required = false) String[] query)
+      throws InterruptedException {
     JSONArray jArray = new JSONArray();
     Iterable<Vendor> vendors = vendorRepository.findAll();
     for (Vendor vendor : vendors) {
       jArray.put(vendor.toJson());
     }
-    //return new ResponseEntity<>(jArray.toString(), HttpStatus.OK);
-
     JSONObject response = new JSONObject();
-
     try {
-
-      response.put("results" ,jArray);
-
-      response.put("count" , vendorRepository.count( ));
-
-      //  response.put("count" , productRepository.count());
+      response.put("results", jArray);
+      response.put("count", vendorRepository.count());
       return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     } catch (JSONException e) {
       e.printStackTrace();
-
     }
     return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-
-   // return JSONObject.quote("Api :" + this.getClass().getSimpleName());
   }
 
+
+  @RequestMapping(
+          value = "/save",
+          method = RequestMethod.POST,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseBody
+  public ResponseEntity<?> save(
+          @Valid @RequestBody Vendor vendor, HttpServletRequest request) {
+    log.trace("{methodName} method accessed");
+    vendor.setActive(true);
+    Vendor savedVendor = vendorRepository.save(vendor);
+    return ResponseEntity.ok(savedVendor.toJson().toString());
+  }
 
 }

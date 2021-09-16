@@ -1,8 +1,6 @@
 package dev.fenix.application.production.product.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +12,8 @@ import java.util.Locale;
 @Getter
 @Setter
 @Table(name = "prds__product")
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 public class Product {
   @Id
@@ -61,7 +61,7 @@ public class Product {
   @Column(columnDefinition="tinyint(1) default 1")
   private boolean active;
 
-  public Product() {}
+
 
 
 

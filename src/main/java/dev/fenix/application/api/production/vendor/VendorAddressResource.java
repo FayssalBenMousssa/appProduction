@@ -1,6 +1,8 @@
 package dev.fenix.application.api.production.vendor;
 
+import dev.fenix.application.production.vendor.model.Address;
 import dev.fenix.application.production.vendor.model.VendorClassification;
+import dev.fenix.application.production.vendor.repository.VendorAddressRepository;
 import dev.fenix.application.production.vendor.repository.VendorClassificationRepository;
 import org.json.JSONArray;
 import org.slf4j.Logger;
@@ -15,12 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController()
-@RequestMapping("/api/vendor/classification")
-public class VendorClassificationResource {
-  private static final Logger log = LoggerFactory.getLogger(VendorClassificationResource.class);
+@RequestMapping("/api/vendor/address")
+public class VendorAddressResource {
+  private static final Logger log = LoggerFactory.getLogger(VendorAddressResource.class);
 
-  @Autowired private VendorClassificationRepository vendorClassificationRepository;
-
+  @Autowired private VendorAddressRepository vendorAddressRepository;
 
   @RequestMapping(
       value = "/index",
@@ -28,14 +29,15 @@ public class VendorClassificationResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public String index(HttpServletRequest request) {
     JSONArray jArray = new JSONArray();
-    log.trace("{methodName} method accessed");
-    Iterable<VendorClassification> vendorClassification = vendorClassificationRepository.findByActiveTrue();
-    for (VendorClassification classification : vendorClassification) {
+    log.trace("{methodName}  method accessed");
+    Iterable<Address> addresses = vendorAddressRepository.findByActiveTrue();
+
+    for (Address classification : addresses) {
       jArray.put(classification.toJson());
     }
+
     return jArray.toString();
   }
-
 
   @RequestMapping(
       value = "/save",
@@ -43,12 +45,13 @@ public class VendorClassificationResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> save(
-      @Valid @RequestBody VendorClassification vendorClassification, HttpServletRequest request) {
+      @Valid @RequestBody Address address, HttpServletRequest request) {
     log.trace("{methodName} method accessed");
-   vendorClassification.setActive(true);
-    VendorClassification savedVendorClassification = vendorClassificationRepository.save(vendorClassification);
-    return ResponseEntity.ok(savedVendorClassification.toJson().toString());
+    address.setActive(true);
+    Address savedAddress = vendorAddressRepository.save(address);
+    return ResponseEntity.ok(savedAddress.toJson().toString());
   }
+
 
 
   @RequestMapping(
@@ -56,17 +59,18 @@ public class VendorClassificationResource {
           method = RequestMethod.PUT,
           produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> update(@Valid @RequestBody VendorClassification vendorClassification, HttpServletRequest request) {
+  public ResponseEntity<?> update(@Valid @RequestBody Address address, HttpServletRequest request) {
     try {
       log.trace("{methodName} method accessed");
-     vendorClassification.setActive(true);
-      VendorClassification updatedVendorClassification = vendorClassificationRepository.save(vendorClassification);
-      return new ResponseEntity<>(updatedVendorClassification.toJson().toString(), HttpStatus.OK);
+      address.setActive(true);
+      Address updatedAddress = vendorAddressRepository.save(address);
+      return new ResponseEntity<>(updatedAddress.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
       return new ResponseEntity<>("Not updated", HttpStatus.BAD_REQUEST);
     }
   }
+
 
   @RequestMapping(
           value = "/delete/{id}",
@@ -76,10 +80,11 @@ public class VendorClassificationResource {
 
     try {
       log.trace("{methodName} method accessed");
-      VendorClassification vendorClassification = vendorClassificationRepository.getOne(id);
-       vendorClassification.setActive(false);
-      VendorClassification savedVendorClassification = vendorClassificationRepository.save(vendorClassification);
-      return ResponseEntity.ok("active : " +  savedVendorClassification.getActive());
+      Address address = vendorAddressRepository.getOne(id);
+      address.setActive(false);
+      Address deletedAddress = vendorAddressRepository.save(address);
+
+      return ResponseEntity.ok("active : " +  deletedAddress.isActive());
     } catch (Exception e) {
       e.printStackTrace();
       return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);

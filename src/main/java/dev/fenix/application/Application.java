@@ -48,7 +48,7 @@ public class Application {
 
   @PostConstruct
   private void runDbBackup() {
-    log.trace("Application.runDbBackup method accessed");
+    log.trace("{methodName}  method accessed");
     LocalDateTime now = LocalDateTime.now(); // current date and time
     LocalDateTime midnight = now.toLocalDate().plusDays(1).atStartOfDay();
 
@@ -83,7 +83,7 @@ public class Application {
 
   @PostConstruct
   private void insertDbDefault() {
-    log.trace("insertDbDefault method accessed");
+    log.trace("{methodName}  method accessed");
     Date date = new GregorianCalendar(2021, Calendar.FEBRUARY, 11).getTime();
     /** find User with Name admin */
     log.trace("find User with Name admin");

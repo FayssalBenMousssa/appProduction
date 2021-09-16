@@ -1,8 +1,6 @@
 package dev.fenix.application.production.product.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +12,8 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Table(name = "prds__type")
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductType {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +30,6 @@ public class ProductType {
     this.name = name;
   }
 
-  public ProductType() {}
 
   public JSONObject toJson() {
     JSONObject personJSON = new JSONObject();

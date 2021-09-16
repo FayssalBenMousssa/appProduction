@@ -2,7 +2,9 @@ package dev.fenix.application.production.vendor.model;
 
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +15,9 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @Entity
-@Table(name = "vendor__classification")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "vnd__classification")
 
 public class VendorClassification {
     @Id
@@ -26,7 +30,6 @@ public class VendorClassification {
     @NotNull(message = "Please enter the code")
     private String code;
 
-    @NotNull(message = "Please enter the active")
     private Boolean active;
 
 

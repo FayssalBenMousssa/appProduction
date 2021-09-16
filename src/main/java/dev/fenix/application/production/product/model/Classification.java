@@ -1,8 +1,6 @@
 package dev.fenix.application.production.product.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +13,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "prds__classification")
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 public class Classification {
   @Id
@@ -52,7 +52,7 @@ public class Classification {
     this.parent = parent;
   }
 
-  public Classification() {}
+
 
   public JSONObject toJson() {
     JSONObject classificationJSON = new JSONObject();

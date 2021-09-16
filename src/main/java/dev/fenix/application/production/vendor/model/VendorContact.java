@@ -1,6 +1,8 @@
 package dev.fenix.application.production.vendor.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,7 +11,9 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @Setter
-@Table(name = "vendor__contact")
+@Table(name = "vnd__contact")
+@AllArgsConstructor
+@NoArgsConstructor
 public class VendorContact {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,17 +21,21 @@ public class VendorContact {
 
     @NotNull(message = "Please enter the  name")
     private String  name;
+
+
+    private String  job;
+
     @NotNull(message = "Please enter the telephone")
     private String telephone;
 
-    @NotNull(message = "Please enter the email")
+
     private String email;
 
 
-    @NotNull(message = "Please enter the note")
+
     private String note;
-    @NotNull(message = "Please enter the active")
-    private String active;
+
+    private Boolean active;
 
 
 }
