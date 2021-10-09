@@ -1,15 +1,15 @@
+
 = Prodction
 
 This is an example output for a service running at http://localhost:
 
-== Save
+== Vendor
 
+<<vendor.adoc#_save,Save>>
 
-.request
-include::{snippets}/save/http-request.adoc[]
+<<vendor.adoc#_update,update>>
 
-.response
-include::{snippets}/save/http-response.adoc[]
+<<vendor.adoc#_index,Index>>
 
+<<vendor.adoc#_index_with_option, Index with Option>>
 
-The data which we can see as part of documentation will loaded from MockMvc Test case data

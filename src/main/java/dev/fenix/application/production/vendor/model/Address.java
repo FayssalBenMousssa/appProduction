@@ -46,6 +46,14 @@ public class Address {
         JSONObject addresstJSON = new JSONObject();
         try {
             addresstJSON.put("id", this.getId());
+            addresstJSON.put("name", this.getName());
+            addresstJSON.put("lineOne", this.getLineOne());
+            addresstJSON.put("lineTow", this.getLineTow());
+            addresstJSON.put("zipCode", this.getZipCode());
+            addresstJSON.put("city", this.getCity());
+            addresstJSON.put("country", this.getCountry());
+            addresstJSON.put("active", this.isActive());
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

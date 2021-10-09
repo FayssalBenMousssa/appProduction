@@ -60,6 +60,14 @@ public class Vendor {
         JSONObject vendorJSON = new JSONObject();
         try {
             vendorJSON.put("id", this.getId());
+            vendorJSON.put("code", this.getCode());
+            vendorJSON.put("socialReason", this.getSocialReason());
+            vendorJSON.put("address", this.getAddress().toJson());
+            vendorJSON.put("telephone", this.getTelephone());
+            vendorJSON.put("email", this.getEmail());
+            vendorJSON.put("classification", this.getClassification().toJson());
+            vendorJSON.put("note", this.getNote());
+            vendorJSON.put("mainContact", this.getMainContact().toJson());
 
 
 

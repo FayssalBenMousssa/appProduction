@@ -1,0 +1,35 @@
+= Prodction
+
+This is an example output for a service running at http://localhost:
+
+== Vendor
+
+==== save
+.request
+include::{snippets}/saveVendor/http-request.adoc[]
+
+.response
+include::{snippets}/saveVendor/http-response.adoc[]
+
+==== update
+.request
+include::{snippets}/updateVendor/http-request.adoc[]
+
+.response
+include::{snippets}/updateVendor/http-response.adoc[]
+
+
+==== index
+.request
+include::{snippets}/indexVendor/http-request.adoc[]
+
+.response
+include::{snippets}/indexVendor/http-response.adoc[]
+
+
+==== index with option
+.request
+include::{snippets}/indexVendorWithOption/http-request.adoc[]
+
+.response
+include::{snippets}/indexVendorWithOption/http-response.adoc[]

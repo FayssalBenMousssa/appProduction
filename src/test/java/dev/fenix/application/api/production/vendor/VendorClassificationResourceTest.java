@@ -44,7 +44,7 @@ class VendorClassificationResourceTest {
   @WithMockUser(
       username = "fenix",
       roles = {"USER", "ADMIN"})
-  void index() throws Exception {
+  void indexVendorClassification() throws Exception {
 
     this.mockMvc
         .perform(get("/api/vendor/classification/index"))
@@ -54,7 +54,7 @@ class VendorClassificationResourceTest {
 
   @Test
   @WithMockUser(username = "fenix")
-  void save() throws Exception {
+  void saveVendorClassification() throws Exception {
     VendorClassification requestClassification = new VendorClassification();
     requestClassification.setName("Name " + this.getRandom(0, 1000));
     requestClassification.setActive(true);
@@ -85,7 +85,7 @@ class VendorClassificationResourceTest {
 
   @Test
   @WithMockUser(username = "fenix")
-  void update() throws Exception {
+  void updateVendorClassification() throws Exception {
     VendorClassification requestClassification =
         vendorClassificationRepository.findTopByOrderByIdDesc();
     requestClassification.setName(requestClassification.getName() + "Updated");
@@ -113,7 +113,7 @@ class VendorClassificationResourceTest {
   }
 
   @Test
-  void delete() {}
+  void deleteVendorClassification() {}
 
   private int getRandom(int min, int max) {
     int random_int = (int) Math.floor(Math.random() * (max - min + 1));

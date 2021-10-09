@@ -5,7 +5,6 @@ import dev.fenix.application.production.vendor.model.Address;
 import dev.fenix.application.production.vendor.model.Vendor;
 import dev.fenix.application.production.vendor.model.VendorClassification;
 import dev.fenix.application.production.vendor.model.VendorContact;
-import dev.fenix.application.production.vendor.repository.VendorClassificationRepository;
 import dev.fenix.application.production.vendor.repository.VendorRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -48,27 +47,76 @@ class VendorResourceTest {
   @WithMockUser(
       username = "fenix",
       roles = {"USER", "ADMIN"})
-  void index() throws Exception {
+  void indexVendor() throws Exception {
 
     this.mockMvc
         .perform(get("/api/vendor/index"))
         .andDo(print())
+        .andDo(
+            document(
+                "{methodName}",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint())))
+        .andExpect(status().isOk());
+  }
+
+
+
+  @Test
+  @WithMockUser(
+      username = "fenix",
+      roles = {"USER", "ADMIN"})
+  void indexVendorWithOption() throws Exception {
+
+    this.mockMvc
+        .perform(get("/api/product/index?sort=id,asc&sort=name,desc&size=10&query=name%3Atop&query=id%3AAroma&page=1"))
+        .andDo(print())
+        .andDo(
+            document(
+                "{methodName}",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint())))
         .andExpect(status().isOk());
   }
 
   @Test
   @WithMockUser(username = "fenix")
-  void save() throws Exception {
+  void saveVendor() throws Exception {
     log.info("{methodName}");
-    Address address = new Address(null,"address facturetion" ,"line One","line tow adress",55555l,"fes","Morocco",true );
-    VendorContact contact = new VendorContact(null,"fayssal benmoussa" , "admin","0644495470","fayssal@gmail.com" ," texte note" , true);
-    VendorClassification classification = new VendorClassification(null, "New one" ,"code" ,  true);
-    Vendor requestVendor = new Vendor(null ,"MC Carton" , "Social Reason " + this.getRandom(0, 1000)  ,address , "0644495470" , "email@gmail.com" ,contact ,classification,"Text Note" ,true  );
-
-
+    Address address =
+        new Address(
+            null,
+            "address facturetion",
+            "line One",
+            "line tow adress",
+            55555l,
+            "fes",
+            "Morocco",
+            true);
+    VendorContact contact =
+        new VendorContact(
+            null,
+            "fayssal benmoussa",
+            "admin",
+            "0644495470",
+            "fayssal@gmail.com",
+            " texte note",
+            true);
+    VendorClassification classification = new VendorClassification(null, "New one", "code", true);
+    Vendor requestVendor =
+        new Vendor(
+            null,
+            "MC Carton",
+            "Social Reason " + this.getRandom(0, 1000),
+            address,
+            "0644495470",
+            "email@gmail.com",
+            contact,
+            classification,
+            "Text Note",
+            true);
 
     String jsonRequest = om.writeValueAsString(requestVendor);
-
 
     MvcResult result =
         mockMvc
@@ -91,18 +139,17 @@ class VendorResourceTest {
     Assert.assertTrue(expectedVendor.getId() != null);
     // Assert.assertTrue(expectedVendor.getSocialReason().equals(requestVendor.getSocialReason()));
   }
-/*
+
   @Test
   @WithMockUser(username = "fenix")
-  void update() throws Exception {
-    VendorClassification requestClassification =
-            vendorRepository.findTopByOrderByIdDesc();
-    requestClassification.setName(requestClassification.getName() + "Updated");
-    String jsonRequest = om.writeValueAsString(requestClassification);
+  void updateVendor() throws Exception {
+    Vendor requestVendor = vendorRepository.findTopByOrderByIdDesc();
+    requestVendor.setSocialReason(requestVendor.getSocialReason() + " Updated");
+    String jsonRequest = om.writeValueAsString(requestVendor);
     MvcResult result =
         mockMvc
             .perform(
-                put("/api/vendor/classification/update")
+                put("/api/vendor/update")
                     .content(jsonRequest)
                     .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andDo(print())
@@ -114,20 +161,17 @@ class VendorResourceTest {
             .andExpect(status().isOk())
             .andReturn();
     String resultContent = result.getResponse().getContentAsString();
-    VendorClassification expectedClassification =
-        om.readValue(resultContent, VendorClassification.class);
+    Vendor expectedVendor = om.readValue(resultContent, Vendor.class);
     // Assert.assertTrue(expectedClassification.getId()== requestClassification.getId());
 
-    Assert.assertTrue(expectedClassification.getName().contains("Updated"));
+    Assert.assertTrue(expectedVendor.getSocialReason().contains("Updated"));
   }
 
   @Test
   void delete() {}
-*/
+
   private int getRandom(int min, int max) {
     int random_int = (int) Math.floor(Math.random() * (max - min + 1));
     return random_int;
   }
 }
-
-
