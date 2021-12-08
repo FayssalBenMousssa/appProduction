@@ -41,7 +41,7 @@ public class Role {
       if (this.getRoutes() != null) {
         JSONArray roleRoutes = new JSONArray();
         for (Route route : this.getRoutes()) {
-          roleRoutes.put(route._toJson());
+          if(route.getLevel() == 0) roleRoutes.put(route._toJson());
         }
         roleJSON.put("routes", roleRoutes);
       }

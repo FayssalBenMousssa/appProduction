@@ -53,7 +53,7 @@ public class Application {
     LocalDateTime midnight = now.toLocalDate().plusDays(1).atStartOfDay();
 
     long delay = Duration.between(now, midnight).toMinutes();
-    log.trace(delay + " min  to start Backup");
+    log.trace(delay + " min  to start Backup time");
 
     ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
     exec.scheduleAtFixedRate(
