@@ -1,10 +1,9 @@
 package dev.fenix.application.api.production.product;
 
-import dev.fenix.application.Application;
-import dev.fenix.application.production.product.model.Packaging;
-import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.model.ProductionUnit;
+import dev.fenix.application.production.product.model.SiUnit;
 import dev.fenix.application.production.product.repository.ProductionUnitRepository;
+import dev.fenix.application.production.product.repository.SiUnitRepository;
 import javassist.NotFoundException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,11 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController()
-@RequestMapping("/api/product/production_unit")
-public class ProductionUnitResource {
-  private static final Logger log = LoggerFactory.getLogger(ProductionUnitResource.class);
+@RequestMapping("/api/product/si_unit")
+public class SiUnitResource {
+  private static final Logger log = LoggerFactory.getLogger(SiUnitResource.class);
 
-  @Autowired private ProductionUnitRepository productionUnitRepository;
+  @Autowired private SiUnitRepository siUnitRepository;
 
   @RequestMapping(
       value = {"/", ""},
@@ -40,9 +39,9 @@ public class ProductionUnitResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public String index(HttpServletRequest request) {
     JSONArray jArray = new JSONArray();
-    Iterable<ProductionUnit> productionUnits = productionUnitRepository.findByActiveTrue();
-    for (ProductionUnit productionUnit : productionUnits) {
-      jArray.put(productionUnit.toJson());
+    Iterable<SiUnit> siUnits = siUnitRepository.findByActiveTrue();
+    for (SiUnit siUnit : siUnits) {
+      jArray.put(siUnit.toJson());
     }
     return jArray.toString();
   }
@@ -53,15 +52,15 @@ public class ProductionUnitResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> save(
-      @Valid @RequestBody ProductionUnit productionUnit, HttpServletRequest request) {
-    productionUnit.setActive(true);
-    ProductionUnit savedProductionUnit = productionUnitRepository.save(productionUnit);
+      @Valid @RequestBody SiUnit siUnit, HttpServletRequest request) {
+    siUnit.setActive(true);
+    SiUnit savedSiUnit = siUnitRepository.save(siUnit);
 
     /*  if (task.getAssignedTo() == null) {
       throw new RuntimeException("AssignedTo is mandatory");
     }*/
 
-    return ResponseEntity.ok(savedProductionUnit.toJson().toString());
+    return ResponseEntity.ok(savedSiUnit.toJson().toString());
   }
 
 
@@ -71,8 +70,8 @@ public class ProductionUnitResource {
           produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id) throws NotFoundException {
     log.trace("ProductResource.get method accessed");
-    ProductionUnit productionUnit = productionUnitRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
-    return new ResponseEntity<>(productionUnit.toJson().toString(), HttpStatus.OK);
+    SiUnit siUnit = siUnitRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+    return new ResponseEntity<>(siUnit.toJson().toString(), HttpStatus.OK);
   }
 
   @RequestMapping(
@@ -80,11 +79,11 @@ public class ProductionUnitResource {
           method = RequestMethod.PUT,
           produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> update(@Valid @RequestBody ProductionUnit productionUnit, HttpServletRequest request) {
+  public ResponseEntity<?> update(@Valid @RequestBody SiUnit siUnit, HttpServletRequest request) {
     try {
-      productionUnit.setActive(true);
-      ProductionUnit updatedProductionUnit = productionUnitRepository.save(productionUnit);
-      return new ResponseEntity<>(updatedProductionUnit.toJson().toString(), HttpStatus.OK);
+      siUnit.setActive(true);
+      SiUnit updatedSiUnit = siUnitRepository.save(siUnit);
+      return new ResponseEntity<>(updatedSiUnit.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
       return new ResponseEntity<>("Not saved", HttpStatus.BAD_REQUEST);
@@ -98,9 +97,9 @@ public class ProductionUnitResource {
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 
     try {
-      ProductionUnit productionUnit = productionUnitRepository.getOne(id);
-      productionUnit.setActive(false);
-      ProductionUnit savedProductUnit = productionUnitRepository.save(productionUnit);
+      SiUnit siUnit = siUnitRepository.getOne(id);
+      siUnit.setActive(false);
+      SiUnit savedProductUnit = siUnitRepository.save(siUnit);
       return ResponseEntity.ok(savedProductUnit.toJson().toString());
     } catch (Exception e) {
       e.printStackTrace();

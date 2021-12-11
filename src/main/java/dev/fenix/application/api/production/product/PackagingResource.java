@@ -44,6 +44,7 @@ public class PackagingResource {
                       @RequestParam(defaultValue = "200") Integer size,
                       @RequestParam(defaultValue = "name,asc") String[] sort,
                       @RequestParam(required = false) String[] query ) {
+
     JSONArray jArray = new JSONArray();
     log.trace("PackagingResource.index method accessed");
 

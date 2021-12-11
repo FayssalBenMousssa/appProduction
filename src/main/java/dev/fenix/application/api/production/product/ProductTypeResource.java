@@ -1,9 +1,11 @@
 package dev.fenix.application.api.production.product;
 
 import dev.fenix.application.Application;
+import dev.fenix.application.production.product.model.Packaging;
 import dev.fenix.application.production.product.model.ProductType;
 import dev.fenix.application.production.product.repository.ProductRepository;
 import dev.fenix.application.production.product.repository.ProductTypeRepository;
+import javassist.NotFoundException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +52,19 @@ public class ProductTypeResource {
     return jArray.toString();
   }
 
+
+  @RequestMapping(
+          value = "/get/{id}",
+          method = RequestMethod.GET,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id) throws NotFoundException {
+    log.trace("ProductType.get method accessed");
+    ProductType type = productTypeRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+    return new ResponseEntity<>(type.toJson().toString(), HttpStatus.OK);
+  }
+
+
+
   @RequestMapping(
       value = "/save",
       method = RequestMethod.POST,
@@ -67,6 +82,9 @@ public class ProductTypeResource {
     }*/
     return ResponseEntity.ok(savedType.toJson().toString());
   }
+
+
+
 
 
   @RequestMapping(
