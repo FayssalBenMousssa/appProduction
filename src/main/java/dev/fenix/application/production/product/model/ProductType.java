@@ -25,10 +25,13 @@ public class ProductType {
   @Column(columnDefinition="tinyint(1) default 1")
   private boolean active;
 
+  private String icon;
+
   public ProductType(Long id, String name) {
     this.id = id;
     this.name = name;
   }
+
 
 
   public JSONObject toJson() {
@@ -36,6 +39,7 @@ public class ProductType {
     try {
       personJSON.put("id", this.getId());
       personJSON.put("name", this.getName());
+      personJSON.put("icon", this.getIcon());
     } catch (JSONException e) {
       e.printStackTrace();
     }

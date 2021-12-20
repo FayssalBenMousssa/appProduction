@@ -58,6 +58,10 @@ public class Product {
   @JoinColumn(name = "product_type_id", referencedColumnName = "id")
   private ProductType productType;
 
+
+  @ManyToOne(cascade = {CascadeType.DETACH},fetch = FetchType.EAGER)
+  private SiUnit siUnit;
+
   @Column(columnDefinition="tinyint(1) default 1")
   private boolean active;
 
@@ -76,6 +80,7 @@ public class Product {
       productJSON.put("packaging", this.getPackaging().toJson());
       productJSON.put("productionUnit", this.getProductionUnit().toJson());
       productJSON.put("productType", this.getProductType().toJson());
+      productJSON.put("siUnit", this.getSiUnit().toJson());
 
     } catch (JSONException e) {
       e.printStackTrace();
