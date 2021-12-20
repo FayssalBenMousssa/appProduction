@@ -69,7 +69,8 @@ public class ProductResource {
 
     try {
       response.put("results" ,jArray);
-      response.put("count" , productService.getCount());
+      response.put("total_type" , productService.getCount());
+      response.put("count" , jArray.length());
       response.put("total" , productService.getCountAll());
       return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     } catch (JSONException e) {

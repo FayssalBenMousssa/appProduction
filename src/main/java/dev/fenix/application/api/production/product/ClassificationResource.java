@@ -1,6 +1,5 @@
 package dev.fenix.application.api.production.product;
 
-import dev.fenix.application.Application;
 import dev.fenix.application.production.product.model.Classification;
 import dev.fenix.application.production.product.repository.ClassificationRepository;
 import dev.fenix.application.production.product.repository.ProductRepository;
@@ -71,14 +70,12 @@ public class ClassificationResource {
       @Valid @RequestBody Classification classification, HttpServletRequest request) {
     classification.setActive(true);
 
-
-    if(classification.getParent() != null){
+    if (classification.getParent() != null) {
       Classification parent = classificationRepository.getOne(classification.getParent().getId());
       classification.setLevel(parent.getLevel() + 1);
-    }else {
+    } else {
       classification.setLevel(0);
     }
-
 
     Classification savedClassification = classificationRepository.save(classification);
 
@@ -113,11 +110,6 @@ public class ClassificationResource {
     try {
       classification.setActive(true);
 
-      if(classification.getParent() != null){
-        classification.setLevel(classification.getParent().getLevel() + 1);
-      }else {
-        classification.setLevel(0);
-      }
 
 
       Classification updatedClassification = classificationRepository.save(classification);
@@ -137,6 +129,20 @@ public class ClassificationResource {
     try {
       classification.setActive(false);
       Classification savedClassification = classificationRepository.save(classification);
+      log.info(savedClassification.getName() + " Removed");
+      savedClassification
+          .getChildren()
+          .forEach(
+              classificationChild -> {
+                classificationChild.setActive(false);
+                Classification savedClassificationChild = classificationRepository.save(classificationChild);
+                log.info(savedClassificationChild.getName() + " Removed");
+                savedClassificationChild.getChildren().forEach(classificationChildOfChild -> {
+                  classificationChildOfChild.setActive(false);
+                  Classification savedClassificationChildOfChild =   classificationRepository.save(classificationChildOfChild);
+                  log.info(savedClassificationChildOfChild.getName() + " Removed");
+                });
+              });
       return ResponseEntity.ok(savedClassification.toJson().toString());
     } catch (Exception e) {
       e.printStackTrace();

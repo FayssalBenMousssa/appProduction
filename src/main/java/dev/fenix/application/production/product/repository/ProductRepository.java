@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends PagingAndSortingRepository<Product, Long> {
+public interface ProductRepository extends PagingAndSortingRepository<Product, Long>  {
 
 
      Page<Product> findAllByNameContains(String name, Pageable pageable);
@@ -35,8 +35,8 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
     int countByNameContainsAndActiveTrueAndProductType(String value, ProductType productType);
     Page<Product> findAllByNameContainsAndActiveTrue(String value, Pageable paging);
     int countByNameContainsAndActiveTrue(String value);
-
     int countByActiveTrue();
+
 
     // Page<Product> findByProductType(ProductType productType, Pageable paging);
  //  Page<Product> findByActiveTrueAndProductType(ProductType productType);

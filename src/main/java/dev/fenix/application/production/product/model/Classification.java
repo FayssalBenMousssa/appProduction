@@ -52,8 +52,6 @@ public class Classification {
     this.parent = parent;
   }
 
-
-
   public JSONObject toJson() {
     JSONObject classificationJSON = new JSONObject();
     try {
