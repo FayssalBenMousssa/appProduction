@@ -57,6 +57,7 @@ public class Classification {
     try {
       classificationJSON.put("id", this.getId());
       classificationJSON.put("name", this.getName());
+      classificationJSON.put("active", this.isActive());
       if (this.getCode() != null) {
         classificationJSON.put("code", this.getCode());
       }
@@ -68,6 +69,7 @@ public class Classification {
         parent.put("name", this.getParent().getName());
         parent.put("code", this.getParent().getCode());
         parent.put("level", this.getParent().getLevel());
+        parent.put("active", this.getParent().isActive());
 
         if (this.getParent().getParent() != null) {
           JSONObject grandfather = new JSONObject();
@@ -75,6 +77,7 @@ public class Classification {
           grandfather.put("name", this.getParent().getParent().getName());
           grandfather.put("code", this.getParent().getParent().getCode());
           grandfather.put("level", this.getParent().getParent().getLevel());
+          grandfather.put("active", this.getParent().getParent().isActive());
           parent.put("parent", grandfather);
         }
 
@@ -83,24 +86,30 @@ public class Classification {
       if (this.getChildren() != null) {
         JSONArray children = new JSONArray();
         for (Classification classification : this.getChildren()) {
-          JSONObject child = new JSONObject();
-          child.put("id", classification.getId());
-          child.put("name", classification.getName());
-          child.put("code", classification.getCode());
-          child.put("level", classification.getLevel());
-          if (classification.getChildren() != null) {
-            JSONArray childrenChild = new JSONArray();
-            for (Classification childClassification : classification.getChildren()) {
-              JSONObject childOfChild = new JSONObject();
-              childOfChild.put("id", childClassification.getId());
-              childOfChild.put("name", childClassification.getName());
-              childOfChild.put("code", childClassification.getCode());
-              childOfChild.put("level", childClassification.getLevel());
-              childrenChild.put(childOfChild);
+          if (classification.isActive()) {
+            JSONObject child = new JSONObject();
+            child.put("id", classification.getId());
+            child.put("name", classification.getName());
+            child.put("code", classification.getCode());
+            child.put("level", classification.getLevel());
+            child.put("active", classification.isActive());
+            if (classification.getChildren() != null) {
+              JSONArray childrenChild = new JSONArray();
+              for (Classification childClassification : classification.getChildren()) {
+                if (childClassification.isActive()) {
+                  JSONObject childOfChild = new JSONObject();
+                  childOfChild.put("id", childClassification.getId());
+                  childOfChild.put("name", childClassification.getName());
+                  childOfChild.put("code", childClassification.getCode());
+                  childOfChild.put("level", childClassification.getLevel());
+                  childOfChild.put("active", childClassification.isActive());
+                  childrenChild.put(childOfChild);
+                }
+              }
+              child.put("children", childrenChild);
             }
-            child.put("children", childrenChild);
+            children.put(child);
           }
-          children.put(child);
         }
         classificationJSON.put("children", children);
       }
