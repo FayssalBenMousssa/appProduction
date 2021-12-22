@@ -3,9 +3,11 @@ package dev.fenix.application.production.product.model;
 import lombok.*;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.Locale;
 
 @Entity
@@ -29,10 +31,10 @@ public class Product {
   @NotNull(message = "Please enter the code")
   private String codeDes;
 
-
-
   @NotNull(message = "Please enter the classification")
-  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
+  @ManyToOne(
+      cascade = {CascadeType.DETACH},
+      fetch = FetchType.EAGER)
   @JoinColumn(name = "classification_id", referencedColumnName = "id")
   private Classification classification;
 
@@ -50,24 +52,38 @@ public class Product {
   @JoinColumn(name = "production_unit_id", referencedColumnName = "id")
   private ProductionUnit productionUnit;
 
-
   @NotNull(message = "Please enter the productType")
   @ManyToOne(
-          cascade = {CascadeType.DETACH},
-          fetch = FetchType.EAGER)
+      cascade = {CascadeType.DETACH},
+      fetch = FetchType.EAGER)
   @JoinColumn(name = "product_type_id", referencedColumnName = "id")
   private ProductType productType;
 
-
-  @ManyToOne(cascade = {CascadeType.DETACH},fetch = FetchType.EAGER)
+  @ManyToOne(
+      cascade = {CascadeType.DETACH},
+      fetch = FetchType.EAGER)
   private SiUnit siUnit;
 
-  @Column(columnDefinition="tinyint(1) default 1")
+  @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 
 
+  @Column(name = "create_date")
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private Date createDate;
 
+  @Column(name = "modify_date")
+  private Date modifyDate;
 
+  @PrePersist
+  protected void onCreate() {
+    createDate = new Date();
+  }
+
+  @PreUpdate
+  protected void onUpdate() {
+    modifyDate = new Date();
+  }
 
   public JSONObject toJson() {
     JSONObject productJSON = new JSONObject();
@@ -81,6 +97,8 @@ public class Product {
       productJSON.put("productionUnit", this.getProductionUnit().toJson());
       productJSON.put("productType", this.getProductType().toJson());
       productJSON.put("siUnit", this.getSiUnit().toJson());
+      productJSON.put("createDate", this.getCreateDate());
+      productJSON.put("modifyDate", this.getModifyDate());
 
     } catch (JSONException e) {
       e.printStackTrace();
