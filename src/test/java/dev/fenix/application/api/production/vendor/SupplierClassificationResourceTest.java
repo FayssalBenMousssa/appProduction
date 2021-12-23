@@ -1,8 +1,8 @@
 package dev.fenix.application.api.production.vendor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.fenix.application.production.vendor.model.VendorClassification;
-import dev.fenix.application.production.vendor.repository.VendorClassificationRepository;
+import dev.fenix.application.production.supplier.model.SupplierClassification;
+import dev.fenix.application.production.supplier.repository.SupplierClassificationRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
@@ -28,10 +28,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs(outputDir = "target/generated-snippets")
-class VendorClassificationResourceTest {
-  private static final Logger log = LoggerFactory.getLogger(VendorClassificationResourceTest.class);
+class SupplierClassificationResourceTest {
+  private static final Logger log = LoggerFactory.getLogger(SupplierClassificationResourceTest.class);
   @Autowired private MockMvc mockMvc;
-  @Autowired private VendorClassificationRepository vendorClassificationRepository;
+  @Autowired private SupplierClassificationRepository vendorClassificationRepository;
   @Autowired private WebApplicationContext context;
   ObjectMapper om = new ObjectMapper();
 
@@ -55,7 +55,7 @@ class VendorClassificationResourceTest {
   @Test
   @WithMockUser(username = "fenix")
   void saveVendorClassification() throws Exception {
-    VendorClassification requestClassification = new VendorClassification();
+    SupplierClassification requestClassification = new SupplierClassification();
     requestClassification.setName("Name " + this.getRandom(0, 1000));
     requestClassification.setActive(true);
     requestClassification.setCode(String.valueOf(this.getRandom(0, 1000)));
@@ -77,8 +77,8 @@ class VendorClassificationResourceTest {
             .andExpect(status().isOk())
             .andReturn();
     String resultContent = result.getResponse().getContentAsString();
-    VendorClassification expectedClassification =
-        om.readValue(resultContent, VendorClassification.class);
+    SupplierClassification expectedClassification =
+        om.readValue(resultContent, SupplierClassification.class);
     Assert.assertTrue(expectedClassification.getId() != null);
     Assert.assertTrue(expectedClassification.getName().equals(requestClassification.getName()));
   }
@@ -86,7 +86,7 @@ class VendorClassificationResourceTest {
   @Test
   @WithMockUser(username = "fenix")
   void updateVendorClassification() throws Exception {
-    VendorClassification requestClassification =
+    SupplierClassification requestClassification =
         vendorClassificationRepository.findTopByOrderByIdDesc();
     requestClassification.setName(requestClassification.getName() + "Updated");
     String jsonRequest = om.writeValueAsString(requestClassification);
@@ -105,8 +105,8 @@ class VendorClassificationResourceTest {
             .andExpect(status().isOk())
             .andReturn();
     String resultContent = result.getResponse().getContentAsString();
-    VendorClassification expectedClassification =
-        om.readValue(resultContent, VendorClassification.class);
+    SupplierClassification expectedClassification =
+        om.readValue(resultContent, SupplierClassification.class);
     // Assert.assertTrue(expectedClassification.getId()== requestClassification.getId());
 
     Assert.assertTrue(expectedClassification.getName().contains("Updated"));

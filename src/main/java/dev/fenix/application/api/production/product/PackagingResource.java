@@ -1,10 +1,8 @@
 package dev.fenix.application.api.production.product;
 
 import dev.fenix.application.production.product.model.Packaging;
-import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.repository.PackagingRepository;
 import dev.fenix.application.production.product.service.PackagingService;
-import dev.fenix.application.production.product.service.ProductService;
 import javassist.NotFoundException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,22 +37,24 @@ public class PackagingResource {
       value = "/index",
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public String index(HttpServletRequest request , @RequestParam (required = false)  Long type,
-                      @RequestParam(defaultValue = "0") Integer page,
-                      @RequestParam(defaultValue = "200") Integer size,
-                      @RequestParam(defaultValue = "name,asc") String[] sort,
-                      @RequestParam(required = false) String[] query ) {
+  public String index(
+      HttpServletRequest request,
+      @RequestParam(required = false) Long type,
+      @RequestParam(defaultValue = "0") Integer page,
+      @RequestParam(defaultValue = "200") Integer size,
+      @RequestParam(defaultValue = "name,asc") String[] sort,
+      @RequestParam(required = false) String[] query) {
 
     JSONArray jArray = new JSONArray();
     log.trace("PackagingResource.index method accessed");
 
-
-    Iterable<Packaging> packagings =    packagingService.getAllPackaging(page, size, sort, query ,type );
+    Iterable<Packaging> packagings =
+        packagingService.getAllPackaging(page, size, sort, query, type);
     for (Packaging packaging : packagings) {
       // log.trace("=> " + packaging.getName());
       jArray.put(packaging.toJson());
     }
- /*
+    /*
     Iterable<Packaging> packages = packagingRepository.findByActiveTrue();
     for (Packaging packaging : packages) {
       jArray.put(packaging.toJson());
@@ -63,15 +63,18 @@ public class PackagingResource {
   }
 
   @RequestMapping(
-          value = "/get/{id}",
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id) throws NotFoundException {
+      value = "/get/{id}",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
+      throws NotFoundException {
     log.trace("ProductResource.get method accessed");
-    Packaging packaging = packagingRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+    Packaging packaging =
+        packagingRepository
+            .findById(id)
+            .orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(packaging.toJson().toString(), HttpStatus.OK);
   }
-
 
   @RequestMapping(
       value = "/save",
@@ -85,13 +88,13 @@ public class PackagingResource {
     return ResponseEntity.ok(savedPackaging.toJson().toString());
   }
 
-
   @RequestMapping(
-          value = "/update",
-          method = RequestMethod.PUT,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/update",
+      method = RequestMethod.PUT,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> update(@Valid @RequestBody Packaging packaging, HttpServletRequest request) {
+  public ResponseEntity<?> update(
+      @Valid @RequestBody Packaging packaging, HttpServletRequest request) {
     try {
       packaging.setActive(true);
       Packaging packagingProduct = packagingRepository.save(packaging);
@@ -103,9 +106,9 @@ public class PackagingResource {
   }
 
   @RequestMapping(
-          value = "/delete/{id}",
-          method = RequestMethod.DELETE,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/delete/{id}",
+      method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 
     try {

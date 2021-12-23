@@ -1,4 +1,4 @@
-package dev.fenix.application.production.vendor.model;
+package dev.fenix.application.production.supplier.model;
 
 
 
@@ -17,9 +17,9 @@ import javax.validation.constraints.NotNull;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "vnd__classification")
+@Table(name = "supl__classification")
 
-public class VendorClassification {
+public class SupplierClassification {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

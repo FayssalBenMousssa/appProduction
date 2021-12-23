@@ -1,7 +1,7 @@
 package dev.fenix.application.api.production.vendor;
 
-import dev.fenix.application.production.vendor.model.VendorClassification;
-import dev.fenix.application.production.vendor.repository.VendorClassificationRepository;
+import dev.fenix.application.production.supplier.model.SupplierClassification;
+import dev.fenix.application.production.supplier.repository.SupplierClassificationRepository;
 import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController()
-@RequestMapping("/api/vendor/classification")
-public class VendorClassificationResource {
-  private static final Logger log = LoggerFactory.getLogger(VendorClassificationResource.class);
+@RequestMapping("/api/supplier/classification")
+public class SupplierClassificationResource {
+  private static final Logger log = LoggerFactory.getLogger(SupplierClassificationResource.class);
 
-  @Autowired private VendorClassificationRepository vendorClassificationRepository;
+  @Autowired private SupplierClassificationRepository supplierClassificationRepository;
 
 
   @RequestMapping(
@@ -29,8 +29,8 @@ public class VendorClassificationResource {
   public String index(HttpServletRequest request) {
     JSONArray jArray = new JSONArray();
     log.trace("{methodName} method accessed");
-    Iterable<VendorClassification> vendorClassification = vendorClassificationRepository.findByActiveTrue();
-    for (VendorClassification classification : vendorClassification) {
+    Iterable<SupplierClassification> supplierClassification = supplierClassificationRepository.findByActiveTrue();
+    for (SupplierClassification classification : supplierClassification) {
       jArray.put(classification.toJson());
     }
     return jArray.toString();
@@ -43,11 +43,11 @@ public class VendorClassificationResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> save(
-      @Valid @RequestBody VendorClassification vendorClassification, HttpServletRequest request) {
+          @Valid @RequestBody SupplierClassification supplierClassification, HttpServletRequest request) {
     log.trace("{methodName} method accessed");
-   vendorClassification.setActive(true);
-    VendorClassification savedVendorClassification = vendorClassificationRepository.save(vendorClassification);
-    return ResponseEntity.ok(savedVendorClassification.toJson().toString());
+   supplierClassification.setActive(true);
+    SupplierClassification savedSupplierClassification = supplierClassificationRepository.save(supplierClassification);
+    return ResponseEntity.ok(savedSupplierClassification.toJson().toString());
   }
 
 
@@ -56,12 +56,12 @@ public class VendorClassificationResource {
           method = RequestMethod.PUT,
           produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> update(@Valid @RequestBody VendorClassification vendorClassification, HttpServletRequest request) {
+  public ResponseEntity<?> update(@Valid @RequestBody SupplierClassification supplierClassification, HttpServletRequest request) {
     try {
       log.trace("{methodName} method accessed");
-     vendorClassification.setActive(true);
-      VendorClassification updatedVendorClassification = vendorClassificationRepository.save(vendorClassification);
-      return new ResponseEntity<>(updatedVendorClassification.toJson().toString(), HttpStatus.OK);
+     supplierClassification.setActive(true);
+      SupplierClassification updatedSupplierClassification = supplierClassificationRepository.save(supplierClassification);
+      return new ResponseEntity<>(updatedSupplierClassification.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
       return new ResponseEntity<>("Not updated", HttpStatus.BAD_REQUEST);
@@ -76,10 +76,10 @@ public class VendorClassificationResource {
 
     try {
       log.trace("{methodName} method accessed");
-      VendorClassification vendorClassification = vendorClassificationRepository.getOne(id);
-       vendorClassification.setActive(false);
-      VendorClassification savedVendorClassification = vendorClassificationRepository.save(vendorClassification);
-      return ResponseEntity.ok("active : " +  savedVendorClassification.getActive());
+      SupplierClassification supplierClassification = supplierClassificationRepository.getOne(id);
+       supplierClassification.setActive(false);
+      SupplierClassification savedSupplierClassification = supplierClassificationRepository.save(supplierClassification);
+      return ResponseEntity.ok("active : " +  savedSupplierClassification.getActive());
     } catch (Exception e) {
       e.printStackTrace();
       return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);

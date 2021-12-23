@@ -1,4 +1,4 @@
-package dev.fenix.application.production.vendor.model;
+package dev.fenix.application.core.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @Setter
-@Table(name = "vnd__address")
+@Table(name = "core__address")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Address {

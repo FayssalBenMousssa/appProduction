@@ -1,9 +1,7 @@
 package dev.fenix.application.api.production.vendor;
 
-import dev.fenix.application.production.product.model.Product;
-import dev.fenix.application.production.vendor.model.Address;
-import dev.fenix.application.production.vendor.model.Vendor;
-import dev.fenix.application.production.vendor.repository.VendorRepository;
+import dev.fenix.application.production.supplier.model.Supplier;
+import dev.fenix.application.production.supplier.repository.SupplierRepository;
 import javassist.NotFoundException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +22,7 @@ import javax.validation.Valid;
 public class VendorResource {
   private static final Logger log = LoggerFactory.getLogger(VendorResource.class);
 
-  @Autowired private VendorRepository vendorRepository;
+  @Autowired private SupplierRepository vendorRepository;
 
   @RequestMapping(
       value = {"/", ""},
@@ -48,8 +46,8 @@ public class VendorResource {
       throws InterruptedException {
     log.trace(String.format("%s method accessed ." , new Object(){}.getClass().getEnclosingMethod().getName() ));
     JSONArray jArray = new JSONArray();
-    Iterable<Vendor> vendors = vendorRepository.findAll();
-    for (Vendor vendor : vendors) {
+    Iterable<Supplier> vendors = vendorRepository.findAll();
+    for (Supplier vendor : vendors) {
       jArray.put(vendor.toJson());
     }
     JSONObject response = new JSONObject();
@@ -70,11 +68,11 @@ public class VendorResource {
           produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> save(
-          @Valid @RequestBody Vendor vendor, HttpServletRequest request) {
+          @Valid @RequestBody Supplier vendor, HttpServletRequest request) {
 
     log.trace(String.format("%s method accessed ." , new Object(){}.getClass().getEnclosingMethod().getName() ));
     vendor.setActive(true);
-    Vendor savedVendor = vendorRepository.save(vendor);
+    Supplier savedVendor = vendorRepository.save(vendor);
     return ResponseEntity.ok(savedVendor.toJson().toString());
   }
 
@@ -85,11 +83,11 @@ public class VendorResource {
           method = RequestMethod.PUT,
           produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> update(@Valid @RequestBody Vendor vendor, HttpServletRequest request) {
+  public ResponseEntity<?> update(@Valid @RequestBody Supplier vendor, HttpServletRequest request) {
     try {
       log.trace(String.format("%s method accessed ." , new Object(){}.getClass().getEnclosingMethod().getName() ));
       vendor.setActive(true);
-      Vendor updatedVendor = vendorRepository.save(vendor);
+      Supplier updatedVendor = vendorRepository.save(vendor);
       return new ResponseEntity<>(updatedVendor.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
@@ -104,7 +102,7 @@ public class VendorResource {
           produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id) throws NotFoundException {
     log.trace(String.format("%s method accessed" , new Object(){}.getClass().getEnclosingMethod().getName() ));
-    Vendor vendor = vendorRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+    Supplier vendor = vendorRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(vendor.toJson().toString(), HttpStatus.OK);
   }
 
@@ -115,10 +113,10 @@ public class VendorResource {
           produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
     log.trace(String.format("%s method accessed" , new Object(){}.getClass().getEnclosingMethod().getName() ));
-    Vendor vendor = vendorRepository.getOne(id);
+    Supplier vendor = vendorRepository.getOne(id);
     try {
       vendor.setActive(false);
-      Vendor savedVendor = vendorRepository.save(vendor);
+      Supplier savedVendor = vendorRepository.save(vendor);
       return ResponseEntity.ok(savedVendor.getActive());
     } catch (Exception e) {
       e.printStackTrace();

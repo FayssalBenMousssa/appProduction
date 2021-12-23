@@ -1,4 +1,4 @@
-package dev.fenix.application.production.vendor.model;
+package dev.fenix.application.core.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,10 +13,10 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @Setter
-@Table(name = "vnd__contact")
+@Table(name = "core__contact")
 @AllArgsConstructor
 @NoArgsConstructor
-public class VendorContact {
+public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

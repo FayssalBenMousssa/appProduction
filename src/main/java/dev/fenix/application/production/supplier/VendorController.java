@@ -1,4 +1,4 @@
-package dev.fenix.application.production.vendor;
+package dev.fenix.application.production.supplier;
 
 import dev.fenix.application.person.repository.PersonRepository;
 import org.slf4j.Logger;

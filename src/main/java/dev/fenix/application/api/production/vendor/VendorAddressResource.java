@@ -1,9 +1,7 @@
 package dev.fenix.application.api.production.vendor;
 
-import dev.fenix.application.production.vendor.model.Address;
-import dev.fenix.application.production.vendor.model.VendorClassification;
-import dev.fenix.application.production.vendor.repository.VendorAddressRepository;
-import dev.fenix.application.production.vendor.repository.VendorClassificationRepository;
+import dev.fenix.application.core.model.Address;
+import dev.fenix.application.core.repository.AddressRepository;
 import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +19,7 @@ import javax.validation.Valid;
 public class VendorAddressResource {
   private static final Logger log = LoggerFactory.getLogger(VendorAddressResource.class);
 
-  @Autowired private VendorAddressRepository vendorAddressRepository;
+  @Autowired private AddressRepository vendorAddressRepository;
 
   @RequestMapping(
       value = "/index",
