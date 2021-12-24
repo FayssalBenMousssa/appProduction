@@ -1,4 +1,4 @@
-package dev.fenix.application.api.production.vendor;
+package dev.fenix.application.api.production.supplier;
 
 import dev.fenix.application.production.supplier.model.Supplier;
 import dev.fenix.application.production.supplier.repository.SupplierRepository;
@@ -19,8 +19,8 @@ import javax.validation.Valid;
 
 @RestController()
 @RequestMapping("/api/vendor")
-public class VendorResource {
-  private static final Logger log = LoggerFactory.getLogger(VendorResource.class);
+public class SupplierResource {
+  private static final Logger log = LoggerFactory.getLogger(SupplierResource.class);
 
   @Autowired private SupplierRepository vendorRepository;
 

@@ -1,7 +1,8 @@
-package dev.fenix.application.api.production.vendor;
+package dev.fenix.application.api.production.supplier;
 
 import dev.fenix.application.production.supplier.model.SupplierClassification;
 import dev.fenix.application.production.supplier.repository.SupplierClassificationRepository;
+import javassist.NotFoundException;
 import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,16 @@ public class SupplierClassificationResource {
     return jArray.toString();
   }
 
+
+  @RequestMapping(
+          value = "/get/{id}",
+          method = RequestMethod.GET,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id) throws NotFoundException {
+    log.trace("ProductResource.get method accessed");
+    SupplierClassification SupplierClassification = supplierClassificationRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+    return new ResponseEntity<>(SupplierClassification.toJson().toString(), HttpStatus.OK);
+  }
 
   @RequestMapping(
       value = "/save",

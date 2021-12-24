@@ -1,11 +1,8 @@
-package dev.fenix.application.api.production.vendor;
+package dev.fenix.application.api.production.supplier;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.fenix.application.core.model.Address;
-import dev.fenix.application.production.supplier.model.Supplier;
 import dev.fenix.application.production.supplier.model.SupplierClassification;
-import dev.fenix.application.core.model.Contact;
-import dev.fenix.application.production.supplier.repository.SupplierRepository;
+import dev.fenix.application.production.supplier.repository.SupplierClassificationRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
@@ -31,10 +28,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs(outputDir = "target/generated-snippets")
-class SupplierResourceTest {
-  private static final Logger log = LoggerFactory.getLogger(SupplierResourceTest.class);
+class SupplierClassificationResourceTest {
+  private static final Logger log = LoggerFactory.getLogger(SupplierClassificationResourceTest.class);
   @Autowired private MockMvc mockMvc;
-  @Autowired private SupplierRepository vendorRepository;
+  @Autowired private SupplierClassificationRepository vendorClassificationRepository;
   @Autowired private WebApplicationContext context;
   ObjectMapper om = new ObjectMapper();
 
@@ -47,109 +44,28 @@ class SupplierResourceTest {
   @WithMockUser(
       username = "fenix",
       roles = {"USER", "ADMIN"})
-  void indexVendor() throws Exception {
+  void indexVendorClassification() throws Exception {
 
     this.mockMvc
-        .perform(get("/api/vendor/index"))
+        .perform(get("/api/vendor/classification/index"))
         .andDo(print())
-        .andDo(
-            document(
-                "{methodName}",
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint())))
-        .andExpect(status().isOk());
-  }
-
-
-
-  @Test
-  @WithMockUser(
-      username = "fenix",
-      roles = {"USER", "ADMIN"})
-  void indexVendorWithOption() throws Exception {
-
-    this.mockMvc
-        .perform(get("/api/product/index?sort=id,asc&sort=name,desc&size=10&query=name%3Atop&query=id%3AAroma&page=1"))
-        .andDo(print())
-        .andDo(
-            document(
-                "{methodName}",
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint())))
         .andExpect(status().isOk());
   }
 
   @Test
   @WithMockUser(username = "fenix")
-  void saveVendor() throws Exception {
-    /*log.info("{methodName}");
-    Address address =
-        new Address(
-            null,
-            "address facturetion",
-            "line One",
-            "line tow adress",
-            55555l,
-            "fes",
-            "Morocco",
-            true);
-    Contact contact =
-        new Contact(
-            null,
-            "fayssal benmoussa",
-            "admin",
-            "0644495470",
-            "fayssal@gmail.com",
-            " texte note",
-            true);
-    SupplierClassification classification = new SupplierClassification(null, "New one", "code", true);
-    Supplier requestVendor =
-        new Supplier(
-            null,
-            "MC Carton",
-            "Social Reason " + this.getRandom(0, 1000),
-            null,
-            "0644495470",
-            "email@gmail.com",
-            null,
-            classification,
-            "Text Note",
-            true);
-
-    String jsonRequest = om.writeValueAsString(requestVendor);
-
+  void saveVendorClassification() throws Exception {
+    SupplierClassification requestClassification = new SupplierClassification();
+    requestClassification.setName("Name " + this.getRandom(0, 1000));
+    requestClassification.setActive(true);
+    requestClassification.setCode(String.valueOf(this.getRandom(0, 1000)));
+    String jsonRequest = om.writeValueAsString(requestClassification);
+    log.info("{methodName}");
+    // String jsonRequest = requestClassification.toJson().toString();
     MvcResult result =
         mockMvc
             .perform(
-                post("/api/vendor/save")
-                    .content(jsonRequest)
-                    .contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andDo(print())
-            .andDo(
-                document(
-                    "{methodName}",
-                    preprocessRequest(prettyPrint()),
-                    preprocessResponse(prettyPrint())))
-            .andExpect(status().isOk())
-            .andReturn();
-
-    String resultContent = result.getResponse().getContentAsString();
-
-    Supplier expectedVendor = om.readValue(resultContent, Supplier.class);
-    Assert.assertTrue(expectedVendor.getId() != null);
-    // Assert.assertTrue(expectedVendor.getSocialReason().equals(requestVendor.getSocialReason()));*/
-  }
-
-  @Test
-  @WithMockUser(username = "fenix")
-  void updateVendor() throws Exception {
-    Supplier requestVendor = vendorRepository.findTopByOrderByIdDesc();
-    requestVendor.setSocialReason(requestVendor.getSocialReason() + " Updated");
-    String jsonRequest = om.writeValueAsString(requestVendor);
-    MvcResult result =
-        mockMvc
-            .perform(
-                put("/api/vendor/update")
+                post("/api/vendor/classification/save")
                     .content(jsonRequest)
                     .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andDo(print())
@@ -161,14 +77,43 @@ class SupplierResourceTest {
             .andExpect(status().isOk())
             .andReturn();
     String resultContent = result.getResponse().getContentAsString();
-    Supplier expectedVendor = om.readValue(resultContent, Supplier.class);
+    SupplierClassification expectedClassification =
+        om.readValue(resultContent, SupplierClassification.class);
+    Assert.assertTrue(expectedClassification.getId() != null);
+    Assert.assertTrue(expectedClassification.getName().equals(requestClassification.getName()));
+  }
+
+  @Test
+  @WithMockUser(username = "fenix")
+  void updateVendorClassification() throws Exception {
+    SupplierClassification requestClassification =
+        vendorClassificationRepository.findTopByOrderByIdDesc();
+    requestClassification.setName(requestClassification.getName() + "Updated");
+    String jsonRequest = om.writeValueAsString(requestClassification);
+    MvcResult result =
+        mockMvc
+            .perform(
+                put("/api/vendor/classification/update")
+                    .content(jsonRequest)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andDo(print())
+            .andDo(
+                document(
+                    "{methodName}",
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint())))
+            .andExpect(status().isOk())
+            .andReturn();
+    String resultContent = result.getResponse().getContentAsString();
+    SupplierClassification expectedClassification =
+        om.readValue(resultContent, SupplierClassification.class);
     // Assert.assertTrue(expectedClassification.getId()== requestClassification.getId());
 
-    Assert.assertTrue(expectedVendor.getSocialReason().contains("Updated"));
+    Assert.assertTrue(expectedClassification.getName().contains("Updated"));
   }
 
   @Test
-  void delete() {}
+  void deleteVendorClassification() {}
 
   private int getRandom(int min, int max) {
     int random_int = (int) Math.floor(Math.random() * (max - min + 1));

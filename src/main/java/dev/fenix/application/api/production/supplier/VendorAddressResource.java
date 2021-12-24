@@ -1,4 +1,4 @@
-package dev.fenix.application.api.production.vendor;
+package dev.fenix.application.api.production.supplier;
 
 import dev.fenix.application.core.model.Address;
 import dev.fenix.application.core.repository.AddressRepository;
