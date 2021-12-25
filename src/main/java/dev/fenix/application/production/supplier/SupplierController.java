@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/vendor")
-public class VendorController {
+public class SupplierController {
 
-  private static final Logger log = LoggerFactory.getLogger(VendorController.class);
+  private static final Logger log = LoggerFactory.getLogger(SupplierController.class);
   @Autowired private PersonRepository personRepository;
   @GetMapping("/")
   public  String hi(){

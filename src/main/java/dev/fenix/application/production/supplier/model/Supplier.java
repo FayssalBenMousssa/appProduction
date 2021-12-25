@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,65 +21,75 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "supl__supplier")
 public class Supplier {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @NotNull(message = "Please enter the code")
-    private String code;
+  @NotNull(message = "Please enter the code")
+  private String code;
 
-    @NotNull(message = "Please enter the socialReason")
-    private String socialReason;
+  @NotNull(message = "Please enter the socialReason")
+  private String socialReason;
 
-    @NotNull(message = "Please enter the telephone")
-    private String telephone;
+  @NotNull(message = "Please enter the telephone")
+  private String telephone;
 
-    private String email;
+  private String email;
+  private Boolean active;
 
-    @NotNull(message = "Please enter the contacts")
-    @ManyToMany
-    @JoinTable(name="supl__contact",
-            joinColumns=@JoinColumn(name="supplier_id"),
-            inverseJoinColumns=@JoinColumn(name="contact_id")
-    )
-    private List<Contact> contacts;
+  @NotNull(message = "Please enter the contacts")
+  @ManyToMany
+  @JoinTable(
+      name = "supl__contact",
+      joinColumns = @JoinColumn(name = "supplier_id"),
+      inverseJoinColumns = @JoinColumn(name = "contact_id"))
+  private List<Contact> contacts;
 
-    @ManyToMany
-    @JoinTable(name="supl__address",
-            joinColumns=@JoinColumn(name="supplier_id"),
-            inverseJoinColumns=@JoinColumn(name="address_id")
-    )
-    private List<Address> address;
+  @ManyToMany
+  @JoinTable(
+      name = "supl__address",
+      joinColumns = @JoinColumn(name = "supplier_id"),
+      inverseJoinColumns = @JoinColumn(name = "address_id"))
+  private List<Address> addresses;
 
+  @NotNull(message = "Please enter the classement")
+  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @JoinColumn(name = "classification_id", referencedColumnName = "id")
+  private SupplierClassification classification;
 
-
-
-
-    @NotNull(message = "Please enter the classement")
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "classification_id", referencedColumnName = "id")
-    private SupplierClassification classification;
+  private String note;
 
 
-    private String note;
-    private Boolean active;
-
-    public JSONObject toJson() {
-        JSONObject vendorJSON = new JSONObject();
-        try {
-            vendorJSON.put("id", this.getId());
-            vendorJSON.put("code", this.getCode());
-            vendorJSON.put("socialReason", this.getSocialReason());
-            //vendorJSON.put("address", this.getAddress().toJson());
-            vendorJSON.put("telephone", this.getTelephone());
-            vendorJSON.put("email", this.getEmail());
-            vendorJSON.put("classification", this.getClassification().toJson());
-            vendorJSON.put("note", this.getNote());
-            //vendorJSON.put("mainContact", this.getMainContact().toJson());
-        } catch (JSONException e) {
-            e.printStackTrace();
+  public JSONObject toJson() {
+    JSONObject vendorJSON = new JSONObject();
+    try {
+      vendorJSON.put("id", this.getId());
+      vendorJSON.put("code", this.getCode());
+      vendorJSON.put("socialReason", this.getSocialReason());
+      if (this.getContacts() != null) {
+        JSONArray contacts = new JSONArray();
+        for (Contact contact : this.getContacts()) {
+          contacts.put(contact.toJson());
         }
-        return vendorJSON;
-    }
+        vendorJSON.put("contacts", contacts);
+      }
+      // vendorJSON.put("address", this.getAddress().toJson());
 
+      if (this.getAddresses() != null) {
+        JSONArray addresses = new JSONArray();
+        for (Address address : this.getAddresses()) {
+          addresses.put(address.toJson());
+        }
+        vendorJSON.put("addresses", addresses);
+      }
+      vendorJSON.put("telephone", this.getTelephone());
+      vendorJSON.put("email", this.getEmail());
+      vendorJSON.put("classification", this.getClassification().toJson());
+      vendorJSON.put("note", this.getNote());
+      // vendorJSON.put("mainContact", this.getMainContact().toJson());
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return vendorJSON;
+  }
 }

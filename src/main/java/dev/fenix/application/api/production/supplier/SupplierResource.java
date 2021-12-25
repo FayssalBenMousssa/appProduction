@@ -1,7 +1,9 @@
 package dev.fenix.application.api.production.supplier;
 
+import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.supplier.model.Supplier;
 import dev.fenix.application.production.supplier.repository.SupplierRepository;
+import dev.fenix.application.production.supplier.service.SupplierService;
 import javassist.NotFoundException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,11 +20,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController()
-@RequestMapping("/api/vendor")
+@RequestMapping("/api/supplier")
 public class SupplierResource {
   private static final Logger log = LoggerFactory.getLogger(SupplierResource.class);
 
-  @Autowired private SupplierRepository vendorRepository;
+  @Autowired private SupplierRepository supplierRepository;
+  @Autowired private SupplierService supplierService;
 
   @RequestMapping(
       value = {"/", ""},
@@ -46,14 +49,17 @@ public class SupplierResource {
       throws InterruptedException {
     log.trace(String.format("%s method accessed ." , new Object(){}.getClass().getEnclosingMethod().getName() ));
     JSONArray jArray = new JSONArray();
-    Iterable<Supplier> vendors = vendorRepository.findAll();
-    for (Supplier vendor : vendors) {
-      jArray.put(vendor.toJson());
+    //Iterable<Supplier> vendors = supplierRepository.findAll();
+
+    Iterable<Supplier> suppliers = supplierService.getAllSuppliers(page, size, sort, query  );
+    
+    for (Supplier supplier : suppliers) {
+      jArray.put(supplier.toJson());
     }
     JSONObject response = new JSONObject();
     try {
       response.put("results", jArray);
-      response.put("count", vendorRepository.count());
+      response.put("count", supplierRepository.count());
       return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     } catch (JSONException e) {
       e.printStackTrace();
@@ -72,7 +78,7 @@ public class SupplierResource {
 
     log.trace(String.format("%s method accessed ." , new Object(){}.getClass().getEnclosingMethod().getName() ));
     vendor.setActive(true);
-    Supplier savedVendor = vendorRepository.save(vendor);
+    Supplier savedVendor = supplierRepository.save(vendor);
     return ResponseEntity.ok(savedVendor.toJson().toString());
   }
 
@@ -87,7 +93,7 @@ public class SupplierResource {
     try {
       log.trace(String.format("%s method accessed ." , new Object(){}.getClass().getEnclosingMethod().getName() ));
       vendor.setActive(true);
-      Supplier updatedVendor = vendorRepository.save(vendor);
+      Supplier updatedVendor = supplierRepository.save(vendor);
       return new ResponseEntity<>(updatedVendor.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
@@ -102,7 +108,7 @@ public class SupplierResource {
           produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id) throws NotFoundException {
     log.trace(String.format("%s method accessed" , new Object(){}.getClass().getEnclosingMethod().getName() ));
-    Supplier vendor = vendorRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+    Supplier vendor = supplierRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(vendor.toJson().toString(), HttpStatus.OK);
   }
 
@@ -113,10 +119,10 @@ public class SupplierResource {
           produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
     log.trace(String.format("%s method accessed" , new Object(){}.getClass().getEnclosingMethod().getName() ));
-    Supplier vendor = vendorRepository.getOne(id);
+    Supplier vendor = supplierRepository.getOne(id);
     try {
       vendor.setActive(false);
-      Supplier savedVendor = vendorRepository.save(vendor);
+      Supplier savedVendor = supplierRepository.save(vendor);
       return ResponseEntity.ok(savedVendor.getActive());
     } catch (Exception e) {
       e.printStackTrace();
