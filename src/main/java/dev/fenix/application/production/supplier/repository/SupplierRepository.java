@@ -25,4 +25,6 @@ public interface SupplierRepository extends JpaRepository <Supplier,Long> {
     Page<Supplier> findByActiveTrue(Pageable paging);
 
     Page<Supplier> findAllBySocialReasonContainingAndActiveTrue(String socialReason, Pageable paging);
+//
+Page<Supplier> findAllByAndActiveTrue(String socialReason, Pageable paging);
 }

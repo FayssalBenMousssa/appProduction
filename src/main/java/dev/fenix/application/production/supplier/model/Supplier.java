@@ -31,13 +31,12 @@ public class Supplier {
   @NotNull(message = "Please enter the socialReason")
   private String socialReason;
 
-  @NotNull(message = "Please enter the telephone")
-  private String telephone;
 
+  private String telephone;
   private String email;
   private Boolean active;
 
-  @NotNull(message = "Please enter the contacts")
+
   @ManyToMany
   @JoinTable(
       name = "supl__contact",
@@ -52,8 +51,8 @@ public class Supplier {
       inverseJoinColumns = @JoinColumn(name = "address_id"))
   private List<Address> addresses;
 
-  @NotNull(message = "Please enter the classement")
-  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "classification_id", referencedColumnName = "id")
   private SupplierClassification classification;
 

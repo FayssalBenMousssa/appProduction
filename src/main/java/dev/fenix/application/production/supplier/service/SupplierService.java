@@ -72,7 +72,7 @@ public class SupplierService {
         String value = entry.getValue();
         switch (key) {
           case "social_reason":
-            filteringSuppliers.addAll(supplierRepository.findAllBySocialReasonContainsAndActiveTrue("socialReason", paging).getContent());
+            filteringSuppliers.addAll(supplierRepository.findAllBySocialReasonContainsAndActiveTrue(value, paging).getContent());
             count = supplierRepository.countBySocialReasonContainsAndActiveTrue(value);
             log.info(count + " Suppliers by name [" + value + "] for all types" );
             break;

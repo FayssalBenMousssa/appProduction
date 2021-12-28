@@ -51,7 +51,7 @@ public class SupplierResource {
     JSONArray jArray = new JSONArray();
     //Iterable<Supplier> vendors = supplierRepository.findAll();
 
-    Iterable<Supplier> suppliers = supplierService.getAllSuppliers(page, size, sort, query  );
+    Iterable<Supplier> suppliers = supplierService.getAllSuppliers(page, size, sort, query);
     
     for (Supplier supplier : suppliers) {
       jArray.put(supplier.toJson());
@@ -59,7 +59,9 @@ public class SupplierResource {
     JSONObject response = new JSONObject();
     try {
       response.put("results", jArray);
-      response.put("count", supplierRepository.count());
+      response.put("count", jArray.length());
+      response.put("total" , supplierService.getCountAll());
+
       return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     } catch (JSONException e) {
       e.printStackTrace();
