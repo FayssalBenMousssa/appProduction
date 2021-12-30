@@ -9,9 +9,11 @@ import lombok.Setter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -58,6 +60,23 @@ public class Supplier {
 
   private String note;
 
+  @Column(name = "create_date")
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private Date createDate;
+
+  @Column(name = "modify_date")
+  private Date modifyDate;
+
+  @PrePersist
+  protected void onCreate() {
+    createDate = new Date();
+  }
+
+  @PreUpdate
+  protected void onUpdate() {
+    modifyDate = new Date();
+  }
+
 
   public JSONObject toJson() {
     JSONObject vendorJSON = new JSONObject();
@@ -85,6 +104,8 @@ public class Supplier {
       vendorJSON.put("email", this.getEmail());
       vendorJSON.put("classification", this.getClassification().toJson());
       vendorJSON.put("note", this.getNote());
+      vendorJSON.put("createDate", this.getCreateDate());
+      vendorJSON.put("modifyDate", this.getModifyDate());
       // vendorJSON.put("mainContact", this.getMainContact().toJson());
     } catch (JSONException e) {
       e.printStackTrace();
