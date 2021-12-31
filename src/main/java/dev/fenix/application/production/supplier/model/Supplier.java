@@ -46,7 +46,7 @@ public class Supplier {
       inverseJoinColumns = @JoinColumn(name = "contact_id"))
   private List<Contact> contacts;
 
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(
       name = "supl__address",
       joinColumns = @JoinColumn(name = "supplier_id"),
@@ -55,6 +55,7 @@ public class Supplier {
 
 
   @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
+  ///  @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
   @JoinColumn(name = "classification_id", referencedColumnName = "id")
   private SupplierClassification classification;
 

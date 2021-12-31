@@ -24,11 +24,7 @@ public class Address {
 
     @NotNull(message = "Please enter the addressOne")
     private String name;
-
-    @NotNull(message = "Please enter the addressOne")
     private String lineOne;
-
-
     private String lineTow;
     private long zipCode;
 
@@ -38,8 +34,7 @@ public class Address {
     @NotNull(message = "Please enter the country")
     private String country ;
 
-
-
+    @Column(columnDefinition="tinyint(1) default 1")
     private boolean active;
 
     public JSONObject toJson() {

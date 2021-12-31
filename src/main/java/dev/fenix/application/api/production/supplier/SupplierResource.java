@@ -91,11 +91,11 @@ public class SupplierResource {
           method = RequestMethod.PUT,
           produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> update(@Valid @RequestBody Supplier vendor, HttpServletRequest request) {
+  public ResponseEntity<?> update(@Valid @RequestBody Supplier supplier, HttpServletRequest request) {
     try {
       log.trace(String.format("%s method accessed ." , new Object(){}.getClass().getEnclosingMethod().getName() ));
-      vendor.setActive(true);
-      Supplier updatedVendor = supplierRepository.save(vendor);
+      supplier.setActive(true);
+      Supplier updatedVendor = supplierRepository.save(supplier);
       return new ResponseEntity<>(updatedVendor.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
