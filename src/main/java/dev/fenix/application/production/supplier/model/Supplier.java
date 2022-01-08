@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +41,7 @@ public class Supplier {
   private Boolean active;
 
 
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(
       name = "supl__contact",
       joinColumns = @JoinColumn(name = "supplier_id"),
@@ -63,20 +65,16 @@ public class Supplier {
 
   @Column(name = "create_date")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @CreationTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
   private Date createDate;
 
   @Column(name = "modify_date")
+  @UpdateTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
   private Date modifyDate;
 
-  @PrePersist
-  protected void onCreate() {
-    createDate = new Date();
-  }
 
-  @PreUpdate
-  protected void onUpdate() {
-    modifyDate = new Date();
-  }
 
 
   public JSONObject toJson() {
@@ -88,7 +86,10 @@ public class Supplier {
       if (this.getContacts() != null) {
         JSONArray contacts = new JSONArray();
         for (Contact contact : this.getContacts()) {
-          contacts.put(contact.toJson());
+       if(contact.getActive()) {
+         contacts.put(contact.toJson());
+       }
+
         }
         vendorJSON.put("contacts", contacts);
       }
@@ -97,7 +98,10 @@ public class Supplier {
       if (this.getAddresses() != null) {
         JSONArray addresses = new JSONArray();
         for (Address address : this.getAddresses()) {
-          addresses.put(address.toJson());
+          if(address.isActive()) {
+            addresses.put(address.toJson());
+          }
+
         }
         vendorJSON.put("addresses", addresses);
       }
