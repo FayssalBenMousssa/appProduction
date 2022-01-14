@@ -38,6 +38,8 @@ public class Supplier {
 
   private String telephone;
   private String email;
+  /// Common Company Identifier
+  private String ice;
   private Boolean active;
 
 
@@ -83,6 +85,7 @@ public class Supplier {
       vendorJSON.put("id", this.getId());
       vendorJSON.put("code", this.getCode());
       vendorJSON.put("socialReason", this.getSocialReason());
+      vendorJSON.put("ice", this.getIce());
       if (this.getContacts() != null) {
         JSONArray contacts = new JSONArray();
         for (Contact contact : this.getContacts()) {

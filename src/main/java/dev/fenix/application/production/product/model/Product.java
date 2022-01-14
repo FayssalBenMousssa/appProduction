@@ -64,6 +64,8 @@ public class Product {
       fetch = FetchType.EAGER)
   private SiUnit siUnit;
 
+  private String description;
+
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 

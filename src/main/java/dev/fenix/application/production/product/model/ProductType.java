@@ -1,6 +1,9 @@
 package dev.fenix.application.production.product.model;
 
+
+import dev.fenix.application.core.model.Metadata;
 import lombok.*;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -8,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,6 +39,13 @@ public class ProductType {
   }
 
 
+  @ManyToMany(cascade = CascadeType.ALL)
+  @JoinTable(
+          name = "prds__type_metadata",
+          joinColumns = @JoinColumn(name = "product_type_id"),
+          inverseJoinColumns = @JoinColumn(name = "metadata_id"))
+  private List<Metadata> metadataList;
+
   @Column(name = "create_date")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date createDate;
@@ -53,14 +64,26 @@ public class ProductType {
   }
 
   public JSONObject toJson() {
-    JSONObject personJSON = new JSONObject();
+    JSONObject ProductTypeJSON = new JSONObject();
     try {
-      personJSON.put("id", this.getId());
-      personJSON.put("name", this.getName());
-      personJSON.put("icon", this.getIcon());
+      ProductTypeJSON.put("id", this.getId());
+      ProductTypeJSON.put("name", this.getName());
+      ProductTypeJSON.put("icon", this.getIcon());
+
+      if (this.getMetadataList().size() > 0 ){
+        JSONArray metadatalist = new JSONArray();
+        for (Metadata metadata : this.getMetadataList()) {
+          if(metadata.isActive()) {
+            metadatalist.put(metadata.toJson());
+          }
+
+        }
+        ProductTypeJSON.put("meta_data", metadatalist);
+      }
+      
     } catch (JSONException e) {
       e.printStackTrace();
     }
-    return personJSON;
+    return ProductTypeJSON;
   }
 }
