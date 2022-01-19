@@ -18,7 +18,7 @@ import java.util.Locale;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Metadata {
+public class MetaData {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
@@ -34,6 +34,9 @@ public class Metadata {
 
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
+
+  @Column(columnDefinition = "tinyint(1) default 1")
+  private boolean required;
 
 
   @Column(name = "create_date")
@@ -57,6 +60,7 @@ public class Metadata {
     try {
       productJSON.put("id", this.getId());
       productJSON.put("name", this.getName());
+      productJSON.put("code", this.getCode());
       productJSON.put("type", this.getType());
       productJSON.put("create_date", this.getCreateDate());
       productJSON.put("modify_date", this.getModifyDate());

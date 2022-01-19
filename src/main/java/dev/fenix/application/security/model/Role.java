@@ -2,6 +2,7 @@ package dev.fenix.application.security.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Setter
 @Service
 @Table(name = "sc__role")
+@ToString
 public class Role {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

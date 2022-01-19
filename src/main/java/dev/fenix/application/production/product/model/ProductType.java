@@ -1,7 +1,7 @@
 package dev.fenix.application.production.product.model;
 
 
-import dev.fenix.application.core.model.Metadata;
+import dev.fenix.application.core.model.MetaData;
 import lombok.*;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +44,7 @@ public class ProductType {
           name = "prds__type_metadata",
           joinColumns = @JoinColumn(name = "product_type_id"),
           inverseJoinColumns = @JoinColumn(name = "metadata_id"))
-  private List<Metadata> metadataList;
+  private List<MetaData> metaData;
 
   @Column(name = "create_date")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -70,15 +70,15 @@ public class ProductType {
       ProductTypeJSON.put("name", this.getName());
       ProductTypeJSON.put("icon", this.getIcon());
 
-      if (this.getMetadataList().size() > 0 ){
+      if (this.getMetaData() != null && this.getMetaData().size() > 0 ){
         JSONArray metadatalist = new JSONArray();
-        for (Metadata metadata : this.getMetadataList()) {
+        for (MetaData metadata : this.getMetaData()) {
           if(metadata.isActive()) {
             metadatalist.put(metadata.toJson());
           }
 
         }
-        ProductTypeJSON.put("meta_data", metadatalist);
+        ProductTypeJSON.put("metaData", metadatalist);
       }
       
     } catch (JSONException e) {

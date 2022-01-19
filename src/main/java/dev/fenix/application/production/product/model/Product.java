@@ -1,6 +1,7 @@
 package dev.fenix.application.production.product.model;
 
 import lombok.*;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -8,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 @Entity
@@ -69,6 +71,8 @@ public class Product {
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 
+  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+  private List<MetaDataValue> metaDataValues;
 
   @Column(name = "create_date")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -101,6 +105,14 @@ public class Product {
       productJSON.put("siUnit", this.getSiUnit().toJson());
       productJSON.put("createDate", this.getCreateDate());
       productJSON.put("modifyDate", this.getModifyDate());
+
+      if (this.getMetaDataValues() != null) {
+        JSONArray metaDataList = new JSONArray();
+        for (MetaDataValue metaData : this.getMetaDataValues()) {
+          metaDataList.put(metaData.toJson());
+        }
+        productJSON.put("metaData", metaDataList);
+      }
 
     } catch (JSONException e) {
       e.printStackTrace();

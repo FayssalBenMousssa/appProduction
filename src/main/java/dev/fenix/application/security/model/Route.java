@@ -2,6 +2,7 @@ package dev.fenix.application.security.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.json.JSONArray;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Table(name = "sc__routes")
 @Getter
 @Setter
+@ToString
 public class Route {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,21 +27,27 @@ public class Route {
   @Column(name = "name")
   private String name;
 
+  @Column(name = "code")
+  private String code;
+
+  @Column(name = "position")
+  private String position;
+
   @Column(name = "route")
   private String route;
 
   @Column(name = "icon")
   private String icon;
 
+
+  private String cssClass;
   @Column(name = "orderNum")
   private int orderNum;
 
-
   @Column(name = "color", nullable = false, columnDefinition = "varchar(20) default '#ff0000'")
-  private String color ;
+  private String color;
 
-
-  @ManyToOne( cascade = { CascadeType.ALL } )
+  @ManyToOne(cascade = {CascadeType.ALL})
   @JoinColumn(name = "parent_id")
   @NotFound(action = NotFoundAction.IGNORE)
   private Route parent;
@@ -50,8 +58,7 @@ public class Route {
   private List<Route> subRoutes;
 
   @Column(name = "level", nullable = false, columnDefinition = "int default 0")
-  private int level ;
-
+  private int level;
 
   @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinTable(
@@ -62,27 +69,45 @@ public class Route {
 
   public JSONObject _toJson() {
 
-    JSONObject roleJSON = new JSONObject();
+    JSONObject routeJSON = new JSONObject();
     try {
-      roleJSON.put("id", this.getId());
-      roleJSON.put("name", this.getName());
-      roleJSON.put("icon", this.getIcon());
-      roleJSON.put("orderNum", this.getOrderNum());
-      roleJSON.put("route", this.getRoute());
-      roleJSON.put("level", this.getLevel());
-      roleJSON.put("color", this.getColor());
+      routeJSON.put("id", this.getId());
+      routeJSON.put("name", this.getName());
+      routeJSON.put("code", this.getCode());
+      routeJSON.put("icon", this.getIcon());
+      routeJSON.put("orderNum", this.getOrderNum());
+      routeJSON.put("route", this.getRoute());
+      routeJSON.put("level", this.getLevel());
+      routeJSON.put("color", this.getColor());
+      routeJSON.put("position", this.getPosition());
+      routeJSON.put("cssClass", this.getCssClass());
 
       if (this.getSubRoutes() != null) {
-        JSONArray subRoutes  = new JSONArray();
-        for (Route rote : this.getSubRoutes()) {
-          subRoutes.put(rote._toJson());
+        JSONArray subRoutes = new JSONArray();
+
+        for (Route subRoute : this.getSubRoutes()) {
+          for (Role role : subRoute.getRoles()) {
+            for (Role parentRole : this.getRoles()) {
+              {
+                if (parentRole.getId() == role.getId()) {
+
+
+                 System.out.println(subRoute.getSubRoutes().size());
+
+
+                  subRoutes.put(subRoute._toJson());
+
+                }
+              }
+            }
+          }
         }
-        roleJSON.put("sub_routes", subRoutes);
+        routeJSON.put("sub_routes", subRoutes);
       }
 
     } catch (JSONException e) {
       e.printStackTrace();
     }
-    return roleJSON;
+    return routeJSON;
   }
 }
