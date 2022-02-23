@@ -24,5 +24,7 @@ services:
       - '8080:80'
     environment:
       PMA_HOST: db
+      UPLOAD_LIMIT: 300M
+
         
      

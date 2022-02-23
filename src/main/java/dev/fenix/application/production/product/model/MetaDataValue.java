@@ -22,24 +22,20 @@ public class MetaDataValue {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-
   @NotNull(message = "Please enter the value")
   private String value;
 
-
-
   @NotNull(message = "Please enter the metaData")
   @ManyToOne(
-          cascade = {CascadeType.DETACH},
-          fetch = FetchType.EAGER)
+      cascade = {CascadeType.DETACH},
+      fetch = FetchType.EAGER)
   @JoinColumn(name = "meta_data_id", referencedColumnName = "id")
   private MetaData metaData;
 
-
-  @NotNull(message = "Please enter the product")
+  //@NotNull(message = "Please enter the product")
   @ManyToOne(
-          cascade = {CascadeType.DETACH},
-          fetch = FetchType.EAGER)
+      cascade = {CascadeType.DETACH},
+      fetch = FetchType.EAGER)
   @JoinColumn(name = "product_id", referencedColumnName = "id")
   private Product product;
 
@@ -48,18 +44,18 @@ public class MetaDataValue {
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 
-
   @Column(name = "create_date")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date createDate;
+
   @Column(name = "modify_date")
   private Date modifyDate;
-
 
   @PrePersist
   protected void onCreate() {
     createDate = new Date();
   }
+
   @PreUpdate
   protected void onUpdate() {
     modifyDate = new Date();
@@ -71,8 +67,6 @@ public class MetaDataValue {
       classificationJSON.put("id", this.getId());
 
       classificationJSON.put("active", this.isActive());
-
-
 
     } catch (JSONException e) {
       e.printStackTrace();

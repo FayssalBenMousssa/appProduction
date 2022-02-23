@@ -1,6 +1,7 @@
 package dev.fenix.application.cascade.repository;
 
 import dev.fenix.application.cascade.model.A;
+import dev.fenix.application.cascade.model.B;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,6 +45,20 @@ public class ARepositoryTest {
     @Rollback(false)
     public void testSaveA(){
         A a = new A(UUID.randomUUID().toString() , "1aAssqsqAsA23456789");
+        B b1 = new B();
+        b1.setName("1aAssqsqAsA23456789");
+        B b2 = new B();
+        b2.setName("1aAssqsqAsdA23456789");
+        List<B> bs = new ArrayList<>();
+        bs.add(b1);
+        bs.add(b2);
+        a.setItems(bs);
+
+
+
+
+
+
         A savedInDb = entityManager.persist(a);
         A getFromDb = aRepository.getOne(savedInDb.getId());
         assertThat(getFromDb).isEqualTo(savedInDb);

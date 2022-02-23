@@ -1,7 +1,6 @@
 package dev.fenix.application.production.product.model;
 
 import lombok.*;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -71,7 +70,11 @@ public class Product {
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 
-  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+
+
+
+
+  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
   private List<MetaDataValue> metaDataValues;
 
   @Column(name = "create_date")
@@ -105,7 +108,7 @@ public class Product {
       productJSON.put("siUnit", this.getSiUnit().toJson());
       productJSON.put("createDate", this.getCreateDate());
       productJSON.put("modifyDate", this.getModifyDate());
-
+/*
       if (this.getMetaDataValues() != null) {
         JSONArray metaDataList = new JSONArray();
         for (MetaDataValue metaData : this.getMetaDataValues()) {
@@ -113,10 +116,13 @@ public class Product {
         }
         productJSON.put("metaData", metaDataList);
       }
-
+*/
     } catch (JSONException e) {
       e.printStackTrace();
     }
     return productJSON;
   }
 }
+
+
+//// https://www.stackchief.com/blog/One%20To%20Many%20Example%20%7C%20Spring%20Data%20JPA
