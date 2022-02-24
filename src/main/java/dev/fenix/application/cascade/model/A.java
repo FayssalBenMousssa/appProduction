@@ -1,6 +1,5 @@
 package dev.fenix.application.cascade.model;
 
-import dev.fenix.application.production.product.model.MetaDataValue;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +9,6 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "dev__a")

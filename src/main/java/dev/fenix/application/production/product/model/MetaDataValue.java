@@ -32,11 +32,9 @@ public class MetaDataValue {
   @JoinColumn(name = "meta_data_id", referencedColumnName = "id")
   private MetaData metaData;
 
-  //@NotNull(message = "Please enter the product")
-  @ManyToOne(
-      cascade = {CascadeType.DETACH},
-      fetch = FetchType.EAGER)
-  @JoinColumn(name = "product_id", referencedColumnName = "id")
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "product_id" , nullable = false)
   private Product product;
 
 
@@ -62,15 +60,16 @@ public class MetaDataValue {
   }
 
   public JSONObject toJson() {
-    JSONObject classificationJSON = new JSONObject();
+    JSONObject metaDataValueJSON = new JSONObject();
     try {
-      classificationJSON.put("id", this.getId());
-
-      classificationJSON.put("active", this.isActive());
+      metaDataValueJSON.put("id", this.getId());
+      metaDataValueJSON.put("value", this.getValue());
+      metaDataValueJSON.put("metadata", this.getMetaData().toJson());
+      metaDataValueJSON.put("active", this.isActive());
 
     } catch (JSONException e) {
       e.printStackTrace();
     }
-    return classificationJSON;
+    return metaDataValueJSON;
   }
 }

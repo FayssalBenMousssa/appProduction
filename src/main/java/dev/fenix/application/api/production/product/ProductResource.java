@@ -97,69 +97,8 @@ public class ProductResource {
   @ResponseBody
   public ResponseEntity<?> save(@Valid @RequestBody Product product, HttpServletRequest request) {
     log.trace("ProductResource.save method accessed");
-
-
-/*
-
-
-    Product testProduct = new Product();
-
-    Packaging packaging = new Packaging() ;
-    packaging.setId(19L);
-
-    ProductType type = new ProductType();
-    type.setId(3L);
-
-    ProductionUnit pu = new ProductionUnit();
-    pu.setId(2L);
-
-    Classification classification = new Classification();
-    classification.setId(38L);
-
-    SiUnit siUnit = new SiUnit();
-    siUnit.setId(8L);
-
-    testProduct.setActive(true);
-    testProduct.setProductType(type);
-    testProduct.setPackaging(packaging);
-    testProduct.setCodeDes("xxxxx");
-    testProduct.setName("Test product");
-    testProduct.setCode("Test");
-    testProduct.setClassification(classification);
-    testProduct.setProductionUnit(pu);
-    testProduct.setSiUnit(siUnit);
-
-    MetaDataValue metaDataValue = new MetaDataValue();
-    metaDataValue.setValue("xxxxxx");
-
-    MetaDataValue metaDataValue_2 = new MetaDataValue();
-    metaDataValue_2.setValue("xxxxxx x");
-
-    MetaData metaData = new MetaData();
-    metaData.setId(1L);
-
-    metaDataValue_2.setMetaData(metaData);
-    metaDataValue.setMetaData(metaData);
-
-
-    List<MetaDataValue> metaDataValues = new ArrayList<MetaDataValue>() ;
-    metaDataValues.add(metaDataValue);
-    metaDataValues.add(metaDataValue_2);
-
-    testProduct.setMetaDataValues(metaDataValues);
-
-*/
-
-
-
     try {
       product.setActive(true);
-
-     // log.info(product.toString());
-
-
-
-
       Product savedProduct = productRepository.save(product);
       return new ResponseEntity<>(savedProduct.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {

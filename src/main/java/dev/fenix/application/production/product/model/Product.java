@@ -1,6 +1,7 @@
 package dev.fenix.application.production.product.model;
 
 import lombok.*;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -74,7 +75,9 @@ public class Product {
 
 
 
-  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+ // @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+  @OneToMany(fetch = FetchType.EAGER, cascade ={CascadeType.ALL})//javax.persistent.CascadeType
+  @JoinColumn(name = "product_id") //parent's foreign key
   private List<MetaDataValue> metaDataValues;
 
   @Column(name = "create_date")
@@ -108,15 +111,15 @@ public class Product {
       productJSON.put("siUnit", this.getSiUnit().toJson());
       productJSON.put("createDate", this.getCreateDate());
       productJSON.put("modifyDate", this.getModifyDate());
-/*
+
       if (this.getMetaDataValues() != null) {
         JSONArray metaDataList = new JSONArray();
         for (MetaDataValue metaData : this.getMetaDataValues()) {
           metaDataList.put(metaData.toJson());
         }
-        productJSON.put("metaData", metaDataList);
+        productJSON.put("metaDataValues", metaDataList);
       }
-*/
+
     } catch (JSONException e) {
       e.printStackTrace();
     }

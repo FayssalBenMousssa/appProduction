@@ -8,24 +8,22 @@ import lombok.ToString;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "dev__b")
+@Table(name = "dev__product")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-public class B {
+public class Pro {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id")
   private int id;
 
-  private String name;
+  @Column(name = "product_name")
+  private String productName;
 
-  //@NotNull(message = "Please enter the product")
-  @ManyToOne
-  @JoinColumn(name = "cart_id" )
-
-  private A cart;
-
-
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "factory_id" , nullable = false)
+  private Fac factory;
 }
