@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -21,15 +23,13 @@ import java.util.Date;
     allowGetters = true)
 public abstract class AuditModel implements Serializable {
 
+  @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "created_at", nullable = false, updatable = false)
-  @ColumnDefault(value = "CURRENT_TIMESTAMP")
-  @CreatedDate
-  private Date createdAt;
+  @Column(name = "create_date")
+  private Date createDate;
 
+  @UpdateTimestamp
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "updated_at", nullable = false)
-  @ColumnDefault(value = "CURRENT_TIMESTAMP")
-  @LastModifiedDate
-  private Date updatedAt;
+  @Column(name = "modify_date")
+  private Date modifyDate;
 }
