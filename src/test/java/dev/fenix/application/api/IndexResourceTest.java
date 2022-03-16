@@ -1,6 +1,7 @@
 package dev.fenix.application.api;
 
-import dev.fenix.application.api.util.JwtUtil;
+import dev.fenix.application.api.security.IndexResource;
+import dev.fenix.application.api.security.util.JwtUtil;
 import dev.fenix.application.security.model.AppUserDetails;
 import dev.fenix.application.security.model.User;
 import dev.fenix.application.security.repository.UserRepository;

@@ -3,13 +3,16 @@ package dev.fenix.application.business.model;
 import dev.fenix.application.person.model.Person;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,5 +42,17 @@ public class Team {
       inverseJoinColumns = {@JoinColumn(name = "person_id")})
   private Set<Person> people = new HashSet<>();
 
+  @CreationTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "create_date" ,  updatable = false)
+  private Date createDate;
+
+  @UpdateTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "modify_date")
+  private Date modifyDate;
+
+  private Boolean active;
+  
   public Team() {}
 }

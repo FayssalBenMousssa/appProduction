@@ -1,0 +1,33 @@
+= Prodction
+
+== Job
+
+==== save
+.request
+include::{snippets}/saveJob/http-request.adoc[]
+
+.response
+include::{snippets}/saveJob/http-response.adoc[]
+
+==== update
+.request
+include::{snippets}/updateJob/http-request.adoc[]
+
+.response
+include::{snippets}/updateJob/http-response.adoc[]
+
+==== delete
+.request
+include::{snippets}/deleteJob/http-request.adoc[]
+
+.response
+include::{snippets}/deleteJob/http-response.adoc[]
+
+
+==== index
+.request
+include::{snippets}/indexJob/http-request.adoc[]
+
+.response
+include::{snippets}/indexJob/http-response.adoc[]
+

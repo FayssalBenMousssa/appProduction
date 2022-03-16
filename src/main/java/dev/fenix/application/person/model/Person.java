@@ -1,9 +1,12 @@
 package dev.fenix.application.person.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import dev.fenix.application.security.model.User;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,6 +15,7 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -20,6 +24,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Person {
 
   @NotNull(message = "firstName is mandatory")
@@ -32,12 +37,16 @@ public class Person {
   @Column(length = 10)
   private Gender gender;
 
-  @Column(name = "create_date")
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @CreationTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "create_date" ,  updatable = false)
   private Date createDate;
-
+  @UpdateTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "modify_date")
   private Date modifyDate;
+
+
 
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -62,25 +71,37 @@ public class Person {
 
   public Person() {}
 
-  @PrePersist
-  protected void onCreate() {
-    createDate = new Date();
-  }
 
-  @PreUpdate
-  protected void onUpdate() {
-    modifyDate = new Date();
-  }
 
-  public JSONObject _toJson() {
+  public JSONObject toJson() {
     JSONObject personJSON = new JSONObject();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     try {
       personJSON.put("id", this.getId());
       personJSON.put("firstName", this.getFirstName());
       personJSON.put("lastName", this.getLastName());
       personJSON.put("fullName", this.getFullName());
-      personJSON.put("birthDate", this.getBirthDate());
-      personJSON.put("user", user._toJson());
+      if(this.getGender() != null) {
+        personJSON.put("gender", this.getGender());
+      }
+
+
+
+
+      if (this.getBirthDate() != null) {
+        personJSON.put("birthDate",   formatter.format(this.getBirthDate()))  ;
+      }
+      if (this.getModifyDate() != null) {
+        personJSON.put("modifyDate",   formatter.format(this.getModifyDate()))  ;
+      }
+      if (this.getCreateDate() != null) {
+        personJSON.put("createDate", formatter.format(this.getCreateDate()));
+      }
+
+      if(this.getUser() != null) {
+        personJSON.put("user", this.getUser()._toJson());
+      }
+
 
     } catch (JSONException e) {
       e.printStackTrace();
@@ -89,6 +110,6 @@ public class Person {
   }
 
   public String getFullName() {
-    return this.getFirstName() + " " + this.getLastName();
+    return  this.getLastName() + " " +this.getFirstName();
   }
 }

@@ -1,6 +1,5 @@
 package dev.fenix.application.business.service;
 
-import dev.fenix.application.Application;
 import dev.fenix.application.business.model.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +30,10 @@ public class JobService {
             (record) -> {
               Long id = ((BigInteger) record[0]).longValue();
               String name = (String) record[1];
-              jobs.add(new Job(id, name));
+              Job job = new Job();
+              job.setId(id);
+              job.setName(name);
+              jobs.add(job);
             });
 
     return jobs;

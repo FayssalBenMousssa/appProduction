@@ -1,0 +1,72 @@
+= Prodction
+
+== Staff
+Version 0.3, 10.03.2021
+
+
+
+
+==== http Request
+.request
+include::{snippets}/httpRequestTest/http-request.adoc[]
+
+.response
+include::{snippets}/httpRequestTest/http-response.adoc[]
+
+
+==== staff
+.request
+include::{snippets}/indexStaff/http-request.adoc[]
+
+.response
+include::{snippets}/indexStaff/http-response.adoc[]
+
+
+
+
+
+==== index Staff With Params
+
+IMPORTANT:  Params
+
+* Param(defaultValue = "0") Integer page.
+* Param(defaultValue = "200") Integer size.
+* Param(defaultValue = "id,desc") String[] sort.
+* Param(required = false) String[] query.
+
+.request
+include::{snippets}/indexStaffWithParams/http-request.adoc[]
+
+.response
+include::{snippets}/indexStaffWithParams/http-response.adoc[]
+
+
+==== get
+.request
+include::{snippets}/getStaff/http-request.adoc[]
+
+.response
+include::{snippets}/getStaff/http-response.adoc[]
+
+
+
+==== save
+.request
+include::{snippets}/saveStaff/http-request.adoc[]
+
+.response
+include::{snippets}/saveStaff/http-response.adoc[]
+
+==== update
+.request
+include::{snippets}/updateStaff/http-request.adoc[]
+
+.response
+include::{snippets}/updateStaff/http-response.adoc[]
+
+==== delete
+.request
+include::{snippets}/deleteStaff/http-request.adoc[]
+
+.response
+include::{snippets}/deleteStaff/http-response.adoc[]

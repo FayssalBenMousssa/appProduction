@@ -1,0 +1,382 @@
+Famille ;Sous Famille;Sous-sous Famille;Designation;Unite de prod;Code Source ; Caractéristiques;Utilisations;Fournisseur et/ou Origine;type
+Coquilles D'oeufs ;Coquilles Grand Calibre ;Coquilles Grand Calibre ;Coquilles Normale Grand Calibre;Ovofrais;CNG ;Poids moyen / plateau  :  1,8 à 2,3 kg ;Œuf Liquide Pasteurisé;"Bougrini 
+Espace Avicole 
+Avicole Slaoui 
+Entente 
+";MPere
+Coquilles D'oeufs ;Coquilles Moyen Calibre ;Coquilles Moyen Calibre ;Coquilles Normale Moyen Calibre  ;Ovofrais;CNM ;Poids moyen / plateau  :  1,7 à 1,9 kg ;Œuf Liquide Pasteurisé;"Bougrini 
+Espace Avicole 
+Avicole Slaoui 
+Entente 
+";MPere
+Coquilles D'oeufs ;Coquilles Divers Calibres;Coquilles Divers Calibres;Coquille Double Jaune Grand Calibre;Ovofrais;CDG;Poids moyen / plateau  :  2,3 à 2,7 kg ;Œuf Liquide Pasteurisé;"Bougrini 
+Espace Avicole 
+Avicole Slaoui 
+Entente 
+";MPere
+Coquilles D'oeufs ;Coquilles Divers Calibres;Coquilles Divers Calibres;Coquilles Fragile Grand Calibre   ;Ovofrais;CFG;Poids moyen / plateau  :  1,3 à 2 kg ;Œuf Liquide Pasteurisé;"Bougrini 
+Espace Avicole 
+Avicole Slaoui 
+Entente 
+Ovodis ";MPere
+Coquilles D'oeufs ;Coquilles Divers Calibres;Coquilles Divers Calibres;Coquilles Mélange Grand Calibre;Ovofrais;CMG;Poids moyen / plateau  :  1,3 à 2 kg ;Œuf Liquide Pasteurisé;"Bougrini 
+Espace Avicole 
+Avicole Slaoui 
+Entente 
+Ovodis ";MPere
+Coquilles D'oeufs ;Coquilles petit Calibre ;Coquilles petit Calibre ;Coquilles Normale Large   ;Ovofrais;CNL;Entier d'œuf congelé en bidon de 5 kg ;Œuf Liquide Pasteurisé;"Bougrini 
+Espace Avicole 
+Avicole Slaoui 
+Entente 
+Ovodis ";MPere
+Œufs liquides pasteurisés Jaunes  ;Œufs Liquides Pasteurisés Jaunes;Œufs Liquides Pasteurisés Jaunes;Œufs Liquides Pasteurisés Jaunes 2 kg ; Frais Caprices I ;INT200;"Jaunes D'œufs Pasteurisés En Bidons De 
+2 kg ";Préparation des sauces blanches ;Ovofrais ;MPere
+Lait Cru;Lait cru fermier;Lait cru fermier;Lait Salhi L'houssine ; Frais Caprices II ;INT050;"Matière grasse      > à 28 gr/ l. 
+Protéines                > à 32 gr/l.
+Extrait sec              > à 95 gr/l.
+pH                            = 6,6 à 6,8.
+Test antibiotique : Negatif 
+Couleur                    : Blanche caractéristique. ";Production de Caillé pour la Mozzarelle;Salhi ;MPere
+Lait Cru;Lait cru fermier;Lait cru fermier;Lait Benaloua Lghazi; Frais Caprices II ;INT051;"Matière grasse      > à 28 gr/ l. 
+Protéines                > à 32 gr/l.
+Extrait sec              > à 95 gr/l.
+pH                            = 6,6 à 6,8.
+Test antibiotique : Negatif 
+Couleur                    : Blanche caractéristique. ";Production de Caillé pour la Mozzarelle;Ghazi ;MPere
+Lait Cru;Lait cru fermier;Lait cru fermier;Lait Kraimi Said; Frais Caprices II ;INT052;"Matière grasse      > à 28 gr/ l. 
+Protéines                > à 32 gr/l.
+Extrait sec              > à 95 gr/l.
+pH                            = 6,6 à 6,8.
+Test antibiotique : Negatif 
+Couleur                    : Blanche caractéristique. ";Production de Caillé pour la Mozzarelle;Kraimi ;MPere
+Lait Cru;Lait cru fermier;Lait cru fermier;Lait Belalia Abdelah ; Frais Caprices II ;INT053;"Matière grasse      > à 28 gr/ l. 
+Protéines                > à 32 gr/l.
+Extrait sec              > à 95 gr/l.
+pH                            = 6,6 à 6,8.
+Test antibiotique : Negatif 
+Couleur                    : Blanche caractéristique. ";Production de Caillé pour la Mozzarelle;Belalia ;MPere
+Lait Cru;Lait cru fermier;Lait cru fermier;Lait Belalia Farid*; Frais Caprices II ;INT054;"Matière grasse      > à 28 gr/ l. 
+Protéines                > à 32 gr/l.
+Extrait sec              > à 95 gr/l.
+pH                            = 6,6 à 6,8.
+Test antibiotique : Negatif 
+Couleur                    : Blanche caractéristique. ";Production de Caillé pour la Mozzarelle;Farid;MPere
+Lait Cru;Lait cru fermier;Lait cru fermier;Lait Belalia Bousselham*; Frais Caprices II ;INT055;"Matière grasse      > à 28 gr/ l. 
+Protéines                > à 32 gr/l.
+Extrait sec              > à 95 gr/l.
+pH                            = 6,6 à 6,8.
+Test antibiotique : Negatif 
+Couleur                    : Blanche caractéristique. ";Production de Caillé pour la Mozzarelle;Bouselham ;MPere
+Lait Cru;Lait cru fermier;Lait cru fermier;Lait Rziki Abdessalam; Frais Caprices II ;INT056;"Matière grasse      > à 28 gr/ l. 
+Protéines                > à 32 gr/l.
+Extrait sec              > à 95 gr/l.
+pH                            = 6,6 à 6,8.
+Test antibiotique : Negatif 
+Couleur                    : Blanche caractéristique. ";Production de Caillé pour la Mozzarelle;Abdessalam ;MPere
+Lait Traité;Lait termisé standardisé industriel;Lait termisé standardisé industriel;Lait Centrale Danone ; Frais Caprices II ;INT057;"Matière grasse   > à 30 gr/ l. 
+Protéines             > à 34 gr/l.
+Extrait sec           > à 98 gr/l.
+pH                          = 6,6 à 6,8.
+Test antibiotique : Negatif 
+Couleur                  : Blanche caractéristique.";Production de Caillé pour la Mozzarelle;A définir ;MPere
+Fromage ;Fromage semi affiné;Fromage semi affiné;Fromage Cheddard Irlande; Frais Caprices II ;INT058;Taux de matière grasse / EST : 50 à 52 %;Production d'Imperial Rouge ;Comaner / Irlande;MPere
+Fromage ;Fromage semi affiné;Fromage semi affiné;Fromage Cheddard Polonia ; Frais Caprices II ;INT059;Taux de matière grasse / EST : 50 à 52 %;Production d'Imperial Rouge ;Comaner / Polonia ;MPere
+Poudre Laitière;Blend maigre normal;Blend maigre normal;Blend LT 85/15 ;Commun Fabrication;INT999;"Matière grasse  < 0,5%
+Protéines           :28 à 30 % ";Creme et Mozzarel;Azelis;MPere
+Poudre Laitière;Poudre de lait maigre ;Poudre de lait maigre ;Poudre de lait Azelis ;Commun Fabrication;INT888;"Matière grasse  < 0,5%
+Protéines           : 32 à 34 % ";Crémes et Mozzarel;Azelis / France ;MPere
+Poudre Laitière;;Poudre de lait maigre ;Poudre de lait  Extra lait;Commun Fabrication;INT777;"Matière grasse  < 0,5%
+Protéines           : 32 à 34 % ";Crémes et Mozzarel;Extra lait / Maroc;MPere
+Poudre Laitière;Caseine présure ;Caseine présure ;Caseine presure Glanbia ; Frais Caprices II ;INT060;"Matière grasse  < 0,5%
+Protéines           > à 80 % ";Mozzarelle;Comaner / Irland ;MPere
+Poudre Laitière;Caseine présure ;Caseine présure ;Caseine presure Armor; Frais Caprices II ;INT061;"Matière grasse  < 0,5%
+Protéines           > à 80 % ";Mozzarelle;Comaner / France;MPere
+Poudre Laitière;Caseine présure ;Caseine présure ;Caseine presure Aronmor; Frais Caprices II ;INT062;"Matière grasse  < 0,5%
+Protéines           > à 80 % ";Mozzarelle;Comaner / France;MPere
+Poudre Laitière;Caseine présure ;Caseine présure ;Caseine presure Lactalis; Frais Caprices II ;INT063;"Matière grasse  < 0,5%
+Protéines           > à 80 % ";Mozzarelle;Lactalis / France;MPere
+Poudre Laitière;Caseine présure ;Caseine présure ;Caseine presure Divers; Frais Caprices II ;INT064;"Matière grasse  < 0,5%
+Protéines           > à 80 % ";Mozzarelle;Divers;MPere
+Poudre Laitière;Caseinate Acide;Caseinate Acide;Caseinate ; Frais Caprices I ;INT201;Matière grasse  < 1,5%;Créma Plus;Comaner + Azelis / Allemand;MPere
+Graisse V;Palmiste Midium;Palmiste Midium;Palmiste IFFCO SCO 35; Frais Caprices I ;INT202;"Température de fusion = 34-37 °C
+SMP ? ";Créma Plus;TBI;MPere
+Graisse V;Palmiste Low;Palmiste Low;Palmiste IFFCO SCO 32; Frais Caprices I ;INT203;"Température de fusion = 34-37 °C
+SMP ? ";Créma Plus;TBI;MPere
+Graisse V;Palmiste Midium;Palmiste Midium;Palmiste Comaner; Frais Caprices I ;INT204;"Température de fusion = 34-37 °C
+SMP ? ";Créma Plus;Comaner;MPere
+Graisse V;Palmiste Hight;Palmiste Hight;Palmiste Diver; Frais Caprices I ;INT205;"Température de fusion = 34-37 °C
+SMP ? ";Créma Plus;Divers;MPere
+Graisse V;Coprah Original;Coprah Original;GVH De Coprah Comaner;Commun Fabrication;INT666;"Température de fusion = 30-32 °C
+SMP ? ";Crème et Mozzarel;Comaner;MPere
+Graisse V;Coprah Original;Coprah Original;GVH De Coprah Azelis;Commun Fabrication;INT555;"Température de fusion = 30-32 °C
+SMP ? ";Crème et Mozzarel;Azelis;MPere
+Graisse V;Coprah Substitue;Coprah Substitue;ICMP 32 (Substituant GVH Coprah);Commun Fabrication;INT444;"Température de fusion = 30-32 °C
+SMP ? ";Crème et Mozzarel;TBI;MPere
+Graisse V;Palm Low;Palm Low;Palme IFFCO 38-40; Frais Caprices II ;INT065;"Température de fusion = 38-42 °C
+SMP ? ";Mozzarelle;TBI;MPere
+Graisse V;Palm Low;Palm Low;Palme Comaner 38-40; Frais Caprices II ;INT066;"Température de fusion = 38-42 °C
+SMP ? ";Mozzarelle;Comaner;MPere
+Graisse V;Palm Hight;Palm Hight;Palme Baltimar 40-42; Frais Caprices II ;INT067;"Température de fusion = 38-42 °C
+SMP ? ";Mozzarelle;Baltimar;MPere
+Graisse V;Huile de Soja;Huile de Soja;Huile végétale de Soja Lesieur;Commun Fabrication;INT333; Humidité d'huile < 0,01%;Sauces et Mozzarelle;Lesieur;MPere
+Graisse V;Huile de Soja;Huile de Soja;Huile Végétale de Soja Lio;Commun Fabrication;INT222; Humidité d'huile < 0,01%;Sauces et Mozzarelle;Huilerie de Souss;MPere
+Graisse V;Huile d'olive;Huile d'olive;Huile d'olive ; Frais Caprices I ;ADF200;Goût caractéristique de l'huile d'olive;Sauce Pizza;Divers;MPere
+Graisse A;Beurre non salé;Beurre non salé;Beurre Animale Importé ; Frais Caprices I ;INT206;"Matière grasse = 82% 
+EST                       =  84% ";Crèmes ;Comaner / Extra lait & Divers;MPere
+Graisse A;Beurre non salé;Beurre non salé;Beurre Animale Local ; Frais Caprices I ;INT207;"Matière grasse  = 82% à confirmer 
+EST                       = 84% à confirmer   ";Crémes ;FC2;MPere
+Graisse A;Crème fraiche cru;Crème fraiche cru;Créme Fraiche ; Frais Caprices I ;INT208;"Matière grasse  = 28 à 30 % à confirmer 
+EST                       = 40 à 45 % à confirmer   ";Crème;FC2;MPere
+Amidons;Texturant à chaud;Texturant à chaud;Thermtex ; Frais Caprices I ;INT209;"Agent texturant à chaud 
+T°C d'activation : A définir 
+T°C limite            : ";Créma Delice et Cosa mia;TBI;MPere
+Amidons;Texturant à chaud;Texturant à chaud;Purity HPC; Frais Caprices I ;INT210;"Agent texturant à chaud 
+T°C d'activation : A définir 
+T°C limite            : ";Crème+ Patisserie et Sauce à chaude;TBI;MPere
+Amidons;Texturant à froid;Texturant à froid;Cold Sewll ; Frais Caprices I ;INT211;"Agent texturant à froid
+T°C d'activation : A définir  
+T°C limite            : ";Sauces à Froid;Comaner ;MPere
+Amidons;Texturant à froid;Texturant à froid;Ultratex 2131 ; Frais Caprices I ;INT212;"Agent texturant à froid
+T°C d'activation : A définir  
+T°C limite            : ";Sauces à Froid;TBI;MPere
+Amidons;Texturant à chaud;Texturant à chaud;Amidon Low Melt ; Frais Caprices II ;INT068;"Agent texturant à chaud 
+T°C d'activation : A définir 
+T°C limite            : ";Mozzarelle;Comaner ;MPere
+Amidons;Texturant à chaud;Texturant à chaud;Amidon High Melt ; Frais Caprices II ;INT069;"Agent texturant à chaud 
+T°C d'activation : A définir 
+T°C limite            : ";Mozzarelle;Comaner ;MPere
+Amidons;Texturant à chaud;Texturant à chaud;Amidon Melty ; Frais Caprices II ;INT070;"Agent texturant à chaud 
+T°C d'activation : A définir 
+T°C limite            : ";Mozzarelle;Azelis ;MPere
+Amidons;Gélifiant à chaud;Gélifiant à chaud;EMP ; Frais Caprices II ;INT071;"Agent Gélifiant 
+T° d'activiation : A définir 
+Limites d'usage : A définir ";Mozzarelle;Belvim ;MPere
+Amidons;Gélifiant à chaud;Gélifiant à chaud;C300; Frais Caprices II ;INT072;"Agent Gélifiant 
+T° d'activiation : A définir 
+Limites d'usage : A définir ";Mozzarelle;Belvim ;MPere
+Amidons;Antiaglomerant;Antiaglomerant;Amidon Natif ; Frais Caprices II ;ADF050;"Faible antiaglomerant
+Limites d'usage : A définir ";Mozzarelle;Azelis;MPere
+Amidons;Texturant à chaud;Texturant à chaud;Textaid A ; Frais Caprices I ;ADF201;"Agent texturant 
+T°C d'activation : A définir  
+T°C limite            : ";Sauce Pizza;TBI;MPere
+Amidons;Texturant à froid retardé;Texturant à froid retardé;Eliane Gel 100; Frais Caprices I ;ADF202;"Agent texturant à froid retardé 
+T°C d'activation : A définir  
+T°C limite            : ";Créma Ice;Belvim ;MPere
+Liants ;Emulsifiant;Emulsifiant;Lamemul ; Frais Caprices I ;INT213;"Emulsifiant
+Limites d'usage : A définir ";Impérial Mix;TBI;MPere
+Liants ;Emulsifiant;Emulsifiant;Propylene Glycol ; Frais Caprices I ;INT214;"Emulsifiant
+Limites d'usage : A définir ";Impérial Mix;AVM CHIM;MPere
+Liants ;Emulsifiant;Emulsifiant;Lecithine de Soja MARJAC; Frais Caprices I ;INT215;"Emulsifiant
+Limites d'usage : A définir ";Crème;Marjac / Comaner ;MPere
+Liants ;Gélifiant;Gélifiant;Pectine  64.020; Frais Caprices I ;INT216;"Gélifiant
+Limites d'usage : A définir";Patisserie;TBI;MPere
+Liants ;;Gélifiant;Unipectine OG 305; Frais Caprices I ;INT217;"Gélifiant
+Limites d'usage : A définir";Patisserie;TBI;MPere
+Liants ;Emulsiant & Texturant;Emulsiant & Texturant;Lygomme FM 6700 ; Frais Caprices I ;ADJ200;"Emulsifiant et texturant
+Limites d'usage : A définir ";Crème;TBI;MPere
+Liants ;Emulsiant & Texturant;Emulsiant & Texturant;Themtex (A vérifier l'existence et la désignation de cet article) ; Frais Caprices I ;ADJ201;"Texturant 
+Limites d'usage : A définir ";Crème;TBI;MPere
+Liants ;Emulsiant & Texturant;Emulsiant & Texturant;Lygomme ACL 900; Frais Caprices I ;ADJ202;"Emulsifiant et texturant
+Limites d'usage : A définir ";Crème;TBI;MPere
+Liants ;Emulsifiant;Emulsifiant;N Creamer 2230 ; Frais Caprices I ;ADF203;"Emulsifiant
+Limites d'usage : A définir ";Sauce à froid + Crème;TBI;MPere
+Liants ;;Emulsifiant;Emulsiform CM 1120 ; Frais Caprices I ;ADF204;"Emulsifiant
+Limites d'usage : A définir ";Sauce à froid + Crème;Comaner ;MPere
+Liants ;Texturant & gélifiant;Texturant & gélifiant;Lygomme MM 391;Commun Fabrication;ADF999;"Texturant 
+Limites d'usage : A définir ";OLP + Sauce;TBI;MPere
+Liants ;Texturant;Texturant;Satiaxane CX911; Frais Caprices I ;ADF205;"Texturant 
+Limites d'usage : A définir ";Sauce;TBI;MPere
+Liants ;Texturant;Texturant;Satialgine FGP 250; Frais Caprices I ;ADF206;"Texturant 
+Limites d'usage : A définir ";Crème;TBI;MPere
+Liants ;Gélifiant;Gélifiant;Satiagel ACH 253; Frais Caprices I ;ADF207;"Gélifiant
+Limites d'usage : A définir ";Crème;TBI;MPere
+Sucres ;Sucre raffiné;Sucre raffiné;Sucre Saccharose; Frais Caprices I ;INT218;"Couleur : Blanche
+Corps étrangers : Abscence   "; Patisserie + Crème et Sauce ;Perla Food ;MPere
+Sucres ;Sucre hydrolisé;Sucre hydrolisé;Sucre Glucose ; Frais Caprices I ;INT219;"Brix=82-85  
+pH= 4-6";Patisserie + Crème;Azelis ;MPere
+Sucres ;Sucre inverti;Sucre inverti;Sucre Equimolaire (Glucose & Fructose) ; Frais Caprices I ;INT220;"Brix=78-81  
+pH= 4-6";Patisserie + Sauce;Comaner ;MPere
+Sucres ;Edulcorant;Edulcorant;Dextrose ; Frais Caprices I ;ADJ203;"Edulcorant 
+Corps étrangers : Absence ";Patisserie;Azelis ;MPere
+Polyphosphates ;Absorbant plus ;Absorbant plus ;Sel de fonte PZ7 (JOHA); Frais Caprices II ;ADJ050;"Emulsifiant, Fondant et Absorbant
+Taux de polyphosphate : A définir ";Mozzarelle;Comaner ;MPere
+Polyphosphates ;Standard;Standard;Sel de fonte SP26 ; Frais Caprices II ;ADJ051;"Absorbant standard
+Taux de polyphosphate : A définir 
+";Mozzarelle;Azelis ;MPere
+Polyphosphates ;Fondant plus;Fondant plus;Sel de fonte BT ; Frais Caprices II ;ADJ052;"Absorbant et fondant 
+Taux de polyphosphate : A définir ";Mozzarelle;Fortrade ;MPere
+Polyphosphates ;Fondant plus;Fondant plus;Sel de Fonte PZ35 ; Frais Caprices II ;ADJ053;"Absorbant et fondant 
+Taux de polyphosphate : A définir ";Mozzarelle;Fortrade ;MPere
+Compléxe de composés ;Agent tampon, émulsifiant, épaississant et Blanchissant  ;Agent tampon, émulsifiant, épaississant et Blanchissant  ;Pyrophosphate de soude ;l'unité de poudre ;ADF 400;"Emulsifiant, épaississant, levant, Blanchissant
+Pureté : A définir   ";Améliorants & compléments de patisserie ;A définir ;MPere
+Compléxe de composés ;Agent levant, Blanchissant et désodorisant   ;Agent levant, Blanchissant et désodorisant   ;Bicarbonate de soude ;l'unité de poudre ;ADF 401;"Levant 
+Pureté : A définir ";Améliorants & compléments de patisserie ;A définir ;MPere
+Compléxe de composés ;Antiacide, Colorant acide, Epaississant, Abrasif doux ;Antiacide, Colorant acide, Epaississant, Abrasif doux ;Carbonate de calcium ;l'unité de poudre ;ADF 402;"Epaississant
+Pureté : A céfinir ";Améliorants & compléments de patisserie ;A définir ;MPere
+Matières Végétales & Condiments ;Végéteaux en conserve ;Végéteaux en conserve ;Concentré de Tomate 28-30 °B en Boite de 850g; Frais Caprices I ;INT221;"Brix=28-30 
+Couleur et arome : Typiques ";Sauces: ketchup, Barbecue et Pizza;Divers ;MPere
+Matières Végétales & Condiments ;Végéteaux en conserve ;Végéteaux en conserve ;Concentré de Tomate 28-30 °B Importé Fût 200 kg; Frais Caprices I ;INT222;"Brix=28-30 
+Couleur et arome : Typiques ";Sauces: ketchup, Barbecue et Pizza;Tianjin Kunyu ;MPere
+Matières Végétales & Condiments ;Végéteaux en conserve ;Végéteaux en conserve ;Concentré de Tomate 36-38 °B Importé Fût 200 kg; Frais Caprices I ;INT223;"Brix=36-38
+Couleur et arome : Typiques vers rouge brique ";Sauces: ketchup, Barbecue et Pizza;Tianjin Kunyu ;MPere
+Matières Végétales & Condiments ;Condiments en conserve ;Condiments en conserve ;Cornichon en boite de  conserve ; Frais Caprices I ;ADF208;"Spécifique pour la sauce Biggy-Burger 
+Acidité et gout : A définir ";Sauce Biggy-Burger;Divers ;MPere
+Matières Végétales & Condiments ;Condiments en conserve ;Condiments en conserve ;Capre en boite de conserve ; Frais Caprices I ;ADF209;"Spécifique pour la sauce Andalouse
+Acidité et gout : A définir ";Sauce Andalouse;Divers ;MPere
+Matières Végétales & Condiments ;Condiments en conserve ;Condiments en conserve ;"Jus de cornichon  
+(Résidue du  conserve de Conrnichon) "; Frais Caprices I ;ADF210;"Spécifique pour la sauce Biggy-Burger 
+Acidité et gout : A définir ";Sauce Biggy-Burger;Divers ;MPere
+Matières Végétales & Condiments ;Condiments en conserve ;Condiments en conserve ;"Jus de Capre  
+(Résidue du  conserve de Capre) "; Frais Caprices I ;ADF211;"Spécifique pour la sauce Andalouse
+Acidité et gout : A définir ";Sauce Andalouse;Divers ;MPere
+Epices ;Poudre non traité ;Poudre non traité ;Piment fort moulu ; Frais Caprices I ;INT224;"Non Traité Thermiquement
+Couleur et gout : Spécifique au piment fort ";Sauce Piquante;Laarabiya Food;MPere
+Epices ;Poudre traité ;Poudre traité ;Piment de cayenne moulu ; Frais Caprices I ;INT225;"Traité Thermiquement
+Couleur et gout : Spécifique au piment de cayenne ";Sauce Piquante + Algérienne;Lacasem;MPere
+Epices ;Poudre traité ;Poudre traité ;Poudre de Moutarde ; Frais Caprices I ;INT226;"Traité Thermiquement
+Couleur et gout : Spécifique de la moutarde ";Sauce Moutarde;Dunn ;MPere
+Epices ;Assaisonnement liquide ;Assaisonnement liquide ;Vinaigre de table à 22°; Frais Caprices I ;INT227;"Acidité= 22° (+/-) 0,2    
+Couleur : A définir ";Sauces;Agro Maggasino ;MPere
+Epices ;Assaisonnement liquide ;Assaisonnement liquide ;Vinaigre de table à 11°; Frais Caprices I ;INT228;"Acidité= 11° (+/-) 0,2    
+Couleur : A définir ";Sauces;Oubaha ;MPere
+Epices ;Assaisonnement liquide ;Assaisonnement liquide ;Vinaire de ving Blanc ; Frais Caprices I ;INT229;Acidité= 11° (+/-) 0,2    ;Sauce Moutard;Agro Maggasino ;MPere
+Epices ;Blend en poudre ;Blend en poudre ;Assaisonement Sauce Algériénne ; Frais Caprices I ;INT230;"Blend spécifique d'épices homogènes 
+Corps étrangers : Abscence ";Sauce Algérienne;Colin;MPere
+Epices ;Blend en poudre ;Blend en poudre ;Assaisonement Sauce Andalouse ; Frais Caprices I ;INT231;"Blend spécifique d'épices homogènes 
+Corps étrangers : Abscence ";Sauce Andalouse;Colin;MPere
+Epices ;Blend en poudre ;Blend en poudre ;Assaisonement Sauce Barbecue ; Frais Caprices I ;INT232;"Blend spécifique d'épices homogènes 
+Corps étrangers : Abscence ";Sauce Barbecue;Colin;MPere
+Epices ;Blend en poudre ;Blend en poudre ;Assaisonement Sauce Burger ; Frais Caprices I ;INT233;"Blend spécifique d'épices homogènes 
+Corps étrangers : Abscence ";Sauce Biggy-Burger;Colin;MPere
+Epices ;Blend en poudre ;Blend en poudre ;Assaisonement Sauce Fromage (Chezy) ; Frais Caprices I ;INT234;"Blend spécifique d'épices homogènes 
+Corps étrangers : Abscence ";Sauce Cheezy;Colin;MPere
+Epices ;Blend en poudre ;Blend en poudre ;Assaisonement Sauce Piquante ; Frais Caprices I ;INT235;"Blend spécifique d'épices homogènes 
+Corps étrangers : Abscence ";Sauce Piquante Colin;Colin;MPere
+Epices ;Blend en poudre ;Blend en poudre ;Assaisonement Sauce Pita ; Frais Caprices I ;INT236;"Blend spécifique d'épices homogènes 
+Corps étrangers : Abscence ";Sauce Pita;Colin;MPere
+Epices ;Blend en poudre ;Blend en poudre ;Assaisonement Sauce Samourai ; Frais Caprices I ;INT237;"Blend spécifique d'épices homogènes 
+Corps étrangers : Abscence ";Sauce Samourai;Colin;MPere
+Epices ;Sauce pâteuse;Sauce pâteuse;Assaisonement Sauce SAUCE MOUTARDE ; Frais Caprices I ;INT238;"Sauce à froid spécifique de la moutarde 
+Corps étrangers : Abscence ";Sauce à froid ;DIVERS;MPere
+Epices ;Poudre traité ;Poudre traité ;Poudre d'ognions ; Frais Caprices I ;ADF212;"Spécifique pour la préparation de Sauce Pizza
+Corps étrangers : Abscence ";Sauce pizza;Lacasem;MPere
+Epices ;Poudre traité ;Poudre traité ;Poudre d'ail; Frais Caprices I ;ADF213;"Spécifique pour la préparation de Sauce Pizza
+Corps étrangers : Abscence ";Sauce pizza;Lacasem;MPere
+Epices ;Feuilles séchées en morceaux ;Feuilles séchées en morceaux ;Thym ; Frais Caprices I ;ADF214;"Spécifique pour la préparation de Sauce Pizza
+Corps étrangers : Abscence ";Sauce pizza;Lacasem;MPere
+Epices ;Feuilles séchées en morceaux ;Feuilles séchées en morceaux ;Basilic ; Frais Caprices I ;ADF215;"Spécifique pour la préparation de Sauce Pizza
+Corps étrangers : Abscence ";Sauce pizza;Lacasem;MPere
+Epices ;Feuilles séchées en morceaux ;Feuilles séchées en morceaux ;Origan Séché ; Frais Caprices I ;ADF216;"Spécifique pour la préparation de Sauce Pizza
+Corps étrangers : Abscence ";Sauce pizza;Lacasem à Confirmer ;MPere
+Epices ;Poudre traité ;Poudre traité ;Poivre Blanc ; Frais Caprices I ;ADF217;"Spécifique pour la Sauce Cosa Mia
+Corps étrangers : Absence ";Sauce Cosa Mia;Lacasem;MPere
+Epices ;Poudre traité ;Poudre traité ;Noix de Muscade (GOUZA) ; Frais Caprices I ;ADF218;"Spécifique pour la Sauce Cosa Mia
+Corps étrangers : Absence ";Sauce Cosa Mia;Lacasem;MPere
+Epices ;Poudre traité ;Poudre traité ;Cumin Moulu Lacasem ; Frais Caprices I ;ADF219;"Spécifique pour la Sauce Piquante
+Corps étrangers : Absence ";Sauce Piquante;Lacasem;MPere
+Epices ;Poudre non traité ;Poudre non traité ;SEL;Commun Fabrication;ADF888;"Sel de cuisine pour : La Mozzarella et la crème
+Corps étrangers : Absence ";Mozzarelle+Crème;Divers ;MPere
+Correcteurs ;Anti-aglomérant ;Anti-aglomérant ;Anticaking ; Frais Caprices II ;ADF051;"Antiaglomerant  pour la Mozzarella Rapé
+Corps étrangers : Absence  ";Mozzarelle Rapé: Antiaglomerant;Comaner ;MPere
+Correcteurs ;Anti-aglomérant ;Anti-aglomérant ;Vitacel L600 ; Frais Caprices II ;ADF052;"Antiaglomerant fort  pour la Mozzarella Rapé
+Corps étrangers : Absence  ";Mozzarelle Rapé: Antiaglomerant;Fortrade ;MPere
+Correcteurs ;Ferments;Ferments;Ferment ; Frais Caprices II ;ADF053;"Type : Ferment lactique pour le caillage du lait
+Température d'activation : ";Caillage du lait;AFE Distribution ;MPere
+Correcteurs ;Minéreaux ;Minéreaux ;Calcium ; Frais Caprices II ;ADF054;"Classification       : Oligoélement 
+Fonction                   : Liaison et consistance ";Caillage du lait;Cadilac ;MPere
+Correcteurs ;Enzymes;Enzymes;Presure  ; Frais Caprices II ;ADF055;"Classification                             : Enzyme 
+Température d'activation : ";Caillage du lait;AFE Distribution ;MPere
+Correcteurs ;Correcteurs d'acidité ;Correcteurs d'acidité ;Citrate Trisodique ;Commun Fabrication;ADF777;"Humidité relative : 11 - 13% 
+Corps étrangers     : Absence  ";Patisserie+Mozzarelle;Disproquimia ;MPere
+Correcteurs ;Correcteurs d'acidité ;Correcteurs d'acidité ;Acide Citrique ;Commun Fabrication;ADF666;"Humidité relative : A définitr  
+Corps étrangers     : Absence  ";Patisserie- Mozzarelle - Crème - OLP;Comaner;MPere
+Correcteurs ;Correcteurs d'acidité ;Correcteurs d'acidité ;Acide Lactique ; Frais Caprices I ;ADF220;"Humidité relative : A définitr  
+Corps étrangers     : Absence  ";Sauces à froid;Disproquimia ;MPere
+Correcteurs ;Anti-oxydants;Anti-oxydants;EDTA Solvitar ; Frais Caprices I ;ADF221;"Humidité relative : A définitr  
+Puretée                        : A définir ";Sauces à froid;Molina ;MPere
+Correcteurs ;Anti-oxydants;Anti-oxydants;Vetaphenol ; Frais Caprices I ;ADF222;"Humidité relative : A définitr  
+Puretée                         : A définir ";Sauces à froid;Marjac ;MPere
+Correcteurs ;Conservateurs ;Conservateurs ;Sorbate de potassium ;Commun Fabrication;ADF555;"Humidité relative           : A définitr  
+Absorption dans l'eau  : A définir ";Tous produits;Azelis;MPere
+Correcteurs ;Conservateurs ;Conservateurs ;Benzoate de Sodium Poudre; Frais Caprices I ;ADF223;"Humidité relative : A définitr  
+Puretée                        : A définir ";Sauce à Froid;Disproquimia ;MPere
+Correcteurs ;Conservateurs ;Conservateurs ;Benzoate de Sodium Granulé; Frais Caprices I ;ADF224;"Humidité relative : A définitr  
+Puretée                        : A définir ";Sauce à Froid;AVM CHIM;MPere
+Correcteurs ;Conservateurs ;Conservateurs ;Natamax ; Frais Caprices I ;ADF225;"Humidité relative : A définitr  
+Puretée                        : A définir ";Mozzarelle - Sauce à Chaud;TBI;MPere
+Correcteurs ;Humectant;Humectant;Glycerine ; Frais Caprices I ;ADF226;"Humidité relative : A définitr  
+Puretée                        : A définir ";Patisserie;Azelis;MPere
+Colorants Liquides Artificiels ;Colorants  Plantes Aromatiques Non commercialisables ;Colorants  Plantes Aromatiques Non commercialisables ;Colorant Caramel Karasirup ; Frais Caprices I ;ACA200;"Couleur :  A définir 
+Texture : A définir ";Patisserie;Arome&Co;MPere
+Colorants Liquides Artificiels ;Colorants  Plantes Aromatiques Non commercialisables ;Colorants  Plantes Aromatiques Non commercialisables ;Colorant Caramel E150D; Frais Caprices I ;ACA201;"Couleur :  A définir 
+Texture : A définir ";Patisserie;Metarom;MPere
+Colorants poudres Artificiels ;Colorants  Plantes Aromatiques Non commercialisables ;Colorants  Plantes Aromatiques Non commercialisables ;Colorant Jaune Soleil ; Frais Caprices I ;ACA202;"Couleur :  A définir 
+Texture : A définir ";Crème;Metarom + Divers;MPere
+Colorants poudres Artificiels ;Colorants  Plantes Aromatiques Non commercialisables ;Colorants  Plantes Aromatiques Non commercialisables ;Colorant Jaune Tratrazine ; Frais Caprices I ;ACA203;"Couleur :  A définir 
+Texture : A définir ";Crème;Metarom + Divers;MPere
+Colorants poudres Artificiels ;Colorants  Plantes Aromatiques Non commercialisables ;Colorants  Plantes Aromatiques Non commercialisables ;Colorant Annatto ; Frais Caprices II ;ACA050;"Couleur :  A définir 
+Texture : A définir ";Edam;Metarom + Divers;MPere
+Colorants poudres Artificiels ;Colorants  Plantes Aromatiques Non commercialisables ;Colorants  Plantes Aromatiques Non commercialisables ;Betacarotene 1% Disproquimia ;Commun Fabrication;ACA999;"Couleur :  A définir 
+Texture : A définir ";Mozzarelle+Crème;Disproquimia ;MPere
+Colorants poudres Artificiels ;Colorants  Minérales  Non commercialisables ;Colorants  Minérales  Non commercialisables ;Dioxyde de Titane ;Commun Fabrication;ACA888;"Couleur :  A définir 
+Texture : A définir ";Mozzarelle - Patisserie;Metarom + Divers;MPere
+Colorants poudres Artificiels ;Colorant de synthèse non commercialisable;Colorant de synthèse non commercialisable;Colorant Rouge Ponceau E124 ; Frais Caprices I ;ACA204;"Couleur :  Rouge 
+Texture : Poudre";Sauce piquante & Pizza ;A définir ;MPere
+Aromes poudre Artificiels ;Aromes Fromage Non commercialisables;Aromes Fromage Non commercialisables;Arome Fromage type EDAM AROMSA; Frais Caprices II ;ACA051;"Couleur :  A définir 
+Texture : A définir ";Edam;Comaner;MPere
+Aromes pateux Naturels ;Aromes Fromage Non commercialisables;Aromes Fromage Non commercialisables;EMC Cheddar ; Frais Caprices II ;ACA052;"Couleur :  A définir 
+Texture : A définir ";Edam;Comaner;MPere
+Aromes liquides Artificiels  ;Aromes Plantes Aromatiques Non commercialisables ;Aromes Plantes Aromatiques Non commercialisables ;Arome créme ; Frais Caprices I ;ACA205;"Couleur :  A définir 
+Texture : A définir ";Crème;Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Plantes Aromatiques Non commercialisables ;Aromes Plantes Aromatiques Non commercialisables ;Arome vanille P0080 ; Frais Caprices I ;ACA206;"Couleur :  A définir 
+Texture : A définir ";Crème;Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Plantes Aromatiques Non commercialisables ;Aromes Plantes Aromatiques Non commercialisables ;Arome caramel E150B ; Frais Caprices I ;ACA207;"Couleur :  A définir 
+Texture : A définir ";Patisserie;Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Fruits Secs Commercialisables ;Aromes Fruits Secs Commercialisables ;Arome patisserie Amande  ; Frais Caprices I ;ACA208;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Fruits Secs Commercialisables ;Aromes Fruits Secs Commercialisables ;Arome patisserie pistache ; Frais Caprices I ;ACA209;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Fruits Secs Commercialisables ;Aromes Fruits Secs Commercialisables ;Arome patisserie Nougat ; Frais Caprices I ;ACA210;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Fruits Frais Commercialisables ;Aromes Fruits Frais Commercialisables ;Arome patisserie Ananas; Frais Caprices I ;ACA211;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Fruits Frais Commercialisables ;Aromes Fruits Frais Commercialisables ;Arome patisserie Banane ; Frais Caprices I ;ACA212;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Fruits Frais Commercialisables ;Aromes Fruits Frais Commercialisables ;Arome patisserie Citron ; Frais Caprices I ;ACA213;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Fruits Frais Commercialisables ;Aromes Fruits Frais Commercialisables ;Arome patisserie Citron vert ; Frais Caprices I ;ACA214;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Fruits Frais Commercialisables ;Aromes Fruits Frais Commercialisables ;Arome patisserie Fraise ; Frais Caprices I ;ACA215;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Fruits Frais Commercialisables ;Aromes Fruits Frais Commercialisables ;Arome patisserie Framboise ; Frais Caprices I ;ACA216;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Fruits Frais Commercialisables ;Aromes Fruits Frais Commercialisables ;Arome patisserie Fruit passion ; Frais Caprices I ;ACA217;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Fruits Frais Commercialisables ;Aromes Fruits Frais Commercialisables ;Arome patisserie fruit rouge ; Frais Caprices I ;ACA218;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Plantes Aromatiques Commercialisables ;Aromes Plantes Aromatiques Commercialisables ;Arome patisserie Café ; Frais Caprices I ;ACA219;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Plantes Aromatiques Commercialisables ;Aromes Plantes Aromatiques Commercialisables ;Arome patisserie Cappussino ; Frais Caprices I ;ACA220;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Plantes Aromatiques Commercialisables ;Aromes Plantes Aromatiques Commercialisables ;Arome patisserie Caramel ; Frais Caprices I ;ACA221;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Plantes Aromatiques Commercialisables ;Aromes Plantes Aromatiques Commercialisables ;Arome patisserie Menthe ; Frais Caprices I ;ACA222;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Plantes Aromatiques Commercialisables ;Aromes Plantes Aromatiques Commercialisables ;Arome patisserie Vanille ; Frais Caprices I ;ACA223;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Goûts Divers Commercialisables ;Aromes Goûts Divers Commercialisables ;Arome patisserie Beurre ; Frais Caprices I ;ACA224;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Goûts Divers Commercialisables ;Aromes Goûts Divers Commercialisables ;Arome patisserie Bubbl Gum ; Frais Caprices I ;ACA225;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes liquides Artificiels  ;Aromes Goûts Divers Commercialisables ;Aromes Goûts Divers Commercialisables ;Arome patisserie Yaourt poudre ; Frais Caprices I ;ACA226;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes Poudre Artificiels  ;Aromes Plantes Aromatiques Commercialisables ;Aromes Plantes Aromatiques Commercialisables ;Arome patisserie Vanille poudre ; Frais Caprices I ;ACA227;"Couleur :  A définir 
+Arome  : A définir ";Reconditionnement de 'Aroma Plus';Metarom;MPere
+Aromes Poudre Artificiels  ;Aromes Plantes Aromatiques Non commercialisables ;Aromes Plantes Aromatiques Non commercialisables ;Poudre de Cacao ; Frais Caprices I ;ACA228;"Couleur :  A définir 
+Arome  : A définir ";Patisserie;Metarom;MPere
+Aromes Poudre Artificiels  ;Aromes Plantes Aromatiques Non commercialisables ;Aromes Plantes Aromatiques Non commercialisables ;Arome vanille poudre ; Frais Caprices I ;ACA229;"Couleur :  A définir 
+Arome  : A définir ";Crème;Metarom;MPere
+Aromes Poudre Artificiels  ;Aromes Plantes Aromatiques Non commercialisables ;Aromes Plantes Aromatiques Non commercialisables ;Arome moutarde Aromsa ; Frais Caprices I ;ACA230;"Couleur :  A définir 
+Arome  : A définir ";Moutarde;Comaner;MPere
+Aromes Poudre Artificiels  ;Aromes Plantes Aromatiques Non commercialisables ;Aromes Plantes Aromatiques Non commercialisables ;Vaniline ;l'unité de poudre ;ACA 400;"Couleur :  A définir 
+Arome  : Vanille caractéristique ";Améliorants & compléments de patisserie ;A définir ;MPere

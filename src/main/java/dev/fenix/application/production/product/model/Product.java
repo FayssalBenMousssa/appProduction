@@ -1,10 +1,11 @@
 package dev.fenix.application.production.product.model;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -76,26 +77,23 @@ public class Product {
 
 
  // @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-  @OneToMany(fetch = FetchType.EAGER, cascade ={CascadeType.ALL})//javax.persistent.CascadeType
+  @OneToMany(fetch = FetchType.EAGER, cascade ={CascadeType.ALL} , orphanRemoval = true)//javax.persistent.CascadeType
   @JoinColumn(name = "product_id") //parent's foreign key
   private List<MetaDataValue> metaDataValues;
 
-  @Column(name = "create_date")
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-  private Date createDate;
 
-  @Column(name = "modify_date")
-  private Date modifyDate;
 
-  @PrePersist
-  protected void onCreate() {
-    createDate = new Date();
-  }
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_date" ,  updatable = false)
+    private Date createDate;
 
-  @PreUpdate
-  protected void onUpdate() {
-    modifyDate = new Date();
-  }
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "modify_date")
+    private Date modifyDate;
+
+
 
   public JSONObject toJson() {
     JSONObject productJSON = new JSONObject();

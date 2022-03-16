@@ -35,6 +35,7 @@ public class Depot {
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "create_date" ,  updatable = false)
   private Date createDate;
+
   @UpdateTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "modify_date")
