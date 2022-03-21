@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SiUnitRepository extends JpaRepository<SiUnit, Long> {
     Iterable<SiUnit> findByActiveTrue();
+
+    SiUnit findOneById(long l);
 }

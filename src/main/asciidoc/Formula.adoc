@@ -1,0 +1,49 @@
+= Prodction
+
+== Formula
+Version 1.0, 19.03.2021
+
+
+
+
+==== http Request
+.request
+include::{snippets}/httpRequestTest/http-request.adoc[]
+
+.response
+include::{snippets}/httpRequestTest/http-response.adoc[]
+
+====  index index Formula With Params
+IMPORTANT:  Params
+
+* Param(defaultValue = "0") Integer page.
+* Param(defaultValue = "200") Integer size.
+* Param(defaultValue = "id,desc") String[] sort.
+* Param(required = false) String[] query.
+
+.request
+include::{snippets}/indexFormulaWithParams/http-request.adoc[]
+
+.response
+include::{snippets}/indexFormulaWithParams/http-response.adoc[]
+
+==== save
+.request
+include::{snippets}/saveFormula/http-request.adoc[]
+
+.response
+include::{snippets}/saveFormula/http-response.adoc[]
+
+==== update
+.request
+include::{snippets}/updateFormula/http-request.adoc[]
+
+.response
+include::{snippets}/updateFormula/http-response.adoc[]
+
+==== delete
+.request
+include::{snippets}/deleteFormula/http-request.adoc[]
+
+.response
+include::{snippets}/deleteFormula/http-response.adoc[]

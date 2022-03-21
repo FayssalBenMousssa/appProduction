@@ -1,8 +1,7 @@
-package dev.fenix.application.Note;
+package dev.fenix.application.core;
 
 
 import dev.fenix.application.core.model.Note;
-import dev.fenix.application.core.model.Tag;
 import dev.fenix.application.core.repository.NoteRepository;
 import dev.fenix.application.core.repository.TagRepository;
 import org.junit.Test;
@@ -53,16 +52,16 @@ public class NoteRepositoryTest {
     @Rollback(false)
     public void testSaveNote() throws Exception {
         Note note = new Note();
-        note.setNote("c'est une note de  test add note");
+        note.setContent("c'est une note de  test add note");
         note.setActive(true);
-        Color color = Color.YELLOW;
-        note.setColor(color);
+
+        note.setColor("color");
         Note note_saved =  entityManager.persist(note);
 
         noteRepository.save(note);
-        log.info("note_saved :" , note_saved.getNote());
+        log.info("note_saved :" , note_saved.getContent());
 
-    assertThat(note_saved.getNote()).isEqualTo(note.getNote());
+    assertThat(note_saved.getContent()).isEqualTo(note.getContent());
     }
 
 

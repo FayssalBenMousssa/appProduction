@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -97,7 +98,16 @@ public class Product {
 
   public JSONObject toJson() {
     JSONObject productJSON = new JSONObject();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
     try {
+      productJSON.put("id", this.getId());
+      if (this.getModifyDate() != null) {
+        productJSON.put("modifyDate",   formatter.format(this.getModifyDate()))  ;
+      }
+      if (this.getCreateDate() != null) {
+        productJSON.put("createDate", formatter.format(this.getCreateDate()));
+      }
       productJSON.put("id", this.getId());
       productJSON.put("name", this.getName());
       productJSON.put("code", this.getCode().toUpperCase(Locale.ROOT));
@@ -107,8 +117,7 @@ public class Product {
       productJSON.put("productionUnit", this.getProductionUnit().toJson());
       productJSON.put("productType", this.getProductType().toJson());
       productJSON.put("siUnit", this.getSiUnit().toJson());
-      productJSON.put("createDate", this.getCreateDate());
-      productJSON.put("modifyDate", this.getModifyDate());
+
 
       if (this.getMetaDataValues() != null) {
         JSONArray metaDataList = new JSONArray();

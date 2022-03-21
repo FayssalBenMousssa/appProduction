@@ -39,8 +39,8 @@ public class Route {
   @Column(name = "icon")
   private String icon;
 
-
   private String cssClass;
+
   @Column(name = "orderNum")
   private int orderNum;
 
@@ -90,13 +90,7 @@ public class Route {
             for (Role parentRole : this.getRoles()) {
               {
                 if (parentRole.getId() == role.getId()) {
-
-
-                 System.out.println(subRoute.getSubRoutes().size());
-
-
                   subRoutes.put(subRoute._toJson());
-
                 }
               }
             }

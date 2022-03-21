@@ -10,13 +10,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.persistence.*;
-import java.awt.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "core__notes")
+@Table(name = "core__note")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Note {
@@ -25,14 +25,13 @@ public class Note {
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @Column(name = "note", nullable = false)
-  private String note;
+  @Column(name = "content", nullable = false)
+  private String content;
 
   @Column(name = "color", nullable = true)
-  private Color color;
+  private String color;
 
   boolean active;
-
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
@@ -45,19 +44,25 @@ public class Note {
   private Date modifyDate;
 
   public JSONObject toJson() {
-    JSONObject formulaJSON = new JSONObject();
+    JSONObject noteJSON = new JSONObject();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
     try {
-      formulaJSON.put("id", this.getId());
-      formulaJSON.put("createDate", this.getCreateDate());
-      formulaJSON.put("modifyDate", this.getModifyDate());
+      noteJSON.put("id", this.getId());
+      noteJSON.put("content", this.getContent());
+      noteJSON.put("color", this.getColor());
+      noteJSON.put("active", this.isActive());
 
-      formulaJSON.put("active", this.isActive());
-
+      if (this.getModifyDate() != null) {
+        noteJSON.put("modifyDate", formatter.format(this.getModifyDate()));
+      }
+      if (this.getCreateDate() != null) {
+        noteJSON.put("createDate", formatter.format(this.getCreateDate()));
+      }
 
     } catch (JSONException e) {
       e.printStackTrace();
     }
-    return formulaJSON;
+    return noteJSON;
   }
-
 }

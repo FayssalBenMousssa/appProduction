@@ -1,5 +1,6 @@
 package dev.fenix.application.production.product.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,10 +32,12 @@ public class Classification {
 
   @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
   @JoinColumn(name = "parent_id", referencedColumnName = "id")
+  @JsonIgnore
   private Classification parent;
 
   /* fetch = FetchType.LAZY is default in one:many */
   @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "parent")
+  @JsonIgnore
   private Set<Classification> children;
 
   @Column(columnDefinition = "int default 1")
