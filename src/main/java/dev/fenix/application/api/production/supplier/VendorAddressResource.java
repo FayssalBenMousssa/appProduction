@@ -42,24 +42,21 @@ public class VendorAddressResource {
       method = RequestMethod.POST,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> save(
-      @Valid @RequestBody Address address, HttpServletRequest request) {
-    log.trace("{methodName} method accessed");
+  public ResponseEntity<?> save(@Valid @RequestBody Address address, HttpServletRequest request) {
+    // log.trace("{methodName} method accessed");
     address.setActive(true);
     Address savedAddress = vendorAddressRepository.save(address);
     return ResponseEntity.ok(savedAddress.toJson().toString());
   }
 
-
-
   @RequestMapping(
-          value = "/update",
-          method = RequestMethod.PUT,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/update",
+      method = RequestMethod.PUT,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> update(@Valid @RequestBody Address address, HttpServletRequest request) {
     try {
-      log.trace("{methodName} method accessed");
+      // log.trace("{methodName} method accessed");
       address.setActive(true);
       Address updatedAddress = vendorAddressRepository.save(address);
       return new ResponseEntity<>(updatedAddress.toJson().toString(), HttpStatus.OK);
@@ -69,24 +66,22 @@ public class VendorAddressResource {
     }
   }
 
-
   @RequestMapping(
-          value = "/delete/{id}",
-          method = RequestMethod.DELETE,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/delete/{id}",
+      method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 
     try {
-      log.trace("{methodName} method accessed");
+      // log.trace("{methodName} method accessed");
       Address address = vendorAddressRepository.getOne(id);
       address.setActive(false);
       Address deletedAddress = vendorAddressRepository.save(address);
 
-      return ResponseEntity.ok("active : " +  deletedAddress.isActive());
+      return ResponseEntity.ok("active : " + deletedAddress.isActive());
     } catch (Exception e) {
       e.printStackTrace();
       return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
     }
   }
-
 }

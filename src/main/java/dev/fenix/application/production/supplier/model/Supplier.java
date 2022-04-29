@@ -1,22 +1,18 @@
 package dev.fenix.application.production.supplier.model;
 
+import dev.fenix.application.business.model.Company;
 import dev.fenix.application.core.model.Address;
 import dev.fenix.application.core.model.Contact;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
 
 @Entity
 @Getter
@@ -24,100 +20,60 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "supl__supplier")
-public class Supplier {
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+@DiscriminatorValue("SUPPLIER")
+public class Supplier extends Company {
 
-  @NotNull(message = "Please enter the code")
-  private String code;
-
-  @NotNull(message = "Please enter the socialReason")
-  private String socialReason;
-
-
-  private String telephone;
-  private String email;
-  /// Common Company Identifier
-  private String ice;
-  private Boolean active;
-
-
-  @ManyToMany(cascade = CascadeType.ALL)
-  @JoinTable(
-      name = "supl__contact",
-      joinColumns = @JoinColumn(name = "supplier_id"),
-      inverseJoinColumns = @JoinColumn(name = "contact_id"))
-  private List<Contact> contacts;
-
-  @ManyToMany(cascade = CascadeType.ALL)
-  @JoinTable(
-      name = "supl__address",
-      joinColumns = @JoinColumn(name = "supplier_id"),
-      inverseJoinColumns = @JoinColumn(name = "address_id"))
-  private List<Address> addresses;
-
-
-  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
+  @ManyToOne(
+      cascade = {CascadeType.DETACH},
+      fetch = FetchType.EAGER)
   ///  @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
   @JoinColumn(name = "classification_id", referencedColumnName = "id")
   private SupplierClassification classification;
 
-  private String note;
-
-  @Column(name = "create_date")
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-  @CreationTimestamp
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date createDate;
-
-  @Column(name = "modify_date")
-  @UpdateTimestamp
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date modifyDate;
-
-
-
-
   public JSONObject toJson() {
-    JSONObject vendorJSON = new JSONObject();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+    JSONObject supplierJSON = new JSONObject();
     try {
-      vendorJSON.put("id", this.getId());
-      vendorJSON.put("code", this.getCode());
-      vendorJSON.put("socialReason", this.getSocialReason());
-      vendorJSON.put("ice", this.getIce());
+      supplierJSON.put("id", this.getId());
+      supplierJSON.put("code", this.getCode());
+      supplierJSON.put("socialReason", this.getSocialReason());
+      supplierJSON.put("ice", this.getIce());
+      supplierJSON.put("active", this.getActive());
       if (this.getContacts() != null) {
         JSONArray contacts = new JSONArray();
         for (Contact contact : this.getContacts()) {
-       if(contact.getActive()) {
-         contacts.put(contact.toJson());
-       }
-
+          if (contact.getActive()) {
+            contacts.put(contact.toJson());
+          }
         }
-        vendorJSON.put("contacts", contacts);
+        supplierJSON.put("contacts", contacts);
       }
-      // vendorJSON.put("address", this.getAddress().toJson());
+      // supplierJSON.put("address", this.getAddress().toJson());
 
       if (this.getAddresses() != null) {
         JSONArray addresses = new JSONArray();
         for (Address address : this.getAddresses()) {
-          if(address.isActive()) {
+          if (address.isActive()) {
             addresses.put(address.toJson());
           }
-
         }
-        vendorJSON.put("addresses", addresses);
+        supplierJSON.put("addresses", addresses);
       }
-      vendorJSON.put("telephone", this.getTelephone());
-      vendorJSON.put("email", this.getEmail());
-      vendorJSON.put("classification", this.getClassification().toJson());
-      vendorJSON.put("note", this.getNote());
-      vendorJSON.put("createDate", this.getCreateDate());
-      vendorJSON.put("modifyDate", this.getModifyDate());
-      // vendorJSON.put("mainContact", this.getMainContact().toJson());
+      supplierJSON.put("telephone", this.getTelephone());
+      supplierJSON.put("email", this.getEmail());
+      supplierJSON.put("classification", this.getClassification().toJson());
+      supplierJSON.put("note", this.getNote());
+      if (this.getModifyDate() != null) {
+        supplierJSON.put("modifyDate", formatter.format(this.getModifyDate()));
+      }
+      if (this.getCreateDate() != null) {
+        supplierJSON.put("createDate", formatter.format(this.getCreateDate()));
+      }
+      // supplierJSON.put("mainContact", this.getMainContact().toJson());
     } catch (JSONException e) {
       e.printStackTrace();
     }
-    return vendorJSON;
+    return supplierJSON;
   }
 }

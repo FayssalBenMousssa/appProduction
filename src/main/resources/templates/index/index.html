@@ -11,6 +11,7 @@
         <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4  main-animated" role="main">
             <div th:if="${data.isAuth()}" class="card mb-3 mt-5 shadow-sm bg-white">
                 <div class="card-body row ">
+
                     <div class="col-sm-4"><h3 th:utext="${data.getAuth().getName()}"> Name</h3></div>
                     <div class="col-sm-8">
                         <div class="btn-toolbar justify-content-between float-right" role="toolbar"

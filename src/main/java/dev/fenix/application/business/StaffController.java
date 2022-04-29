@@ -7,7 +7,6 @@ import dev.fenix.application.business.repository.StaffRepository;
 import dev.fenix.application.business.service.JobService;
 import dev.fenix.application.person.repository.PersonRepository;
 import dev.fenix.application.person.service.PersonService;
-import dev.fenix.application.security.UserController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

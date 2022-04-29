@@ -1,6 +1,5 @@
 package dev.fenix.application.api.business;
 
-
 import dev.fenix.application.business.model.Job;
 import dev.fenix.application.business.repository.JobRepository;
 import javassist.NotFoundException;
@@ -24,11 +23,13 @@ public class JobResource {
 
   @Autowired private JobRepository jobRepository;
 
-  @RequestMapping(value = {"/", ""}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @RequestMapping(
+      value = {"/", ""},
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public String index() {
     return JSONObject.quote("Api :" + this.getClass().getSimpleName());
   }
-
 
   @RequestMapping(
       value = "/index",
@@ -43,35 +44,33 @@ public class JobResource {
     return jArray.toString();
   }
 
-
-
   @RequestMapping(
       value = "/save",
       method = RequestMethod.POST,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> save(
-      @Valid @RequestBody Job job, HttpServletRequest request) {
+  public ResponseEntity<?> save(@Valid @RequestBody Job job, HttpServletRequest request) {
     job.setActive(true);
     Job savedJob = jobRepository.save(job);
     return ResponseEntity.ok(savedJob.toJson().toString());
   }
 
-
   @RequestMapping(
-          value = "/get/{id}",
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id) throws NotFoundException {
-    log.trace("ProductResource.get method accessed");
-    Job job = jobRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+      value = "/get/{id}",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
+      throws NotFoundException {
+   // log.trace("ProductResource.get method accessed");
+    Job job =
+        jobRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(job.toJson().toString(), HttpStatus.OK);
   }
 
   @RequestMapping(
-          value = "/update",
-          method = RequestMethod.PUT,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/update",
+      method = RequestMethod.PUT,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> update(@Valid @RequestBody Job job, HttpServletRequest request) {
     try {
@@ -85,9 +84,9 @@ public class JobResource {
   }
 
   @RequestMapping(
-          value = "/delete/{id}",
-          method = RequestMethod.DELETE,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/delete/{id}",
+      method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 
     try {
@@ -100,6 +99,4 @@ public class JobResource {
       return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
     }
   }
-
-
 }

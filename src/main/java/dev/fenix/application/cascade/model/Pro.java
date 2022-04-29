@@ -24,6 +24,6 @@ public class Pro {
   private String productName;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "factory_id" , nullable = false)
+  @JoinColumn(name = "factory_id", nullable = false)
   private Fac factory;
 }

@@ -1,0 +1,49 @@
+= Prodction
+
+== Customer
+Version 1.0, 12.04.2022
+
+
+
+
+==== http Request
+.request
+include::{snippets}/httpCustomerRequestTest/http-request.adoc[]
+
+.response
+include::{snippets}/httpCustomerRequestTest/http-response.adoc[]
+
+====  index index Customer With Params
+IMPORTANT:  Params
+
+* Param(defaultValue = "0") Integer page.
+* Param(defaultValue = "200") Integer size.
+* Param(defaultValue = "id,desc") String[] sort.
+* Param(required = false) String[] query.
+
+.request
+include::{snippets}/indexCustomerWithParams/http-request.adoc[]
+
+.response
+include::{snippets}/indexCustomerWithParams/http-response.adoc[]
+
+==== save
+.request
+include::{snippets}/saveCustomer/http-request.adoc[]
+
+.response
+include::{snippets}/saveCustomer/http-response.adoc[]
+
+==== update
+.request
+include::{snippets}/updateCustomer/http-request.adoc[]
+
+.response
+include::{snippets}/updateCustomer/http-response.adoc[]
+
+==== delete
+.request
+include::{snippets}/deleteCustomer/http-request.adoc[]
+
+.response
+include::{snippets}/deleteCustomer/http-response.adoc[]

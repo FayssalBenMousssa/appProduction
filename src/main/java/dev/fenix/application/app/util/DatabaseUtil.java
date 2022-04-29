@@ -1,6 +1,5 @@
 package dev.fenix.application.app.util;
 
-import dev.fenix.application.Application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

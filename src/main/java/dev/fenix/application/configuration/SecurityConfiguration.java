@@ -71,7 +71,6 @@ public class SecurityConfiguration {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-
       http.antMatcher("/**")
           .authorizeRequests()
           .antMatchers("/security/index")
@@ -164,7 +163,8 @@ public class SecurityConfiguration {
                   String username = request.getParameter("username");
                   // String password = request.getParameter("password");
                   String error = exception.getMessage();
-                  log.info("Failed login attempt with username : " + username + ". Reason: " + error);
+                  log.info(
+                      "Failed login attempt with username : " + username + ". Reason: " + error);
                   activityRepository.save(
                       new Activity(
                           null,

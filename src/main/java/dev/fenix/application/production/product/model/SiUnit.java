@@ -30,8 +30,7 @@ public class SiUnit {
   @NotNull(message = "Please enter the symbol")
   private String symbol;
 
-
-  @Column(columnDefinition="tinyint(1) default 1")
+  @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 
   @Column(name = "create_date")
@@ -51,7 +50,6 @@ public class SiUnit {
     modifyDate = new Date();
   }
 
-
   public JSONObject toJson() {
     JSONObject productUnitJSON = new JSONObject();
     try {
@@ -66,6 +64,4 @@ public class SiUnit {
     }
     return productUnitJSON;
   }
-
-
 }

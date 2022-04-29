@@ -1,0 +1,16 @@
+= Prodction
+
+== Security
+Version 0.1, 22.03.2021
+
+
+==== staff
+.request
+include::{snippets}/getProfile/http-request.adoc[]
+
+.response
+include::{snippets}/getProfile/http-response.adoc[]
+
+
+
+

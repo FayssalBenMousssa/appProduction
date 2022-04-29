@@ -1,6 +1,5 @@
 package dev.fenix.application.person.service;
 
-import dev.fenix.application.Application;
 import dev.fenix.application.person.model.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

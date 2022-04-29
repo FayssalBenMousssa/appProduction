@@ -1,11 +1,11 @@
 package dev.fenix.application.api.production.product;
 
 import dev.fenix.application.production.product.model.Formula;
-import dev.fenix.application.production.product.model.Packaging;
 import dev.fenix.application.production.product.repository.FormulaRepository;
 import dev.fenix.application.production.product.service.FormulaService;
 import javassist.NotFoundException;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,42 +34,37 @@ public class FormulaResource {
     return JSONObject.quote("Api :" + this.getClass().getSimpleName());
   }
 
-
-
-
   @RequestMapping(
-          value = "/index",
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
-  public String index(
-          HttpServletRequest request,
-          @RequestParam(defaultValue = "0") Integer page,
-          @RequestParam(defaultValue = "200") Integer size,
-          @RequestParam(defaultValue = "name,asc") String[] sort,
-          @RequestParam(required = false) String[] query) {
+      value = "/index",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> index(
+      HttpServletRequest request,
+      @RequestParam(defaultValue = "0") Integer page,
+      @RequestParam(defaultValue = "200") Integer size,
+      @RequestParam(defaultValue = "name,asc") String[] sort,
+      @RequestParam(required = false) String[] query) {
 
     JSONArray jArray = new JSONArray();
     log.trace("PackagingResource.index method accessed");
-    Iterable<Formula> formulas =
-            formulaService.getAllFormula(page, size, sort, query);
+
+    Iterable<Formula> formulas = formulaService.getAllFormula(page, size, sort, query);
     for (Formula formula : formulas) {
       jArray.put(formula.toJson());
     }
-    return jArray.toString();
+
+    JSONObject response = new JSONObject();
+
+    try {
+      response.put("results", jArray);
+      response.put("count", jArray.length());
+      response.put("total", formulaService.getCountAll());
+      return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   @RequestMapping(
       value = "/save",

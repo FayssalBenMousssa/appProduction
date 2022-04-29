@@ -44,7 +44,7 @@ public class Team {
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "create_date" ,  updatable = false)
+  @Column(name = "create_date", updatable = false)
   private Date createDate;
 
   @UpdateTimestamp
@@ -53,6 +53,6 @@ public class Team {
   private Date modifyDate;
 
   private Boolean active;
-  
+
   public Team() {}
 }

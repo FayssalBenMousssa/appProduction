@@ -1,15 +1,18 @@
 package dev.fenix.application.production.product.model;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -74,27 +77,21 @@ public class Product {
   private boolean active;
 
 
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @Fetch(value = FetchMode.SUBSELECT)
+  @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = false) // javax.persistent.CascadeType
+  @JoinColumn(name = "product_id") // parent's foreign key
+  private List<MetaDataValue> metaDataValues = new ArrayList<>();
 
+  @CreationTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "create_date", updatable = false)
+  private Date createDate;
 
-
- // @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-  @OneToMany(fetch = FetchType.EAGER, cascade ={CascadeType.ALL} , orphanRemoval = true)//javax.persistent.CascadeType
-  @JoinColumn(name = "product_id") //parent's foreign key
-  private List<MetaDataValue> metaDataValues;
-
-
-
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "create_date" ,  updatable = false)
-    private Date createDate;
-
-    @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modify_date")
-    private Date modifyDate;
-
-
+  @UpdateTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "modify_date")
+  private Date modifyDate;
 
   public JSONObject toJson() {
     JSONObject productJSON = new JSONObject();
@@ -103,21 +100,40 @@ public class Product {
     try {
       productJSON.put("id", this.getId());
       if (this.getModifyDate() != null) {
-        productJSON.put("modifyDate",   formatter.format(this.getModifyDate()))  ;
+        productJSON.put("modifyDate", formatter.format(this.getModifyDate()));
       }
       if (this.getCreateDate() != null) {
         productJSON.put("createDate", formatter.format(this.getCreateDate()));
       }
       productJSON.put("id", this.getId());
       productJSON.put("name", this.getName());
-      productJSON.put("code", this.getCode().toUpperCase(Locale.ROOT));
-      productJSON.put("codeDes", this.getCodeDes());
-      productJSON.put("classification", this.getClassification().toJson());
-      productJSON.put("packaging", this.getPackaging().toJson());
-      productJSON.put("productionUnit", this.getProductionUnit().toJson());
-      productJSON.put("productType", this.getProductType().toJson());
-      productJSON.put("siUnit", this.getSiUnit().toJson());
+      if (this.getCode() != null) {
+        productJSON.put("code", this.getCode().toUpperCase(Locale.ROOT));
+      }
 
+      if (this.getCodeDes() != null) {
+        productJSON.put("codeDes", this.getCodeDes());
+      }
+
+      if (this.getClassification() != null) {
+        productJSON.put("classification", this.getClassification().toJson());
+      }
+
+      if (this.getPackaging() != null) {
+        productJSON.put("packaging", this.getPackaging().toJson());
+      }
+
+      if (this.getProductionUnit() != null) {
+        productJSON.put("productionUnit", this.getProductionUnit().toJson());
+      }
+
+      if (this.getProductType() != null) {
+        productJSON.put("productType", this.getProductType().toJson());
+      }
+
+      if (this.getSiUnit() != null) {
+        productJSON.put("siUnit", this.getSiUnit().toJson());
+      }
 
       if (this.getMetaDataValues() != null) {
         JSONArray metaDataList = new JSONArray();
@@ -133,6 +149,5 @@ public class Product {
     return productJSON;
   }
 }
-
 
 //// https://www.stackchief.com/blog/One%20To%20Many%20Example%20%7C%20Spring%20Data%20JPA

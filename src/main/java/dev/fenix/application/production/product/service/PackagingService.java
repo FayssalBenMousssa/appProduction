@@ -1,11 +1,7 @@
 package dev.fenix.application.production.product.service;
 
 import dev.fenix.application.production.product.model.Packaging;
-import dev.fenix.application.production.product.model.Product;
-import dev.fenix.application.production.product.model.ProductType;
 import dev.fenix.application.production.product.repository.PackagingRepository;
-import dev.fenix.application.production.product.repository.ProductRepository;
-import dev.fenix.application.production.product.repository.ProductTypeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +13,6 @@ import java.util.*;
 @Service
 public class PackagingService {
   @Autowired private PackagingRepository packagingRepository;
-
 
   private static final Logger log = LoggerFactory.getLogger(PackagingService.class);
   private int count = 0;
@@ -39,9 +34,10 @@ public class PackagingService {
 
     log.trace("pageNo : " + pageNo);
     log.trace("pageSize : " + pageSize);
-    log.trace("sortBy : " + (sortBy != null &&  sortBy.length > 0 ? Arrays.toString(sortBy) : "no sort") );
-    log.trace("query : " + (query != null &&  query.length > 0 ?  Arrays.toString(query) : "no query") );
-
+    log.trace(
+        "sortBy : " + (sortBy != null && sortBy.length > 0 ? Arrays.toString(sortBy) : "no sort"));
+    log.trace(
+        "query : " + (query != null && query.length > 0 ? Arrays.toString(query) : "no query"));
 
     //// Order
     List<Sort.Order> orders = new ArrayList<Sort.Order>();
@@ -52,7 +48,7 @@ public class PackagingService {
         // sortOrder="column, direction"
 
         String[] _sort = sortOrder.split(",");
-        log.trace("sortOrder : " +  _sort[1] +" "+ _sort[0]);
+        log.trace("sortOrder : " + _sort[1] + " " + _sort[0]);
         orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
       }
     } else {
@@ -66,33 +62,33 @@ public class PackagingService {
     List<Packaging> filteringPackagings = new ArrayList<Packaging>();
 
     countAll = packagingRepository.countByActiveTrue();
-    log.info(  countAll + " packaging active in DB");
+    log.info(countAll + " packaging active in DB");
     Page<Packaging> pagedResult;
 
-   if(filters != null && filters.size() != 0) {
+    if (filters != null && filters.size() != 0) {
       log.info("we have just have filters");
       for (Map.Entry<String, String> entry : filters.entrySet()) {
         String key = entry.getKey();
         String value = entry.getValue();
         switch (key) {
           case "name":
-            filteringPackagings.addAll(packagingRepository.findAllByNameContainsAndActiveTrue(value, paging).getContent());
+            filteringPackagings.addAll(
+                packagingRepository.findAllByNameContainsAndActiveTrue(value, paging).getContent());
             count = packagingRepository.countByNameContainsAndActiveTrue(value);
-            log.info(count + " Products by name [" + value + "] for all types" );
+            log.info(count + " Products by name [" + value + "] for all types");
             break;
           default:
-            log.info( "value not in list of search !" );
+            log.info("value not in list of search !");
         }
       }
       pagedResult = new PageImpl<>(filteringPackagings, paging, pageSize);
       return pagedResult.getContent();
-    }
-    else {
-        log.info("all active products");
-        pagedResult = packagingRepository.findByActiveTrue(paging);
-        count = packagingRepository.countByActiveTrue();
-        log.info(count + " Products ");
-        return pagedResult.getContent();
+    } else {
+      log.info("all active products");
+      pagedResult = packagingRepository.findByActiveTrue(paging);
+      count = packagingRepository.countByActiveTrue();
+      log.info(count + " Products ");
+      return pagedResult.getContent();
     }
   }
 
@@ -112,11 +108,10 @@ public class PackagingService {
       Map<String, String> hashMap = new HashMap<String, String>();
       for (String keyValue : query) {
         String[] _filter = keyValue.split(":");
-        if(_filter.length > 1){
+        if (_filter.length > 1) {
           hashMap.put(_filter[0], _filter[1]);
           log.info("Filter found : " + _filter[0] + ":" + _filter[1]);
         }
-
       }
       return hashMap;
     } else {
@@ -132,7 +127,6 @@ public class PackagingService {
   public void setCount(int count) {
     this.count = count;
   }
-
 
   public int getCountAll() {
     return countAll;

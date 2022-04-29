@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductTypeRepository extends JpaRepository<ProductType, Long> {
-    Iterable<ProductType> findByActiveTrue();
+  Iterable<ProductType> findByActiveTrue();
 
-    ProductType findOneById(Long type);
+  ProductType findOneById(Long type);
 }

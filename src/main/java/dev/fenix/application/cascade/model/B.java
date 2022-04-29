@@ -21,11 +21,8 @@ public class B {
 
   private String name;
 
-  //@NotNull(message = "Please enter the product")
+  // @NotNull(message = "Please enter the product")
   @ManyToOne
-  @JoinColumn(name = "cart_id" )
-
+  @JoinColumn(name = "cart_id")
   private A cart;
-
-
 }

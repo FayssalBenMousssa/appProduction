@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DepotRepository extends JpaRepository<Depot, Long> {
-    Iterable<Depot> findByActiveTrue();
+  Iterable<Depot> findByActiveTrue();
 }

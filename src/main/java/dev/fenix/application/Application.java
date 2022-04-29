@@ -22,7 +22,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -46,21 +45,21 @@ public class Application {
   private static final Logger log = LoggerFactory.getLogger(Application.class);
   @Autowired private Environment env;
 
-  @PostConstruct
+ // @PostConstruct
   private void runDbBackup() {
-    log.trace("{methodName}  method accessed");
+    //log.trace("{methodName}  method accessed");
     LocalDateTime now = LocalDateTime.now(); // current date and time
     LocalDateTime midnight = now.toLocalDate().plusDays(1).atStartOfDay();
 
     long delay = Duration.between(now, midnight).toMinutes();
-    log.trace(delay + " min  to start Backup time");
+    //log.trace(delay + " min  to start Backup time");
 
     ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
     exec.scheduleAtFixedRate(
         new Runnable() {
           @Override
           public void run() {
-            log.trace("Application.runDbBackup runnable  method accessed");
+           // log.trace("Application.runDbBackup runnable  method accessed");
             try {
               DatabaseUtil.backup(
                   env.getProperty("spring.datasource.username"),
@@ -81,9 +80,9 @@ public class Application {
         TimeUnit.MINUTES);
   }
 
-  @PostConstruct
+ // @PostConstruct
   private void insertDbDefault() {
-    log.trace("{methodName}  method accessed");
+   // log.trace("{methodName}  method accessed");
     Date date = new GregorianCalendar(2021, Calendar.FEBRUARY, 11).getTime();
     /** find User with Name admin */
     log.trace("find User with Name admin");
@@ -146,7 +145,7 @@ public class Application {
     }
   }
 
-///  @PostConstruct
+  ///  @PostConstruct
   private void cleanUp() {
     List<Classification> allClassification = classNameRepository.findAll();
     for (Classification classification : allClassification) {
@@ -183,7 +182,6 @@ public class Application {
   }
 
   public static void main(String[] args) {
-    log.trace("Application.main method accessed");
     SpringApplication.run(Application.class, args);
   }
 }

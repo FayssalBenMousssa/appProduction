@@ -21,19 +21,24 @@ public class Depot {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+
   @NotNull(message = "Please enter the name")
   private String name;
+
   @NotNull(message = "Please enter the code")
   private String code;
+
   private String description;
+
   @NotNull(message = "Please enter the address")
   private String address;
+
   @NotNull(message = "Please enter the active")
   private Boolean active;
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "create_date" ,  updatable = false)
+  @Column(name = "create_date", updatable = false)
   private Date createDate;
 
   @UpdateTimestamp
@@ -57,6 +62,4 @@ public class Depot {
     }
     return depotJSON;
   }
-
-
 }

@@ -1,6 +1,5 @@
 package dev.fenix.application.production.product.model;
 
-
 import dev.fenix.application.core.model.MetaData;
 import lombok.*;
 import org.json.JSONArray;
@@ -28,22 +27,24 @@ public class ProductType {
   @NotNull(message = "Please enter the name")
   private String name;
 
-  @Column(columnDefinition="tinyint(1) default 1")
+  @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 
   private String icon;
+
+  @Column(columnDefinition = "tinyint(1) default NULL")
+  private Boolean hasFormula;
 
   public ProductType(Long id, String name) {
     this.id = id;
     this.name = name;
   }
 
-
   @ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(
-          name = "prds__type_metadata",
-          joinColumns = @JoinColumn(name = "product_type_id"),
-          inverseJoinColumns = @JoinColumn(name = "metadata_id"))
+      name = "prds__type_metadata",
+      joinColumns = @JoinColumn(name = "product_type_id"),
+      inverseJoinColumns = @JoinColumn(name = "metadata_id"))
   private List<MetaData> metaData;
 
   @Column(name = "create_date")
@@ -70,17 +71,18 @@ public class ProductType {
       ProductTypeJSON.put("name", this.getName());
       ProductTypeJSON.put("icon", this.getIcon());
 
-      if (this.getMetaData() != null && this.getMetaData().size() > 0 ){
+      ProductTypeJSON.put("hasFormula", this.getHasFormula());
+
+      if (this.getMetaData() != null && this.getMetaData().size() > 0) {
         JSONArray metadatalist = new JSONArray();
         for (MetaData metadata : this.getMetaData()) {
-          if(metadata.isActive()) {
+          if (metadata.isActive()) {
             metadatalist.put(metadata.toJson());
           }
-
         }
         ProductTypeJSON.put("metaData", metadatalist);
       }
-      
+
     } catch (JSONException e) {
       e.printStackTrace();
     }

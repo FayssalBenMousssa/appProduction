@@ -1,7 +1,5 @@
 package dev.fenix.application.production.supplier.model;
 
-
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,35 +16,30 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "supl__classification")
-
 public class SupplierClassification {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @NotNull(message = "Please enter the name")
-    private String name;
+  @NotNull(message = "Please enter the name")
+  private String name;
 
-    @NotNull(message = "Please enter the code")
-    private String code;
+  @NotNull(message = "Please enter the code")
+  private String code;
 
-    private Boolean active;
+  private Boolean active;
 
+  public JSONObject toJson() {
+    JSONObject vendorClassificationJSON = new JSONObject();
+    try {
+      vendorClassificationJSON.put("id", this.getId());
+      vendorClassificationJSON.put("name", this.getName());
+      vendorClassificationJSON.put("active", this.getActive());
+      vendorClassificationJSON.put("code", this.getCode());
 
-
-
-
-    public JSONObject toJson() {
-        JSONObject vendorClassificationJSON = new JSONObject();
-        try {
-            vendorClassificationJSON.put("id", this.getId());
-            vendorClassificationJSON.put("name", this.getName());
-            vendorClassificationJSON.put("active", this.getActive());
-            vendorClassificationJSON.put("code", this.getCode());
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return vendorClassificationJSON;
+    } catch (JSONException e) {
+      e.printStackTrace();
     }
+    return vendorClassificationJSON;
+  }
 }

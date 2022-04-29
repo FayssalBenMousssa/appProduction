@@ -121,7 +121,7 @@ public class User {
       if (this.getRoles() != null) {
         JSONArray userRoles = new JSONArray();
         for (Role role : this.getRoles()) {
-          userRoles.put(role._toJson());
+          userRoles.put(role.toJson());
         }
         userJSON.put("roles", userRoles);
       }

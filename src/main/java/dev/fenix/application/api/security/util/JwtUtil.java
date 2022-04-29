@@ -17,6 +17,7 @@ import java.util.function.Function;
 public class JwtUtil {
   private final String SECRET_KEY = "vPWcpWUBoXPU55UhHHN9eT2JRPsdjQZYAxMJVrgGQtDiK";
   private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
+
   public String extractUsername(String token) {
     return extractClaim(token, Claims::getSubject);
   }
@@ -40,13 +41,12 @@ public class JwtUtil {
   }
 
   public String generateToken(UserDetails userDetails) {
-    log.info("generateToken for : " + userDetails.getUsername() );
+    log.info("generateToken for : " + userDetails.getUsername());
     Map<String, Object> claims = new HashMap<>();
     return createToken(claims, userDetails.getUsername());
   }
 
   private String createToken(Map<String, Object> claims, String subject) {
-
 
     return Jwts.builder()
         .setClaims(claims)
@@ -59,7 +59,7 @@ public class JwtUtil {
 
   public Boolean validateToken(String token, UserDetails userDetails) {
     final String username = extractUsername(token);
-    log.info("validateToken for : " + userDetails.getUsername() );
+    log.info("validateToken for : " + userDetails.getUsername());
     return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
   }
 }

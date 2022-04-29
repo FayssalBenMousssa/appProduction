@@ -9,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -25,16 +24,11 @@ public class FormulaNote {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @ManyToOne(
-      cascade = {CascadeType.ALL},
-      fetch = FetchType.EAGER)
+  @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
   @JoinColumn(name = "note_id", referencedColumnName = "id")
   private Note note;
 
-
-  @ManyToOne(
-      cascade = {CascadeType.DETACH},
-      fetch = FetchType.EAGER)
+  @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
   @JoinColumn(name = "formula_note_id", referencedColumnName = "id")
   @JsonBackReference
   private Formula formulaNote;
@@ -59,7 +53,7 @@ public class FormulaNote {
     try {
       formulaNoteJSON.put("id", this.getId());
       if (this.getModifyDate() != null) {
-        formulaNoteJSON.put("modifyDate",   formatter.format(this.getModifyDate()))  ;
+        formulaNoteJSON.put("modifyDate", formatter.format(this.getModifyDate()));
       }
       if (this.getCreateDate() != null) {
         formulaNoteJSON.put("createDate", formatter.format(this.getCreateDate()));
@@ -68,8 +62,6 @@ public class FormulaNote {
       if (this.getNote() != null) {
         formulaNoteJSON.put("note", this.getNote().toJson());
       }
-
-
 
     } catch (JSONException e) {
       e.printStackTrace();

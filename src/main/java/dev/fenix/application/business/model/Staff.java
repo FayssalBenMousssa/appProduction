@@ -10,7 +10,6 @@ import org.json.JSONObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -28,29 +27,30 @@ public class Staff {
   @JoinColumn(name = "job_id", nullable = false)
   private Job job;
 
-
   @NotNull(message = "{staff.personnel.null}")
   @JoinColumn(name = "personnel_id", nullable = false)
-  @ManyToOne(fetch = FetchType.EAGER, cascade ={CascadeType.ALL} )
+  @ManyToOne(
+      fetch = FetchType.EAGER,
+      cascade = {CascadeType.ALL})
   private Person person;
 
   private Boolean active;
+
   @NotNull(message = "{staff.start_date.null}")
- // @PastOrPresent(message = "{staff.start_date.invalid}")
+  // @PastOrPresent(message = "{staff.start_date.invalid}")
   private Date startDate;
 
   private Date endDate;
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "create_date" ,  updatable = false)
+  @Column(name = "create_date", updatable = false)
   private Date createDate;
 
   @UpdateTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "modify_date")
   private Date modifyDate;
-
 
   public Staff() {}
 
@@ -63,15 +63,14 @@ public class Staff {
       staffJSON.put("person", this.getPerson().toJson());
       staffJSON.put("job", this.getJob().toJson());
 
-
       if (this.getStartDate() != null) {
-        staffJSON.put("startDate",   formatter.format(this.getStartDate()))  ;
+        staffJSON.put("startDate", formatter.format(this.getStartDate()));
       }
       if (this.getEndDate() != null) {
-        staffJSON.put("endDate",   formatter.format(this.getEndDate()))  ;
+        staffJSON.put("endDate", formatter.format(this.getEndDate()));
       }
       if (this.getModifyDate() != null) {
-        staffJSON.put("modifyDate",   formatter.format(this.getModifyDate()))  ;
+        staffJSON.put("modifyDate", formatter.format(this.getModifyDate()));
       }
       if (this.getCreateDate() != null) {
         staffJSON.put("createDate", formatter.format(this.getCreateDate()));
@@ -83,6 +82,4 @@ public class Staff {
     }
     return staffJSON;
   }
-
-
 }

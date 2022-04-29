@@ -8,16 +8,13 @@ import java.util.List;
 
 @Repository
 public interface ClassificationRepository extends JpaRepository<Classification, Long> {
-    Iterable<Classification> findByActiveTrue();
+  Iterable<Classification> findByActiveTrue();
 
+  Iterable<Classification> findByActiveTrueAndParent(Classification parent);
 
+  Iterable<Classification> findByActiveTrueAndLevel(Long level);
 
-    Iterable<Classification> findByActiveTrueAndParent(Classification parent);
+  Classification findOneById(Long id);
 
-    Iterable<Classification> findByActiveTrueAndLevel(Long level);
-
-    Classification findOneById(Long id);
-
-
-    List<Classification> findAllByLevel(Long level);
+  List<Classification> findAllByLevel(Long level);
 }

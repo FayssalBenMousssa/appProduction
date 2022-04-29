@@ -7,8 +7,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 @Entity
 @Table(name = "core__metadata")
@@ -32,12 +32,14 @@ public class MetaData {
   @NotBlank(message = "type is mandatory")
   private String type;
 
+
+  private String position;
+
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean required;
-
 
   @Column(name = "create_date")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -55,19 +57,29 @@ public class MetaData {
   protected void onUpdate() {
     modifyDate = new Date();
   }
+
   public JSONObject toJson() {
-    JSONObject productJSON = new JSONObject();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    JSONObject metadataJson = new JSONObject();
     try {
-      productJSON.put("id", this.getId());
-      productJSON.put("name", this.getName());
-      productJSON.put("code", this.getCode());
-      productJSON.put("type", this.getType());
-      productJSON.put("create_date", this.getCreateDate());
-      productJSON.put("modify_date", this.getModifyDate());
+      metadataJson.put("id", this.getId());
+      metadataJson.put("position", this.getPosition());
+      metadataJson.put("name", this.getName());
+      metadataJson.put("code", this.getCode());
+      metadataJson.put("type", this.getType());
+      metadataJson.put("required", this.isRequired());
+      metadataJson.put("active", this.isActive());
+
+      if (this.getModifyDate() != null) {
+        metadataJson.put("modifyDate", formatter.format(this.getModifyDate()));
+      }
+      if (this.getCreateDate() != null) {
+        metadataJson.put("createDate", formatter.format(this.getCreateDate()));
+      }
 
     } catch (JSONException e) {
       e.printStackTrace();
     }
-    return productJSON;
+    return metadataJson;
   }
 }

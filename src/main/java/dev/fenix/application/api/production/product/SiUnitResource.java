@@ -1,8 +1,6 @@
 package dev.fenix.application.api.production.product;
 
-import dev.fenix.application.production.product.model.ProductionUnit;
 import dev.fenix.application.production.product.model.SiUnit;
-import dev.fenix.application.production.product.repository.ProductionUnitRepository;
 import dev.fenix.application.production.product.repository.SiUnitRepository;
 import javassist.NotFoundException;
 import org.json.JSONArray;
@@ -51,8 +49,7 @@ public class SiUnitResource {
       method = RequestMethod.POST,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> save(
-      @Valid @RequestBody SiUnit siUnit, HttpServletRequest request) {
+  public ResponseEntity<?> save(@Valid @RequestBody SiUnit siUnit, HttpServletRequest request) {
     siUnit.setActive(true);
     SiUnit savedSiUnit = siUnitRepository.save(siUnit);
 
@@ -63,21 +60,24 @@ public class SiUnitResource {
     return ResponseEntity.ok(savedSiUnit.toJson().toString());
   }
 
-
   @RequestMapping(
-          value = "/get/{id}",
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id) throws NotFoundException {
+      value = "/get/{id}",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
+      throws NotFoundException {
     log.trace("ProductResource.get method accessed");
-    SiUnit siUnit = siUnitRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+    SiUnit siUnit =
+        siUnitRepository
+            .findById(id)
+            .orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(siUnit.toJson().toString(), HttpStatus.OK);
   }
 
   @RequestMapping(
-          value = "/update",
-          method = RequestMethod.PUT,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/update",
+      method = RequestMethod.PUT,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> update(@Valid @RequestBody SiUnit siUnit, HttpServletRequest request) {
     try {
@@ -91,9 +91,9 @@ public class SiUnitResource {
   }
 
   @RequestMapping(
-          value = "/delete/{id}",
-          method = RequestMethod.DELETE,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/delete/{id}",
+      method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 
     try {
@@ -106,6 +106,4 @@ public class SiUnitResource {
       return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
     }
   }
-
-
 }

@@ -1,5 +1,6 @@
 package dev.fenix.application.production.product.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import dev.fenix.application.core.model.MetaData;
 import lombok.*;
 import org.json.JSONException;
@@ -30,14 +31,14 @@ public class MetaDataValue {
       cascade = {CascadeType.DETACH},
       fetch = FetchType.EAGER)
   @JoinColumn(name = "meta_data_id", referencedColumnName = "id")
-  private MetaData metaData;
+  private MetaData metadata;
 
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "product_id" , nullable = false)
+
+  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
+  @JoinColumn(name = "product_id", referencedColumnName = "id")
+  @JsonBackReference
   private Product product;
-
-
 
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
@@ -64,7 +65,7 @@ public class MetaDataValue {
     try {
       metaDataValueJSON.put("id", this.getId());
       metaDataValueJSON.put("value", this.getValue());
-      metaDataValueJSON.put("metadata", this.getMetaData().toJson());
+      metaDataValueJSON.put("metadata", this.getMetadata().toJson());
       metaDataValueJSON.put("active", this.isActive());
 
     } catch (JSONException e) {

@@ -3,7 +3,7 @@ version: '3.2'
 services:
   db:
     image: mysql:8.0
-    container_name: appsDB
+    container_name: mysql-db
     restart: always
     ports:
       - '3301:3306'
@@ -11,10 +11,8 @@ services:
       MYSQL_ROOT_PASSWORD: Fenix1985
       MYSQL_DATABASE: application_db
       MYSQL_USER: fenix
-      MYSQL_PASSWORD: Fenix1985
-
-
-  app:
+      MYSQL_PASSWORD: "Fenix1985"
+  phpmyadmin:
     depends_on:
       - db
     image: phpmyadmin/phpmyadmin
@@ -24,7 +22,19 @@ services:
       - '8080:80'
     environment:
       PMA_HOST: db
-      UPLOAD_LIMIT: 300M
+  be-app:
+    image: be-app
+    container_name: "be-app"
+    restart: always
+    ports:
+      - "8088:80"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/application_db?autoReconnect=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: "Fenix1985"
+    build:
+      context: "./"
+      dockerfile: "Dockerfile"
+    depends_on:
+      - db
 
-        
-     

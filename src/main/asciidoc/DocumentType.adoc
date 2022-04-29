@@ -1,0 +1,37 @@
+= Prodction
+
+== Document Type
+Version 1.1, 19.04.2022
+
+
+
+
+
+====  index
+
+.request
+include::{snippets}/indexType/http-request.adoc[]
+
+.response
+include::{snippets}/indexType/http-response.adoc[]
+
+==== save
+.request
+include::{snippets}/saveType/http-request.adoc[]
+
+.response
+include::{snippets}/saveType/http-response.adoc[]
+
+==== update
+.request
+include::{snippets}/updateType/http-request.adoc[]
+
+.response
+include::{snippets}/updateType/http-response.adoc[]
+
+==== delete
+.request
+include::{snippets}/deleteType/http-request.adoc[]
+
+.response
+include::{snippets}/deleteType/http-response.adoc[]

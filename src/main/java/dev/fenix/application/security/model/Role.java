@@ -9,8 +9,8 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,18 +32,18 @@ public class Role {
 
   @ManyToMany(mappedBy = "roles")
   @OrderBy("orderNum ASC")
-  private final Set<Route> routes = new HashSet<>();
+  private final List<Route> routes = new ArrayList<>();
 
-  public JSONObject _toJson() {
+  public JSONObject toJson() {
     JSONObject roleJSON = new JSONObject();
     try {
       roleJSON.put("id", this.getId());
       roleJSON.put("role", this.getRole());
-
+      roleJSON.put("name", this.getName());
       if (this.getRoutes() != null) {
         JSONArray roleRoutes = new JSONArray();
         for (Route route : this.getRoutes()) {
-          if(route.getLevel() == 0) roleRoutes.put(route._toJson());
+          if (route.getLevel() == 0) roleRoutes.put(route.toJson(this));
         }
         roleJSON.put("routes", roleRoutes);
       }

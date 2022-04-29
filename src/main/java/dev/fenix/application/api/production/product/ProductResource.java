@@ -1,8 +1,7 @@
 package dev.fenix.application.api.production.product;
 
-import dev.fenix.application.Application;
-import dev.fenix.application.core.model.MetaData;
-import dev.fenix.application.production.product.model.*;
+import dev.fenix.application.production.product.model.Product;
+import dev.fenix.application.production.product.model.ProductType;
 import dev.fenix.application.production.product.repository.ProductRepository;
 import dev.fenix.application.production.product.repository.ProductTypeRepository;
 import dev.fenix.application.production.product.service.ProductService;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,28 +49,31 @@ public class ProductResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> index(
       HttpServletRequest request,
-      @RequestParam (required = false)  Long type,
+      @RequestParam(required = false) Long type,
       @RequestParam(defaultValue = "0") Integer page,
       @RequestParam(defaultValue = "200") Integer size,
       @RequestParam(defaultValue = "name,asc") String[] sort,
-      @RequestParam(required = false) String[] query) throws InterruptedException {
+      @RequestParam(required = false) String[] query,
+      @RequestParam(required = false) Long[] types)
+      throws InterruptedException {
 
     log.trace("ProductResource.index method accessed");
 
     JSONArray jArray = new JSONArray();
-    Iterable<Product> products = productService.getAllProducts(page, size, sort, query ,type );
+
+    List<Product> products = productService.getAllProducts(page, size, sort, query, type, types);
+
     for (Product product : products) {
       jArray.put(product.toJson());
     }
 
-
     JSONObject response = new JSONObject();
 
     try {
-      response.put("results" ,jArray);
-      response.put("total_type" , productService.getCount());
-      response.put("count" , jArray.length());
-      response.put("total" , productService.getCountAll());
+      response.put("results", jArray);
+      response.put("total_type", productService.getCount());
+      response.put("count", jArray.length());
+      response.put("total", productService.getCountAll());
       return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     } catch (JSONException e) {
       e.printStackTrace();
@@ -84,9 +85,13 @@ public class ProductResource {
       value = "/get/{id}",
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id) throws NotFoundException {
+  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
+      throws NotFoundException {
     log.trace("ProductResource.get method accessed");
-    Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+    Product product =
+        productRepository
+            .findById(id)
+            .orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(product.toJson().toString(), HttpStatus.OK);
   }
 

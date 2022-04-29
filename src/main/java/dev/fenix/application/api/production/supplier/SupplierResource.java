@@ -1,6 +1,5 @@
 package dev.fenix.application.api.production.supplier;
 
-import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.supplier.model.Supplier;
 import dev.fenix.application.production.supplier.repository.SupplierRepository;
 import dev.fenix.application.production.supplier.service.SupplierService;
@@ -47,12 +46,14 @@ public class SupplierResource {
       @RequestParam(defaultValue = "id,desc") String[] sort,
       @RequestParam(required = false) String[] query)
       throws InterruptedException {
-    log.trace(String.format("%s method accessed ." , new Object(){}.getClass().getEnclosingMethod().getName() ));
+    log.trace(
+        String.format(
+            "%s method accessed .", new Object() {}.getClass().getEnclosingMethod().getName()));
     JSONArray jArray = new JSONArray();
-    //Iterable<Supplier> vendors = supplierRepository.findAll();
+    // Iterable<Supplier> vendors = supplierRepository.findAll();
 
     Iterable<Supplier> suppliers = supplierService.getAllSuppliers(page, size, sort, query);
-    
+
     for (Supplier supplier : suppliers) {
       jArray.put(supplier.toJson());
     }
@@ -60,7 +61,7 @@ public class SupplierResource {
     try {
       response.put("results", jArray);
       response.put("count", jArray.length());
-      response.put("total" , supplierService.getCountAll());
+      response.put("total", supplierService.getCountAll());
 
       return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     } catch (JSONException e) {
@@ -69,31 +70,32 @@ public class SupplierResource {
     return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
   }
 
-
   @RequestMapping(
-          value = "/save",
-          method = RequestMethod.POST,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/save",
+      method = RequestMethod.POST,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> save(
-          @Valid @RequestBody Supplier vendor, HttpServletRequest request) {
+  public ResponseEntity<?> save(@Valid @RequestBody Supplier vendor, HttpServletRequest request) {
 
-    log.trace(String.format("%s method accessed ." , new Object(){}.getClass().getEnclosingMethod().getName() ));
+    log.trace(
+        String.format(
+            "%s method accessed .", new Object() {}.getClass().getEnclosingMethod().getName()));
     vendor.setActive(true);
     Supplier savedVendor = supplierRepository.save(vendor);
     return ResponseEntity.ok(savedVendor.toJson().toString());
   }
 
-
-
   @RequestMapping(
-          value = "/update",
-          method = RequestMethod.PUT,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/update",
+      method = RequestMethod.PUT,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> update(@Valid @RequestBody Supplier supplier, HttpServletRequest request) {
+  public ResponseEntity<?> update(
+      @Valid @RequestBody Supplier supplier, HttpServletRequest request) {
     try {
-      log.trace(String.format("%s method accessed ." , new Object(){}.getClass().getEnclosingMethod().getName() ));
+      log.trace(
+          String.format(
+              "%s method accessed .", new Object() {}.getClass().getEnclosingMethod().getName()));
       supplier.setActive(true);
       Supplier updatedVendor = supplierRepository.save(supplier);
       return new ResponseEntity<>(updatedVendor.toJson().toString(), HttpStatus.OK);
@@ -103,33 +105,39 @@ public class SupplierResource {
     }
   }
 
-
   @RequestMapping(
-          value = "/get/{id}",
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id) throws NotFoundException {
-    log.trace(String.format("%s method accessed" , new Object(){}.getClass().getEnclosingMethod().getName() ));
-    Supplier vendor = supplierRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+      value = "/get/{id}",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
+      throws NotFoundException {
+    log.trace(
+        String.format(
+            "%s method accessed", new Object() {}.getClass().getEnclosingMethod().getName()));
+    Supplier vendor =
+        supplierRepository
+            .findById(id)
+            .orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(vendor.toJson().toString(), HttpStatus.OK);
   }
 
-
   @RequestMapping(
-          value = "/delete/{id}",
-          method = RequestMethod.DELETE,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/delete/{id}",
+      method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-    log.trace(String.format("%s method accessed" , new Object(){}.getClass().getEnclosingMethod().getName() ));
+    log.trace(
+        String.format(
+            "%s method accessed", new Object() {}.getClass().getEnclosingMethod().getName()));
     Supplier vendor = supplierRepository.getOne(id);
     try {
       vendor.setActive(false);
       Supplier savedVendor = supplierRepository.save(vendor);
-      return ResponseEntity.ok(savedVendor.getActive());
+
+      return new ResponseEntity<>(savedVendor.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
       return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
     }
   }
-
 }

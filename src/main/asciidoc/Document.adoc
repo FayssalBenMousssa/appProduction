@@ -1,0 +1,49 @@
+= Prodction
+
+== Document
+Version 1.3, 26.03.2022
+
+
+
+
+==== http Request
+.request
+include::{snippets}/httpRequestDocumentTest/http-request.adoc[]
+
+.response
+include::{snippets}/httpRequestDocumentTest/http-response.adoc[]
+
+====  index index Formula With Params
+IMPORTANT:  Params
+
+* Param(defaultValue = "0") Integer page.
+* Param(defaultValue = "200") Integer size.
+* Param(defaultValue = "id,desc") String[] sort.
+* Param(required = false) String[] query.
+
+.request
+include::{snippets}/indexDocumentWithParams/http-request.adoc[]
+
+.response
+include::{snippets}/indexDocumentWithParams/http-response.adoc[]
+
+==== save
+.request
+include::{snippets}/saveDocument/http-request.adoc[]
+
+.response
+include::{snippets}/saveDocument/http-response.adoc[]
+
+==== update
+.request
+include::{snippets}/updateDocument/http-request.adoc[]
+
+.response
+include::{snippets}/updateDocument/http-response.adoc[]
+
+==== delete
+.request
+include::{snippets}/deleteDocument/http-request.adoc[]
+
+.response
+include::{snippets}/deleteDocument/http-response.adoc[]

@@ -14,10 +14,9 @@ public class SupplierController {
 
   private static final Logger log = LoggerFactory.getLogger(SupplierController.class);
   @Autowired private PersonRepository personRepository;
+
   @GetMapping("/")
-  public  String hi(){
+  public String hi() {
     return "hello ";
   }
-
-
 }

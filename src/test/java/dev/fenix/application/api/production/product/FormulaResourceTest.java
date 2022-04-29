@@ -1,13 +1,10 @@
 package dev.fenix.application.api.production.product;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.fenix.application.business.model.Job;
 import dev.fenix.application.business.model.Staff;
 import dev.fenix.application.business.repository.JobRepository;
 import dev.fenix.application.business.repository.StaffRepository;
 import dev.fenix.application.core.model.Note;
-import dev.fenix.application.person.model.Gender;
-import dev.fenix.application.person.model.Person;
 import dev.fenix.application.production.product.model.*;
 import dev.fenix.application.production.product.repository.FormulaRepository;
 import dev.fenix.application.production.product.repository.ProductRepository;
@@ -30,9 +27,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -102,11 +96,10 @@ class FormulaResourceTest {
   void indexFormulaWithParams() throws Exception {
     MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
-   params.add("page", "0");
+    params.add("page", "0");
     params.add("page", "0");
     params.add("size", "2");
     params.add("sort", "id,desc");
-
 
     this.mockMvc
         .perform(get("/api/product/formula/index").params(params))
@@ -118,20 +111,17 @@ class FormulaResourceTest {
                 preprocessResponse(prettyPrint()),
                 pathParameters()))
         .andExpect(status().isOk())
-            .andExpect(content().contentType("application/json;charset=UTF-8"))
-    ;
+        .andExpect(content().contentType("application/json;charset=UTF-8"));
   }
-
-
 
   @Test
   @Order(3)
   @WithMockUser(username = "fenix")
   void getFormula() throws Exception {
-    Staff requestStaff = staffRepository.findTopByOrderByIdDesc();
+    Formula requestFormula = formulaRepository.findTopByOrderByIdDesc();
     MvcResult result =
         this.mockMvc
-            .perform(get("/api/staff/get/" + requestStaff.getId()))
+            .perform(get("/api/product/formula/get/" + requestFormula.getId()))
             .andDo(print())
             .andDo(
                 document(
@@ -141,13 +131,13 @@ class FormulaResourceTest {
             .andExpect(status().isOk())
             .andReturn();
     String resultContent = result.getResponse().getContentAsString();
-    Staff expectedStaff = om.readValue(resultContent, Staff.class);
-    Assert.assertTrue(expectedStaff.getId() != null);
+    Formula expectedFormula = om.readValue(resultContent, Formula.class);
+    Assert.assertTrue(expectedFormula.getId() != null);
 
-    log.info(String.valueOf(expectedStaff.getId()));
-    log.info(String.valueOf(requestStaff.getId()));
+    log.info(String.valueOf(expectedFormula.getId()));
+    log.info(String.valueOf(requestFormula.getId()));
 
-    Assert.assertTrue(expectedStaff.getId().equals(requestStaff.getId()));
+    Assert.assertTrue(expectedFormula.getId().equals(requestFormula.getId()));
   }
 
   @Test
@@ -167,7 +157,6 @@ class FormulaResourceTest {
     SiUnit siUnit = siUnitRepository.findOneById(1L);
     formulaProduct.setSiUnit(siUnit);
 
-
     FormulaProduct formulaProduct_1 = new FormulaProduct();
     formulaProduct_1.setQuantity(10);
     formulaProduct_1.setProduct(product);
@@ -178,8 +167,6 @@ class FormulaResourceTest {
     requestFormula.getFormulaProducts().add(formulaProduct_1);
 
     Product product_prod = productRepository.findOneById(2L);
-
-
 
     FormulaNote formulaNote = new FormulaNote();
     formulaNote.setNote(note);
@@ -224,16 +211,44 @@ class FormulaResourceTest {
   @WithMockUser(username = "fenix")
   @Order(2)
   void updateFormula() throws Exception {
+
     Formula requestFormula = formulaRepository.findTopByOrderByIdDesc();
     Note note = new Note();
     note.setContent("Hello Fayssal content updateFormula");
     note.setActive(true);
     note.setColor("#00000");
+
     FormulaNote formulaNote = new FormulaNote();
     formulaNote.setNote(note);
     formulaNote.setActive(true);
+
+    FormulaNote formulaNote_2 = new FormulaNote();
+    formulaNote_2.setNote(note);
+    formulaNote_2.setActive(true);
+
     requestFormula.getFormulaNotes().add(formulaNote);
+    requestFormula.getFormulaNotes().add(formulaNote_2);
     requestFormula.setName("updateFormula");
+
+    Product product = productRepository.findOneById(5L);
+    FormulaProduct formulaProduct = new FormulaProduct();
+    formulaProduct.setQuantity(20);
+    formulaProduct.setProduct(product);
+    SiUnit siUnit = siUnitRepository.findOneById(1L);
+    formulaProduct.setSiUnit(siUnit);
+    formulaProduct.setActive(true);
+
+    Product product_2 = productRepository.findOneById(5L);
+    FormulaProduct formulaProduct_2 = new FormulaProduct();
+    formulaProduct_2.setQuantity(30);
+    formulaProduct_2.setProduct(product_2);
+    formulaProduct_2.setSiUnit(siUnit);
+    formulaProduct_2.setActive(true);
+
+    requestFormula.getFormulaProducts().add(formulaProduct);
+    requestFormula.getFormulaProducts().add(formulaProduct_2);
+    requestFormula.setActive(true);
+
     String jsonRequest = om.writeValueAsString(requestFormula);
     MvcResult result =
         mockMvc

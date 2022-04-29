@@ -33,18 +33,15 @@ public class IndexResource {
   @Autowired private UserRepository userRepository;
   @Autowired private UserDetailsService userDetailsService;
 
-
   @RequestMapping(
-          value = "/",
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> index() throws JSONException {
     JSONObject jObject = new JSONObject();
-    jObject.put("api",1);
+    jObject.put("api", 1);
     return ResponseEntity.ok(jObject.toString());
   }
-
-
 
   @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
   public ResponseEntity<?> createAuthenticationToken(

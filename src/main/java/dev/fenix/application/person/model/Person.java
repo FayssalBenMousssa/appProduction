@@ -9,7 +9,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -39,14 +38,13 @@ public class Person {
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "create_date" ,  updatable = false)
+  @Column(name = "create_date", updatable = false)
   private Date createDate;
+
   @UpdateTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "modify_date")
   private Date modifyDate;
-
-
 
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -71,8 +69,6 @@ public class Person {
 
   public Person() {}
 
-
-
   public JSONObject toJson() {
     JSONObject personJSON = new JSONObject();
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -81,27 +77,23 @@ public class Person {
       personJSON.put("firstName", this.getFirstName());
       personJSON.put("lastName", this.getLastName());
       personJSON.put("fullName", this.getFullName());
-      if(this.getGender() != null) {
+      if (this.getGender() != null) {
         personJSON.put("gender", this.getGender());
       }
 
-
-
-
       if (this.getBirthDate() != null) {
-        personJSON.put("birthDate",   formatter.format(this.getBirthDate()))  ;
+        personJSON.put("birthDate", formatter.format(this.getBirthDate()));
       }
       if (this.getModifyDate() != null) {
-        personJSON.put("modifyDate",   formatter.format(this.getModifyDate()))  ;
+        personJSON.put("modifyDate", formatter.format(this.getModifyDate()));
       }
       if (this.getCreateDate() != null) {
         personJSON.put("createDate", formatter.format(this.getCreateDate()));
       }
 
-      if(this.getUser() != null) {
+      if (this.getUser() != null) {
         personJSON.put("user", this.getUser()._toJson());
       }
-
 
     } catch (JSONException e) {
       e.printStackTrace();
@@ -110,6 +102,6 @@ public class Person {
   }
 
   public String getFullName() {
-    return  this.getLastName() + " " +this.getFirstName();
+    return this.getLastName() + " " + this.getFirstName();
   }
 }

@@ -1,6 +1,5 @@
 package dev.fenix.application.security;
 
-import dev.fenix.application.Application;
 import dev.fenix.application.app.service.ApplicationData;
 import dev.fenix.application.core.Utility;
 import dev.fenix.application.mail.module.Mail;

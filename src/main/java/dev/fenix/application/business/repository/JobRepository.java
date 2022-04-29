@@ -10,9 +10,9 @@ public interface JobRepository extends PagingAndSortingRepository<Job, Long> {
 
   void delete(Job job);
 
-    Iterable<Job> findByActiveTrue();
+  Iterable<Job> findByActiveTrue();
 
   Job getOne(Long id);
 
-    Job findTopByOrderByIdDesc();
+  Job findTopByOrderByIdDesc();
 }

@@ -110,8 +110,6 @@ public class ClassificationResource {
     try {
       classification.setActive(true);
 
-
-
       Classification updatedClassification = classificationRepository.save(classification);
       return new ResponseEntity<>(updatedClassification.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
@@ -135,13 +133,18 @@ public class ClassificationResource {
           .forEach(
               classificationChild -> {
                 classificationChild.setActive(false);
-                Classification savedClassificationChild = classificationRepository.save(classificationChild);
+                Classification savedClassificationChild =
+                    classificationRepository.save(classificationChild);
                 log.info(savedClassificationChild.getName() + " Removed");
-                savedClassificationChild.getChildren().forEach(classificationChildOfChild -> {
-                  classificationChildOfChild.setActive(false);
-                  Classification savedClassificationChildOfChild =   classificationRepository.save(classificationChildOfChild);
-                  log.info(savedClassificationChildOfChild.getName() + " Removed");
-                });
+                savedClassificationChild
+                    .getChildren()
+                    .forEach(
+                        classificationChildOfChild -> {
+                          classificationChildOfChild.setActive(false);
+                          Classification savedClassificationChildOfChild =
+                              classificationRepository.save(classificationChildOfChild);
+                          log.info(savedClassificationChildOfChild.getName() + " Removed");
+                        });
               });
       return ResponseEntity.ok(savedClassification.toJson().toString());
     } catch (Exception e) {

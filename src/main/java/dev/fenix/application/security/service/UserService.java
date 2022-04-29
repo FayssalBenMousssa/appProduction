@@ -1,6 +1,5 @@
 package dev.fenix.application.security.service;
 
-import dev.fenix.application.Application;
 import dev.fenix.application.security.model.User;
 import dev.fenix.application.security.repository.UserRepository;
 import javassist.NotFoundException;
@@ -42,7 +41,6 @@ public class UserService {
     user.setUserpassword("No_pass0");
     user.setPassword(encodedPassword);
     user.setResetPasswordToken(null);
-
     userRepository.save(user);
   }
 }

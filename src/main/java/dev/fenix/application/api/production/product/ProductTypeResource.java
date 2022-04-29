@@ -1,7 +1,5 @@
 package dev.fenix.application.api.production.product;
 
-import dev.fenix.application.Application;
-import dev.fenix.application.production.product.model.Packaging;
 import dev.fenix.application.production.product.model.ProductType;
 import dev.fenix.application.production.product.repository.ProductRepository;
 import dev.fenix.application.production.product.repository.ProductTypeRepository;
@@ -30,7 +28,6 @@ public class ProductTypeResource {
   @Autowired private ProductTypeRepository productTypeRepository;
   @Autowired private ProductRepository productRepository;
 
-
   @RequestMapping(
       value = {"/", ""},
       method = RequestMethod.GET,
@@ -52,18 +49,19 @@ public class ProductTypeResource {
     return jArray.toString();
   }
 
-
   @RequestMapping(
-          value = "/get/{id}",
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id) throws NotFoundException {
+      value = "/get/{id}",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
+      throws NotFoundException {
     log.trace("ProductType.get method accessed");
-    ProductType type = productTypeRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+    ProductType type =
+        productTypeRepository
+            .findById(id)
+            .orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(type.toJson().toString(), HttpStatus.OK);
   }
-
-
 
   @RequestMapping(
       value = "/save",
@@ -75,24 +73,19 @@ public class ProductTypeResource {
     productType.setActive(true);
     ProductType savedType = productTypeRepository.save(productType);
 
-
-
     /*  if (task.getAssignedTo() == null) {
       throw new RuntimeException("AssignedTo is mandatory");
     }*/
     return ResponseEntity.ok(savedType.toJson().toString());
   }
 
-
-
-
-
   @RequestMapping(
-          value = "/update",
-          method = RequestMethod.PUT,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/update",
+      method = RequestMethod.PUT,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> update(@Valid @RequestBody ProductType productType, HttpServletRequest request) {
+  public ResponseEntity<?> update(
+      @Valid @RequestBody ProductType productType, HttpServletRequest request) {
     try {
       productType.setActive(true);
       ProductType updatedProductType = productTypeRepository.save(productType);
@@ -104,9 +97,9 @@ public class ProductTypeResource {
   }
 
   @RequestMapping(
-          value = "/delete/{id}",
-          method = RequestMethod.DELETE,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/delete/{id}",
+      method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 
     try {
@@ -120,11 +113,10 @@ public class ProductTypeResource {
     }
   }
 
-
   @RequestMapping(
-          value = {"/info", ""},
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = {"/info", ""},
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity info() {
     try {
       JSONObject information = new JSONObject();
@@ -134,9 +126,9 @@ public class ProductTypeResource {
       List<ProductType> listProductType = productTypeRepository.findAll();
       for (ProductType type : listProductType) {
         information.put(
-                type.getName(),
-                productRepository.countByActiveTrueAndProductType(
-                        productTypeRepository.findOneById(type.getId())));
+            type.getName(),
+            productRepository.countByActiveTrueAndProductType(
+                productTypeRepository.findOneById(type.getId())));
       }
       return new ResponseEntity<>(information.toString(), HttpStatus.OK);
     } catch (JSONException e) {
@@ -144,6 +136,4 @@ public class ProductTypeResource {
       return new ResponseEntity<>("BAD_REQUEST", HttpStatus.BAD_REQUEST);
     }
   }
-
-
 }

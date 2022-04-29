@@ -7,15 +7,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 
 @Entity
 @Getter
@@ -34,18 +30,14 @@ public class Job {
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-  @Column(name = "create_date" ,  updatable = false)
-
+  @Column(name = "create_date", updatable = false)
   private Date createDate;
 
   @UpdateTimestamp
   @Temporal(TemporalType.TIMESTAMP)
-
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   @Column(name = "modify_date")
   private Date modifyDate;
-
- 
 
   public Job() {}
 
@@ -56,7 +48,7 @@ public class Job {
       jobJSON.put("id", this.getId());
       jobJSON.put("name", this.getName());
       if (this.getModifyDate() != null) {
-        jobJSON.put("modifyDate",   formatter.format(this.getModifyDate()))  ;
+        jobJSON.put("modifyDate", formatter.format(this.getModifyDate()));
       }
       if (this.getCreateDate() != null) {
         jobJSON.put("createDate", formatter.format(this.getCreateDate()));

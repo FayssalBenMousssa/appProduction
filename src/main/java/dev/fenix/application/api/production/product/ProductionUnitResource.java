@@ -1,8 +1,5 @@
 package dev.fenix.application.api.production.product;
 
-import dev.fenix.application.Application;
-import dev.fenix.application.production.product.model.Packaging;
-import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.model.ProductionUnit;
 import dev.fenix.application.production.product.repository.ProductionUnitRepository;
 import javassist.NotFoundException;
@@ -64,23 +61,27 @@ public class ProductionUnitResource {
     return ResponseEntity.ok(savedProductionUnit.toJson().toString());
   }
 
-
   @RequestMapping(
-          value = "/get/{id}",
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id) throws NotFoundException {
+      value = "/get/{id}",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
+      throws NotFoundException {
     log.trace("ProductResource.get method accessed");
-    ProductionUnit productionUnit = productionUnitRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+    ProductionUnit productionUnit =
+        productionUnitRepository
+            .findById(id)
+            .orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(productionUnit.toJson().toString(), HttpStatus.OK);
   }
 
   @RequestMapping(
-          value = "/update",
-          method = RequestMethod.PUT,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/update",
+      method = RequestMethod.PUT,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> update(@Valid @RequestBody ProductionUnit productionUnit, HttpServletRequest request) {
+  public ResponseEntity<?> update(
+      @Valid @RequestBody ProductionUnit productionUnit, HttpServletRequest request) {
     try {
       productionUnit.setActive(true);
       ProductionUnit updatedProductionUnit = productionUnitRepository.save(productionUnit);
@@ -92,9 +93,9 @@ public class ProductionUnitResource {
   }
 
   @RequestMapping(
-          value = "/delete/{id}",
-          method = RequestMethod.DELETE,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/delete/{id}",
+      method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 
     try {
@@ -107,6 +108,4 @@ public class ProductionUnitResource {
       return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
     }
   }
-
-
 }

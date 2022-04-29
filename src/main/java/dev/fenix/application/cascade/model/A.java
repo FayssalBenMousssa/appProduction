@@ -26,11 +26,8 @@ public class A {
 
   @Column
   @Type(type = "text")
-  @ColumnTransformer(read = "UPPER(creditCardNumber)" , write = "LOWER(?)")
-
+  @ColumnTransformer(read = "UPPER(creditCardNumber)", write = "LOWER(?)")
   private String creditCardNumber;
-
-
 
   @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
   private List<B> items;

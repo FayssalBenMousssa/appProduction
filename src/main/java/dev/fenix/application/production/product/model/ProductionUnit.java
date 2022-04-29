@@ -24,7 +24,6 @@ public class ProductionUnit {
   @NotNull(message = "Please enter the name")
   private String name;
 
-
   @Column(name = "create_date")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date createDate;
@@ -42,8 +41,7 @@ public class ProductionUnit {
     modifyDate = new Date();
   }
 
-
-  @Column(columnDefinition="tinyint(1) default 1")
+  @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 
   public JSONObject toJson() {
@@ -57,6 +55,4 @@ public class ProductionUnit {
     }
     return productionUnitJSON;
   }
-
-
 }

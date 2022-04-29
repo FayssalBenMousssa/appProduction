@@ -24,14 +24,13 @@ public class Packaging {
   @NotNull(message = "Please enter the name")
   private String name;
 
-  @Column(columnDefinition="tinyint(1) default 1")
+  @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 
   public Packaging(Long id, String name) {
     this.id = id;
     this.name = name;
   }
-
 
   @Column(name = "create_date")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -60,6 +59,4 @@ public class Packaging {
     }
     return personJSON;
   }
-
-
 }

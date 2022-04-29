@@ -67,7 +67,7 @@ public class Route {
       inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles;
 
-  public JSONObject _toJson() {
+  public JSONObject toJson( Role role) {
 
     JSONObject routeJSON = new JSONObject();
     try {
@@ -81,27 +81,25 @@ public class Route {
       routeJSON.put("color", this.getColor());
       routeJSON.put("position", this.getPosition());
       routeJSON.put("cssClass", this.getCssClass());
-
       if (this.getSubRoutes() != null) {
-        JSONArray subRoutes = new JSONArray();
-
-        for (Route subRoute : this.getSubRoutes()) {
-          for (Role role : subRoute.getRoles()) {
-            for (Role parentRole : this.getRoles()) {
-              {
-                if (parentRole.getId() == role.getId()) {
-                  subRoutes.put(subRoute._toJson());
-                }
-              }
-            }
-          }
-        }
-        routeJSON.put("sub_routes", subRoutes);
+        routeJSON.put("sub_routes", jsonSubRoutes(this , role));
       }
 
     } catch (JSONException e) {
       e.printStackTrace();
     }
     return routeJSON;
+  }
+
+  public JSONArray jsonSubRoutes(Route route ,Role role) {
+    JSONArray subRoutes = new JSONArray();
+    for (Route subRoute : route.getSubRoutes()) {
+        for (Role subRole : subRoute.getRoles()) {
+          if (role.getId() == subRole.getId()) {
+            subRoutes.put(subRoute.toJson(role));
+          }
+        }
+    }
+    return subRoutes;
   }
 }

@@ -1,6 +1,5 @@
 package dev.fenix.application.business.service;
 
-
 import dev.fenix.application.business.model.Staff;
 import dev.fenix.application.business.repository.StaffRepository;
 import org.slf4j.Logger;
@@ -15,7 +14,6 @@ import java.util.*;
 public class StaffService {
   @Autowired private StaffRepository staffRepository;
 
-
   private static final Logger log = LoggerFactory.getLogger(StaffService.class);
   private int count = 0;
   private int countAll = 0;
@@ -27,7 +25,6 @@ public class StaffService {
    * @param pageSize page size
    * @param sortBy list of sort & direction
    * @param query list of query to filter data
-
    */
   public List<Staff> getAllStaffs(
       Integer pageNo, Integer pageSize, String[] sortBy, String[] query) {
@@ -36,9 +33,10 @@ public class StaffService {
 
     log.trace("pageNo : " + pageNo);
     log.trace("pageSize : " + pageSize);
-    log.trace("sortBy : " + (sortBy != null &&  sortBy.length > 0 ? Arrays.toString(sortBy) : "no sort") );
-    log.trace("query : " + (query != null &&  query.length > 0 ?  Arrays.toString(query) : "no query") );
-
+    log.trace(
+        "sortBy : " + (sortBy != null && sortBy.length > 0 ? Arrays.toString(sortBy) : "no sort"));
+    log.trace(
+        "query : " + (query != null && query.length > 0 ? Arrays.toString(query) : "no query"));
 
     //// Order
     List<Sort.Order> orders = new ArrayList<Sort.Order>();
@@ -48,7 +46,7 @@ public class StaffService {
       for (String sortOrder : sortBy) {
         // sortOrder="column, direction"
         String[] _sort = sortOrder.split(",");
-        log.trace("sortOrder : " +  _sort[1] +" "+ _sort[0]);
+        log.trace("sortOrder : " + _sort[1] + " " + _sort[0]);
         orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
       }
     } else {
@@ -62,32 +60,38 @@ public class StaffService {
 
     List<Staff> filteringStaff = new ArrayList<>();
     countAll = staffRepository.countByActiveTrue();
-    log.info(  countAll + " staffes active in DB");
+    log.info(countAll + " staffes active in DB");
     Page<Staff> pagedResult;
-    if(filters != null && filters.size() != 0) {
+    if (filters != null && filters.size() != 0) {
       log.info("we have just have filters");
       for (Map.Entry<String, String> entry : filters.entrySet()) {
         String key = entry.getKey();
         String value = entry.getValue();
         switch (key) {
           case "person_fullName":
-            filteringStaff.addAll(staffRepository.findAllByPersonFirstNameContainsOrPersonLastNameContainsAndActiveTrue(value,value, paging).getContent());
-            count = staffRepository.countByPersonFirstNameContainsOrPersonLastNameContainsAndActiveTrue(value,value);
-            log.info(count + " Staffes by name [" + value + "] for all types" );
+            filteringStaff.addAll(
+                staffRepository
+                    .findAllByPersonFirstNameContainsOrPersonLastNameContainsAndActiveTrue(
+                        value, value, paging)
+                    .getContent());
+            count =
+                staffRepository.countByPersonFirstNameContainsOrPersonLastNameContainsAndActiveTrue(
+                    value, value);
+            log.info(count + " Staffes by name [" + value + "] for all types");
             break;
           default:
-            log.info( "value not in list of search !" );
+            log.info("value not in list of search !");
         }
       }
       pagedResult = new PageImpl<>(filteringStaff, paging, pageSize);
       return pagedResult.getContent();
 
     } else {
-        log.info("all active staffes");
-        pagedResult = staffRepository.findByActiveTrue(paging);
-        count = staffRepository.countByActiveTrue();
-        log.info(count + " Staffes ");
-        return pagedResult.getContent();
+      log.info("all active staffes");
+      pagedResult = staffRepository.findByActiveTrue(paging);
+      count = staffRepository.countByActiveTrue();
+      log.info(count + " Staffes ");
+      return pagedResult.getContent();
     }
   }
 
@@ -107,11 +111,10 @@ public class StaffService {
       Map<String, String> hashMap = new HashMap<String, String>();
       for (String keyValue : query) {
         String[] _filter = keyValue.split(":");
-        if(_filter.length > 1){
+        if (_filter.length > 1) {
           hashMap.put(_filter[0], _filter[1]);
           log.info("Filter found : " + _filter[0] + ":" + _filter[1]);
         }
-
       }
       return hashMap;
     } else {
@@ -127,7 +130,6 @@ public class StaffService {
   public void setCount(int count) {
     this.count = count;
   }
-
 
   public int getCountAll() {
     return countAll;

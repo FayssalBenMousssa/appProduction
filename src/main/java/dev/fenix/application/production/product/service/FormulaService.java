@@ -14,7 +14,6 @@ import java.util.*;
 public class FormulaService {
   @Autowired private FormulaRepository formulaRepository;
 
-
   private static final Logger log = LoggerFactory.getLogger(FormulaService.class);
   private int count = 0;
   private int countAll = 0;
@@ -34,9 +33,10 @@ public class FormulaService {
 
     log.trace("pageNo : " + pageNo);
     log.trace("pageSize : " + pageSize);
-    log.trace("sortBy : " + (sortBy != null &&  sortBy.length > 0 ? Arrays.toString(sortBy) : "no sort") );
-    log.trace("query : " + (query != null &&  query.length > 0 ?  Arrays.toString(query) : "no query") );
-
+    log.trace(
+        "sortBy : " + (sortBy != null && sortBy.length > 0 ? Arrays.toString(sortBy) : "no sort"));
+    log.trace(
+        "query : " + (query != null && query.length > 0 ? Arrays.toString(query) : "no query"));
 
     //// Order
     List<Sort.Order> orders = new ArrayList<Sort.Order>();
@@ -47,7 +47,7 @@ public class FormulaService {
         // sortOrder="column, direction"
 
         String[] _sort = sortOrder.split(",");
-        log.trace("sortOrder : " +  _sort[1] +" "+ _sort[0]);
+        log.trace("sortOrder : " + _sort[1] + " " + _sort[0]);
         orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
       }
     } else {
@@ -61,33 +61,33 @@ public class FormulaService {
     List<Formula> filteringFormulas = new ArrayList<Formula>();
 
     countAll = formulaRepository.countByActiveTrue();
-    log.info(  countAll + " formula active in DB");
+    log.info(countAll + " formula active in DB");
     Page<Formula> pagedResult;
 
-   if(filters != null && filters.size() != 0) {
+    if (filters != null && filters.size() != 0) {
       log.info("we have just have filters");
       for (Map.Entry<String, String> entry : filters.entrySet()) {
         String key = entry.getKey();
         String value = entry.getValue();
         switch (key) {
           case "name":
-            filteringFormulas.addAll(formulaRepository.findAllByNameContainsAndActiveTrue(value, paging).getContent());
+            filteringFormulas.addAll(
+                formulaRepository.findAllByNameContainsAndActiveTrue(value, paging).getContent());
             count = formulaRepository.countByNameContainsAndActiveTrue(value);
-            log.info(count + " formulas by name [" + value + "] for all types" );
+            log.info(count + " formulas by name [" + value + "] for all types");
             break;
           default:
-            log.info( "value not in list of search !" );
+            log.info("value not in list of search !");
         }
       }
       pagedResult = new PageImpl<>(filteringFormulas, paging, pageSize);
       return pagedResult.getContent();
-    }
-    else {
-        log.info("all active formulas");
-        pagedResult = formulaRepository.findByActiveTrue(paging);
-        count = formulaRepository.countByActiveTrue();
-        log.info(count + " formulas ");
-        return pagedResult.getContent();
+    } else {
+      log.info("all active formulas");
+      pagedResult = formulaRepository.findByActiveTrue(paging);
+      count = formulaRepository.countByActiveTrue();
+      log.info(count + " formulas ");
+      return pagedResult.getContent();
     }
   }
 
@@ -107,11 +107,10 @@ public class FormulaService {
       Map<String, String> hashMap = new HashMap<String, String>();
       for (String keyValue : query) {
         String[] _filter = keyValue.split(":");
-        if(_filter.length > 1){
+        if (_filter.length > 1) {
           hashMap.put(_filter[0], _filter[1]);
           log.info("Filter found : " + _filter[0] + ":" + _filter[1]);
         }
-
       }
       return hashMap;
     } else {
@@ -127,7 +126,6 @@ public class FormulaService {
   public void setCount(int count) {
     this.count = count;
   }
-
 
   public int getCountAll() {
     return countAll;

@@ -2,8 +2,6 @@ package dev.fenix.application.api.production.logistic;
 
 import dev.fenix.application.production.logistic.model.Depot;
 import dev.fenix.application.production.logistic.repository.DepotRepository;
-import dev.fenix.application.production.product.model.SiUnit;
-import dev.fenix.application.production.product.repository.SiUnitRepository;
 import javassist.NotFoundException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,7 +31,6 @@ public class DepotResource {
     return JSONObject.quote("Api :" + this.getClass().getSimpleName());
   }
 
-
   @RequestMapping(
       value = "/index",
       method = RequestMethod.GET,
@@ -47,35 +44,33 @@ public class DepotResource {
     return jArray.toString();
   }
 
-
-
   @RequestMapping(
       value = "/save",
       method = RequestMethod.POST,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> save(
-      @Valid @RequestBody Depot depot, HttpServletRequest request) {
+  public ResponseEntity<?> save(@Valid @RequestBody Depot depot, HttpServletRequest request) {
     depot.setActive(true);
     Depot savedDepot = depotRepository.save(depot);
     return ResponseEntity.ok(savedDepot.toJson().toString());
   }
 
-
   @RequestMapping(
-          value = "/get/{id}",
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id) throws NotFoundException {
+      value = "/get/{id}",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
+      throws NotFoundException {
     log.trace("ProductResource.get method accessed");
-    Depot depot = depotRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+    Depot depot =
+        depotRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(depot.toJson().toString(), HttpStatus.OK);
   }
 
   @RequestMapping(
-          value = "/update",
-          method = RequestMethod.PUT,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/update",
+      method = RequestMethod.PUT,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> update(@Valid @RequestBody Depot depot, HttpServletRequest request) {
     try {
@@ -89,9 +84,9 @@ public class DepotResource {
   }
 
   @RequestMapping(
-          value = "/delete/{id}",
-          method = RequestMethod.DELETE,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      value = "/delete/{id}",
+      method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 
     try {
@@ -104,6 +99,4 @@ public class DepotResource {
       return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
     }
   }
-
-
 }
