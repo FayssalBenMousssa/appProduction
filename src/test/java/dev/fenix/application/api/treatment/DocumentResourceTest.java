@@ -104,7 +104,7 @@ class DocumentResourceTest {
     params.add("size", "50");
     params.add("sort", "id,desc");
    // params.add("type", "10128");
-   // params.add("category", "1");
+  // params.add("category", "1");
 
     this.mockMvc
         .perform(get("/api/document/index").params(params))
@@ -118,6 +118,60 @@ class DocumentResourceTest {
         .andExpect(status().isOk())
         .andExpect(content().contentType("application/json;charset=UTF-8"));
   }
+
+  @Test
+  @Order(5)
+  @WithMockUser(
+          username = "fenix",
+          roles = {"USER", "ADMIN"})
+  void indexDocumentWithParamsType() throws Exception {
+    MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+
+    params.add("page", "0");
+    params.add("size", "50");
+    params.add("sort", "id,desc");
+
+
+   Type type = typeRepository.findTopByOrderByIdDesc();
+    params.add("type", String.valueOf(10091L));
+    this.mockMvc
+            .perform(get("/api/document/index").params(params))
+            .andDo(print())
+            .andDo(
+                    document(
+                            "{methodName}",
+                            preprocessRequest(prettyPrint()),
+                            preprocessResponse(prettyPrint()),
+                            pathParameters()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType("application/json;charset=UTF-8"));
+
+  }
+
+
+  void indexDocumentWithParamsCategory() throws Exception {
+    MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+
+    params.add("page", "0");
+    params.add("size", "50");
+    params.add("sort", "id,desc");
+
+    params.add("category", "1");
+
+    this.mockMvc
+            .perform(get("/api/document/index").params(params))
+            .andDo(print())
+            .andDo(
+                    document(
+                            "{methodName}",
+                            preprocessRequest(prettyPrint()),
+                            preprocessResponse(prettyPrint()),
+                            pathParameters()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType("application/json;charset=UTF-8"));
+
+  }
+
 
   @Test
   @Order(3)

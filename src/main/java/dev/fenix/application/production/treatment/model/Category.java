@@ -1,5 +1,6 @@
 package dev.fenix.application.production.treatment.model;
 
+import dev.fenix.application.core.model.Style;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -34,6 +35,13 @@ public class Category {
   @Column(name = "create_date", updatable = false)
   private Date createDate;
 
+
+  @NotNull(message = "Please enter the type")
+  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
+  @JoinColumn(name = "style_id", referencedColumnName = "id")
+  private Style style;
+
+
   @UpdateTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "modify_date")
@@ -45,9 +53,9 @@ public class Category {
     try {
       CategoryJSON.put("id", this.getId());
       CategoryJSON.put("name", this.getName());
-      CategoryJSON.put("active", this.isActive());
-      CategoryJSON.put("createDate", this.getCreateDate());
-      CategoryJSON.put("modifyDate", this.getModifyDate());
+      CategoryJSON.put("style", this.getStyle().toJson());
+
+
       if (this.getModifyDate() != null) {
         CategoryJSON.put("modifyDate", formatter.format(this.getModifyDate()));
       }
