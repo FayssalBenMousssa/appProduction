@@ -1,6 +1,7 @@
-package dev.fenix.application.api.production.product;
+package dev.fenix.application.api.product;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.fenix.application.api.production.product.PackagingResource;
 import dev.fenix.application.production.product.model.Packaging;
 import org.junit.Assert;
 import org.junit.Before;

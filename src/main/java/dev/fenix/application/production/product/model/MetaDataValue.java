@@ -3,6 +3,8 @@ package dev.fenix.application.production.product.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import dev.fenix.application.core.model.MetaData;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -43,22 +45,16 @@ public class MetaDataValue {
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 
-  @Column(name = "create_date")
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @CreationTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "create_date", updatable = false)
   private Date createDate;
 
+  @UpdateTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "modify_date")
   private Date modifyDate;
 
-  @PrePersist
-  protected void onCreate() {
-    createDate = new Date();
-  }
-
-  @PreUpdate
-  protected void onUpdate() {
-    modifyDate = new Date();
-  }
 
   public JSONObject toJson() {
     JSONObject metaDataValueJSON = new JSONObject();

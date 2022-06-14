@@ -17,4 +17,6 @@ public interface ClassificationRepository extends JpaRepository<Classification, 
   Classification findOneById(Long id);
 
   List<Classification> findAllByLevel(Long level);
+
+    Classification findTopByOrderByIdDesc();
 }

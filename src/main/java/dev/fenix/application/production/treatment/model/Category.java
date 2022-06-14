@@ -53,9 +53,9 @@ public class Category {
     try {
       CategoryJSON.put("id", this.getId());
       CategoryJSON.put("name", this.getName());
-      CategoryJSON.put("style", this.getStyle().toJson());
-
-
+      if (this.getStyle() != null) {
+        CategoryJSON.put("style", this.getStyle().toJson());
+      }
       if (this.getModifyDate() != null) {
         CategoryJSON.put("modifyDate", formatter.format(this.getModifyDate()));
       }

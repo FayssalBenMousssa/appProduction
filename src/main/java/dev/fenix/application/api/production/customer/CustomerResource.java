@@ -102,7 +102,7 @@ public class CustomerResource {
       return new ResponseEntity<>(updatedCustomer.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("Not updated", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -135,7 +135,7 @@ public class CustomerResource {
       return new ResponseEntity<>(deletedCustomer.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 }

@@ -19,13 +19,9 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
   int countByActiveTrue();
 
   Page<Document> findAllByCodeContainsAndActiveTrueAndType(String value, Long type, Pageable paging);
-
   int countByCodeContainsAndActiveTrueAndType(String value, Long type);
-
   Page<Document> findAllByCodeContainsAndActiveTrue(String value, Pageable paging);
-
   int countByCodeContainsAndActiveTrue(String value);
-
 
   Page<Document> findByActiveTrueAndType(Type type, Pageable paging);
   int countByActiveTrueAndType(Type type);
@@ -52,6 +48,10 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
 
   Page<Document> findAll(Pageable sortedByName);
+
+
+
+
 
   /*
   @Query("SELECT u FROM User u WHERE u.status = :status and u.name = :name")

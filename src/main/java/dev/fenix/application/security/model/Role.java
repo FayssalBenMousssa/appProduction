@@ -1,5 +1,7 @@
 package dev.fenix.application.security.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,6 +20,7 @@ import java.util.List;
 @Service
 @Table(name = "sc__role")
 @ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Role {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,6 +35,7 @@ public class Role {
 
   @ManyToMany(mappedBy = "roles")
   @OrderBy("orderNum ASC")
+  @JsonIgnoreProperties("routes")
   private final List<Route> routes = new ArrayList<>();
 
   public JSONObject toJson() {

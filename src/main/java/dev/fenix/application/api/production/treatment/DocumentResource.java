@@ -119,12 +119,9 @@ public class DocumentResource {
       return new ResponseEntity<>(savedDocument.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("Not saved", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
-
-
-
 
 
   @RequestMapping(
@@ -141,7 +138,7 @@ public class DocumentResource {
       return new ResponseEntity<>(updatedDocument.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("Not saved", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -159,7 +156,7 @@ public class DocumentResource {
       return ResponseEntity.ok(savedDocument.toJson().toString());
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 

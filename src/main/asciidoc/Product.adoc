@@ -1,0 +1,36 @@
+= Products
+
+== Prosuctt
+Version 1.3, 26.03.2022
+
+
+
+
+
+====  index index Formula With Params
+IMPORTANT:  Params
+
+* Param(defaultValue = "0") Integer page.
+* Param(defaultValue = "200") Integer size.
+* Param(defaultValue = "id,desc") String[] sort.
+* Param(required = false) String[] query.
+
+.request
+include::{snippets}/indexProductWithParams/http-request.adoc[]
+
+.response
+include::{snippets}/indexProductWithParams/http-response.adoc[]
+
+==== save
+.request
+include::{snippets}/saveProduct/http-request.adoc[]
+
+.response
+include::{snippets}/saveProduct/http-response.adoc[]
+
+==== update
+.request
+include::{snippets}/updateProduct/http-request.adoc[]
+
+.response
+include::{snippets}/updateProduct/http-response.adoc[]

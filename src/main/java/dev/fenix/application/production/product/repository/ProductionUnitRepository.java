@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductionUnitRepository extends JpaRepository<ProductionUnit, Long> {
   Iterable<ProductionUnit> findByActiveTrue();
+
+    ProductionUnit findTopByOrderByIdDesc();
 }

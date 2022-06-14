@@ -50,9 +50,16 @@ public class JobResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> save(@Valid @RequestBody Job job, HttpServletRequest request) {
-    job.setActive(true);
-    Job savedJob = jobRepository.save(job);
-    return ResponseEntity.ok(savedJob.toJson().toString());
+
+
+    try {
+      job.setActive(true);
+      Job savedJob = jobRepository.save(job);
+      return ResponseEntity.ok(savedJob.toJson().toString());
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
   }
 
   @RequestMapping(
@@ -61,9 +68,7 @@ public class JobResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-   // log.trace("ProductResource.get method accessed");
-    Job job =
-        jobRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+    Job job = jobRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(job.toJson().toString(), HttpStatus.OK);
   }
 
@@ -79,7 +84,7 @@ public class JobResource {
       return new ResponseEntity<>(updatedJob.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("Not saved", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -96,7 +101,7 @@ public class JobResource {
       return ResponseEntity.ok(deletedJob.toJson().toString());
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 }

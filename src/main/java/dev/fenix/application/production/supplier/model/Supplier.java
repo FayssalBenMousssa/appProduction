@@ -62,7 +62,10 @@ public class Supplier extends Company {
       }
       supplierJSON.put("telephone", this.getTelephone());
       supplierJSON.put("email", this.getEmail());
-      supplierJSON.put("classification", this.getClassification().toJson());
+      if(this.getClassification() != null) {
+        supplierJSON.put("classification", this.getClassification().toJson());
+      }
+
       supplierJSON.put("note", this.getNote());
       if (this.getModifyDate() != null) {
         supplierJSON.put("modifyDate", formatter.format(this.getModifyDate()));

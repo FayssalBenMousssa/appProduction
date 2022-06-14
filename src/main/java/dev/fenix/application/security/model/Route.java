@@ -1,5 +1,8 @@
 package dev.fenix.application.security.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,6 +21,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Route {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,6 +38,7 @@ public class Route {
   private String position;
 
   @Column(name = "route")
+  @JsonBackReference
   private String route;
 
   @Column(name = "icon")
@@ -50,17 +55,20 @@ public class Route {
   @ManyToOne(cascade = {CascadeType.ALL})
   @JoinColumn(name = "parent_id")
   @NotFound(action = NotFoundAction.IGNORE)
+  @JsonBackReference
   private Route parent;
 
   @OneToMany(mappedBy = "parent")
   @NotFound(action = NotFoundAction.IGNORE)
   @OrderBy("orderNum ASC")
+  @JsonManagedReference
   private List<Route> subRoutes;
 
   @Column(name = "level", nullable = false, columnDefinition = "int default 0")
   private int level;
 
   @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @JsonIgnoreProperties("roles")
   @JoinTable(
       name = "sc__routes_role",
       joinColumns = @JoinColumn(name = "route_id"),

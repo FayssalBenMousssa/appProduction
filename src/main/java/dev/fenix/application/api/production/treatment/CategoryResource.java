@@ -1,9 +1,13 @@
 package dev.fenix.application.api.production.treatment;
 
 import dev.fenix.application.production.treatment.model.Category;
+import dev.fenix.application.production.treatment.model.Type;
 import dev.fenix.application.production.treatment.repository.CategoryRepository;
+import dev.fenix.application.production.treatment.repository.DocumentRepository;
 import javassist.NotFoundException;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +25,7 @@ public class CategoryResource {
   private static final Logger log = LoggerFactory.getLogger(CategoryResource.class);
 
   @Autowired private CategoryRepository categoryRepository ;
-
+  @Autowired private DocumentRepository documentRepository;
   @RequestMapping(
       value = "/index",
       method = RequestMethod.GET,
@@ -72,7 +76,7 @@ public class CategoryResource {
       return new ResponseEntity<>(updatedCategory.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("Not updated", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -91,7 +95,38 @@ public class CategoryResource {
 
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+  }
+
+
+  @RequestMapping(
+          value = "/summary",
+          method = RequestMethod.GET,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity summary(HttpServletRequest request) {
+    JSONObject summary = new JSONObject();
+
+    JSONArray jArray = new JSONArray();
+    Iterable<Category> categories  = categoryRepository.findByActiveTrue();
+    for (Category category : categories) {
+      int countDocs = documentRepository.countByActiveTrueAndTypeCategory(category);
+      JSONObject categoryCont = new JSONObject();
+      try {
+        categoryCont.put("category",category.toJson());
+        categoryCont.put("count_document",countDocs);
+      } catch (JSONException e) {
+        return new ResponseEntity<>(  e.getMessage(), HttpStatus.BAD_REQUEST);
+      }
+      jArray.put(categoryCont);
+    }
+    try {
+      summary.put("count" , categoryRepository.countByActiveTrue());
+      summary.put("categories" , jArray);
+    } catch (JSONException e) {
+      return new ResponseEntity<>(  e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    return ResponseEntity.ok(summary.toString());
+
   }
 }

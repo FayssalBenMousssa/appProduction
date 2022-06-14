@@ -62,7 +62,7 @@ public class CustomerAddressResource {
       return new ResponseEntity<>(updatedAddress.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("Not updated", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -81,7 +81,7 @@ public class CustomerAddressResource {
       return ResponseEntity.ok("active : " + deletedAddress.isActive());
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 }

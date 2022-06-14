@@ -13,4 +13,6 @@ public interface TypeRepository extends JpaRepository<Type, Long> {
     Type findOneById(Long type);
 
     Type findTopByOrderByIdAsc();
+
+  int countByActiveTrue();
 }

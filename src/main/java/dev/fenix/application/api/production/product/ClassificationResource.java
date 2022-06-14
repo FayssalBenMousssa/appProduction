@@ -70,7 +70,9 @@ public class ClassificationResource {
       @Valid @RequestBody Classification classification, HttpServletRequest request) {
     classification.setActive(true);
 
-    if (classification.getParent() != null) {
+    log.info(String.valueOf(classification));
+
+  if (classification.getParent() != null) {
       Classification parent = classificationRepository.getOne(classification.getParent().getId());
       classification.setLevel(parent.getLevel() + 1);
     } else {
@@ -114,7 +116,7 @@ public class ClassificationResource {
       return new ResponseEntity<>(updatedClassification.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("Not updated", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -149,7 +151,7 @@ public class ClassificationResource {
       return ResponseEntity.ok(savedClassification.toJson().toString());
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 

@@ -41,6 +41,12 @@ public class MetaData {
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean required;
 
+
+
+
+  private String dataSource;
+  private String defaultValue;
+
   @Column(name = "create_date")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date createDate;
@@ -68,7 +74,13 @@ public class MetaData {
       metadataJson.put("code", this.getCode());
       metadataJson.put("type", this.getType());
       metadataJson.put("required", this.isRequired());
+      if (this.getDefaultValue() != null) {
+        metadataJson.put("defaultValue", this.getDefaultValue());
+      }
       metadataJson.put("active", this.isActive());
+      if (this.getDataSource() != null) {
+        metadataJson.put("dataSource",  this.getDataSource() );
+      }
 
       if (this.getModifyDate() != null) {
         metadataJson.put("modifyDate", formatter.format(this.getModifyDate()));

@@ -9,4 +9,8 @@ public interface ProductTypeRepository extends JpaRepository<ProductType, Long> 
   Iterable<ProductType> findByActiveTrue();
 
   ProductType findOneById(Long type);
+
+  ProductType findTopByOrderByIdDesc();
+
+    ProductType findTopByOrderByIdAsc();
 }

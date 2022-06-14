@@ -52,12 +52,27 @@ public class Product {
   @JoinColumn(name = "packaging_id", referencedColumnName = "id")
   private Packaging packaging;
 
-  @NotNull(message = "Please enter the productionUnit")
+
+  @NotNull(message = "Please enter the ProductMgmtMode")
   @ManyToOne(
-      cascade = {CascadeType.DETACH},
-      fetch = FetchType.EAGER)
-  @JoinColumn(name = "production_unit_id", referencedColumnName = "id")
-  private ProductionUnit productionUnit;
+          cascade = {CascadeType.DETACH},
+          fetch = FetchType.EAGER)
+  @JoinColumn(name = "product_mgmt_mode_id", referencedColumnName = "id")
+  private ProductMgmtMode productMgmtMode;
+
+
+  @NotNull(message = "Please enter the productionUnits")
+  @ManyToMany(
+      fetch = FetchType.EAGER,
+      cascade = {CascadeType.DETACH})
+  @JoinTable(
+      name = "prds__product_production_units",
+      joinColumns = @JoinColumn(name = "product_id"),
+      inverseJoinColumns = @JoinColumn(name = "production_unit_id"))
+  private List<ProductionUnit> productionUnits;
+
+
+
 
   @NotNull(message = "Please enter the productType")
   @ManyToOne(
@@ -76,12 +91,21 @@ public class Product {
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @Fetch(value = FetchMode.SUBSELECT)
+  @OneToMany(
+      cascade = {CascadeType.ALL},
+      orphanRemoval = true) // javax.persistent.CascadeType
+  @JoinColumn(name = "product_id") // parent's foreign key
+  private List<MetaDataValue> metaDataValues = new ArrayList<>();
 
   @LazyCollection(LazyCollectionOption.FALSE)
   @Fetch(value = FetchMode.SUBSELECT)
-  @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = false) // javax.persistent.CascadeType
+  @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true) // javax.persistent.CascadeType
   @JoinColumn(name = "product_id") // parent's foreign key
-  private List<MetaDataValue> metaDataValues = new ArrayList<>();
+  private List<Price> prices = new ArrayList<>();
+
+
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
@@ -102,6 +126,14 @@ public class Product {
       if (this.getModifyDate() != null) {
         productJSON.put("modifyDate", formatter.format(this.getModifyDate()));
       }
+
+      if (this.getProductMgmtMode() != null) {
+        productJSON.put("productMgmtMode",  this.getProductMgmtMode().toJson());
+      }
+
+
+
+
       if (this.getCreateDate() != null) {
         productJSON.put("createDate", formatter.format(this.getCreateDate()));
       }
@@ -122,9 +154,24 @@ public class Product {
       if (this.getPackaging() != null) {
         productJSON.put("packaging", this.getPackaging().toJson());
       }
+      if (this.getProductionUnits() != null && this.getProductionUnits().size() > 0) {
+        JSONArray productionUnitList = new JSONArray();
+        for (ProductionUnit productionUnit : this.getProductionUnits()) {
+          if (productionUnit.isActive()) {
+            productionUnitList.put(productionUnit.toJson());
+          }
+        }
+        productJSON.put("productionUnits", productionUnitList);
+      }
 
-      if (this.getProductionUnit() != null) {
-        productJSON.put("productionUnit", this.getProductionUnit().toJson());
+      if (this.getPrices() != null && this.getPrices().size() > 0) {
+        JSONArray pricesList = new JSONArray();
+        for (Price price : this.getPrices()) {
+          if (price.isActive()) {
+            pricesList.put(price.toJson());
+          }
+        }
+        productJSON.put("prices", pricesList);
       }
 
       if (this.getProductType() != null) {

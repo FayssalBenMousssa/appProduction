@@ -41,10 +41,7 @@ public class ProductType {
   }
 
   @ManyToMany(cascade = CascadeType.ALL)
-  @JoinTable(
-      name = "prds__type_metadata",
-      joinColumns = @JoinColumn(name = "product_type_id"),
-      inverseJoinColumns = @JoinColumn(name = "metadata_id"))
+  @JoinTable(name = "prds__type_metadata",joinColumns = @JoinColumn(name = "product_type_id"),inverseJoinColumns = @JoinColumn(name = "metadata_id"))
   private List<MetaData> metaData;
 
   @Column(name = "create_date")

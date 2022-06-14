@@ -133,7 +133,7 @@ class DocumentResourceTest {
 
 
    Type type = typeRepository.findTopByOrderByIdDesc();
-    params.add("type", String.valueOf(10091L));
+    params.add("type", String.valueOf(type.getId()));
     this.mockMvc
             .perform(get("/api/document/index").params(params))
             .andDo(print())
@@ -148,7 +148,9 @@ class DocumentResourceTest {
 
   }
 
-
+  @Test
+  @Order(3)
+  @WithMockUser(username = "fenix")
   void indexDocumentWithParamsCategory() throws Exception {
     MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
@@ -178,9 +180,10 @@ class DocumentResourceTest {
   @WithMockUser(username = "fenix")
   void getDocument() throws Exception {
     Document requestDocument = documentRepository.findTopByOrderByIdDesc();
+
     MvcResult result =
         this.mockMvc
-            .perform(get("/api/document/get/" + requestDocument.getId()))
+            .perform(get("/api/document/get/" + 1183L))
             .andDo(print())
             .andDo(
                 document(
@@ -196,7 +199,7 @@ class DocumentResourceTest {
     log.info(String.valueOf(expectedDocument.getId()));
     log.info(String.valueOf(requestDocument.getId()));
 
-    Assert.assertTrue(expectedDocument.getId().equals(requestDocument.getId()));
+    Assert.assertTrue(expectedDocument.getId().equals(1183L));
   }
 
   @Test
@@ -207,7 +210,9 @@ class DocumentResourceTest {
 
     Document requestDocument = new Document();
 
-    Type type = typeRepository.findOneById(10091L);
+
+
+    Type type = typeRepository.findTopByOrderByIdDesc();
 
     Type type_1 = new Type();
     type_1.setId(type.getId());
@@ -293,7 +298,7 @@ class DocumentResourceTest {
 
     String jsonRequest = om.writeValueAsString(requestDocument);
 
-    /* MvcResult result =
+    MvcResult result =
         mockMvc
             .perform(
                 put("/api/document/update")
@@ -308,11 +313,11 @@ class DocumentResourceTest {
             .andExpect(status().isOk())
             .andReturn();
     String resultContent = result.getResponse().getContentAsString();
-    Document expectedDocument = om.readValue(resultContent, Document.class);
-    Assert.assertTrue(expectedDocument.getId() != null);
-    Assert.assertTrue(expectedDocument.getCode().equals(requestDocument.getCode()));
-    Assert.assertTrue(expectedDocument.getName().contains("Updated_"));
-    */
+   // Document expectedDocument = om.readValue(resultContent, Document.class);
+   // Assert.assertTrue(expectedDocument.getId() != null);
+   // Assert.assertTrue(expectedDocument.getCode().equals(requestDocument.getCode()));
+   // Assert.assertTrue(expectedDocument.getName().contains("Updated_"));
+
 
   }
 

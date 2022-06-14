@@ -82,7 +82,7 @@ public class CustomerClassificationResource {
       return new ResponseEntity<>(updatedCustomerClassification.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("Not updated", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -101,7 +101,7 @@ public class CustomerClassificationResource {
       return ResponseEntity.ok("active : " + savedCustomerClassification.getActive());
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 }

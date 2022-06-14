@@ -2,6 +2,8 @@ package dev.fenix.application.production.product.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,10 +32,15 @@ public class Classification {
   @NotNull(message = "Please enter the code")
   private String code;
 
+
+
   @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
   @JoinColumn(name = "parent_id", referencedColumnName = "id")
-  @JsonIgnore
   private Classification parent;
+
+
+
+
 
   /* fetch = FetchType.LAZY is default in one:many */
   @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "parent")
@@ -57,22 +64,16 @@ public class Classification {
     this.parent = parent;
   }
 
-  @Column(name = "create_date")
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @CreationTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "create_date", updatable = false)
   private Date createDate;
 
+  @UpdateTimestamp
+  @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "modify_date")
   private Date modifyDate;
 
-  @PrePersist
-  protected void onCreate() {
-    createDate = new Date();
-  }
-
-  @PreUpdate
-  protected void onUpdate() {
-    modifyDate = new Date();
-  }
 
   public JSONObject toJson() {
     JSONObject classificationJSON = new JSONObject();

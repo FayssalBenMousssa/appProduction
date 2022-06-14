@@ -11,4 +11,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
   Category findTopByOrderByIdDesc();
 
     Category findOneById(Long category);
+
+    int countByActiveTrue();
 }

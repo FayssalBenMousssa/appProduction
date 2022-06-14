@@ -17,4 +17,6 @@ public interface PackagingRepository extends JpaRepository<Packaging, Long> {
   Page<Packaging> findAllByNameContainsAndActiveTrue(String value, Pageable paging);
 
   int countByNameContainsAndActiveTrue(String value);
+
+    Packaging findTopByOrderByIdDesc();
 }

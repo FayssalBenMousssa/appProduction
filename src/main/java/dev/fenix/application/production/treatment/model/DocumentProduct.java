@@ -30,6 +30,9 @@ public class DocumentProduct {
   @JoinColumn(name = "product_id", referencedColumnName = "id")
   private Product product;
 
+  @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+  @JoinColumn(name = "batch_id", referencedColumnName = "id")
+  private BatchNumber batch;
 
   @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "document_id", referencedColumnName = "id")
@@ -37,6 +40,9 @@ public class DocumentProduct {
   private Document document;
 
 
+  private Double  tax;
+  private Double  price;
+  private Double  discount;
 
 
   @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
@@ -66,6 +72,22 @@ public class DocumentProduct {
       formulaProductJSON.put("id", this.getId());
       formulaProductJSON.put("quantity", this.getQuantity());
       formulaProductJSON.put("siUnit", this.getSiUnit().toJson());
+
+        if (this.getPrice() != null) {
+            formulaProductJSON.put("price", this.getPrice());
+        }
+
+      if (this.getBatch() != null) {
+        formulaProductJSON.put("batch", this.getBatch().toJson());
+      }
+
+      if (this.getPrice() != null) {
+        formulaProductJSON.put("tax", this.getTax());
+      }
+
+      if (this.getPrice() != null) {
+        formulaProductJSON.put("discount", this.getDiscount());
+      }
 
       if (this.getModifyDate() != null) {
         formulaProductJSON.put("modifyDate", formatter.format(this.getModifyDate()));

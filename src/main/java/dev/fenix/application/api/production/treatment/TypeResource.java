@@ -1,9 +1,15 @@
 package dev.fenix.application.api.production.treatment;
 
+import dev.fenix.application.production.customer.model.Customer;
+import dev.fenix.application.production.product.model.Classification;
+import dev.fenix.application.production.treatment.model.Document;
 import dev.fenix.application.production.treatment.model.Type;
+import dev.fenix.application.production.treatment.repository.DocumentRepository;
 import dev.fenix.application.production.treatment.repository.TypeRepository;
 import javassist.NotFoundException;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +27,7 @@ public class TypeResource {
   private static final Logger log = LoggerFactory.getLogger(TypeResource.class);
 
   @Autowired private TypeRepository typeRepository;
+  @Autowired private DocumentRepository documentRepository;
 
   @RequestMapping(
       value = "/index",
@@ -74,7 +81,7 @@ public class TypeResource {
       return new ResponseEntity<>(updatedType.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("Not updated", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -93,7 +100,40 @@ public class TypeResource {
 
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+  }
+
+
+
+
+  @RequestMapping(
+          value = "/summary",
+          method = RequestMethod.GET,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity summary(HttpServletRequest request) {
+    JSONObject summary = new JSONObject();
+
+    JSONArray jArray = new JSONArray();
+    Iterable<Type> types = typeRepository.findByActiveTrue();
+    for (Type type : types) {
+      int countDocs = documentRepository.countByActiveTrueAndType(type);
+      JSONObject typeCont = new JSONObject();
+      try {
+        typeCont.put("type",type.toJson());
+        typeCont.put("count_document",countDocs);
+      } catch (JSONException e) {
+        return new ResponseEntity<>(  e.getMessage(), HttpStatus.BAD_REQUEST);
+      }
+      jArray.put(typeCont);
+    }
+    try {
+      summary.put("count" , typeRepository.countByActiveTrue());
+      summary.put("types" , jArray);
+    } catch (JSONException e) {
+      return new ResponseEntity<>(  e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    return ResponseEntity.ok(summary.toString());
+
   }
 }

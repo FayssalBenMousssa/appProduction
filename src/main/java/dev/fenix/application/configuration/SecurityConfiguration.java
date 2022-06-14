@@ -137,15 +137,7 @@ public class SecurityConfiguration {
                   String username = userDetails.getUsername();
                   User user = userRepository.findOneByUserName(username);
                   log.info("The user " + username + " has logged in.");
-                  activityRepository.save(
-                      new Activity(
-                          user,
-                          request.getRemoteAddr(),
-                          request.getHeader("referer"),
-                          "The user " + username + " has logged in.",
-                          "INFO",
-                          request.getHeader("user-agent"),
-                          new Date()));
+                  activityRepository.save(new Activity(user, request.getRemoteAddr(), request.getHeader("referer"), "The user " + username + " has logged in.", "INFO", request.getHeader("user-agent"), new Date()));
                   response.sendRedirect(request.getContextPath());
                 }
               })
@@ -198,6 +190,7 @@ public class SecurityConfiguration {
   public class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
     @Autowired UserDetailsService userDetailsService;
     @Autowired private JwtRequestFilter jwtRequestFilter;
+    @Autowired ActivityRepository activityRepository;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -217,6 +210,9 @@ public class SecurityConfiguration {
           .authenticated()
           .and()
           .httpBasic();
+
+
+      // activityRepository.save(new Activity(user, request.getRemoteAddr(), request.getHeader("referer"), "The user " + username + " has logged in.", "INFO", request.getHeader("user-agent"), new Date()));
 
       http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
       http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

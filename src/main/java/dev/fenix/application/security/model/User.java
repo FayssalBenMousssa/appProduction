@@ -1,5 +1,6 @@
 package dev.fenix.application.security.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.fenix.application.person.model.Person;
 import lombok.Getter;
 import lombok.Setter;
@@ -64,6 +65,7 @@ public class User {
       fetch = FetchType.LAZY,
       cascade = {CascadeType.ALL})
   @Valid
+  @JsonIgnore
   private Person person;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

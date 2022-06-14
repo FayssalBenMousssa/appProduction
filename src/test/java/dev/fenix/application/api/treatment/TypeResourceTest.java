@@ -3,6 +3,10 @@ package dev.fenix.application.api.treatment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.fenix.application.business.model.CompanyType;
 import dev.fenix.application.core.model.MetaData;
+import dev.fenix.application.production.product.model.CategoryPrice;
+import dev.fenix.application.production.product.model.ProductType;
+import dev.fenix.application.production.product.repository.CategoryPriceRepository;
+import dev.fenix.application.production.product.repository.ProductTypeRepository;
 import dev.fenix.application.production.treatment.model.Category;
 import dev.fenix.application.production.treatment.model.Type;
 import dev.fenix.application.production.treatment.repository.CategoryRepository;
@@ -24,6 +28,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +46,8 @@ class TypeResourceTest {
   @Autowired private MockMvc mockMvc;
   @Autowired private TypeRepository typeRepository;
   @Autowired private CategoryRepository categoryRepository;
+  @Autowired private  CategoryPriceRepository categoryPriceRepository;
+  @Autowired private ProductTypeRepository productTypeRepository;
   @Autowired private WebApplicationContext context;
   ObjectMapper om = new ObjectMapper();
 
@@ -74,7 +81,6 @@ class TypeResourceTest {
     requestType.setCategory(category);
     requestType.setName("category Test - " + this.getRandom(0, 1000));
     requestType.setAbbreviation("BL");
-    requestType.setColor("#0000000");
     requestType.setCode("xxxxx");
 
     requestType.setSource(CompanyType.CUSTOMER);
@@ -94,6 +100,18 @@ class TypeResourceTest {
       meta.setType("text");
       metas.add(meta);
     }
+
+    List<CategoryPrice> categoryPrices = new ArrayList<>();
+    categoryPrices.add(categoryPriceRepository.findTopByOrderByIdAsc());
+    categoryPrices.add(categoryPriceRepository.findTopByOrderByIdDesc());
+    requestType.setCategoryPrices(categoryPrices);
+
+
+
+    List<ProductType> productTypes = new ArrayList<>();
+    productTypes.add(productTypeRepository.findTopByOrderByIdAsc());
+    productTypes.add(productTypeRepository.findTopByOrderByIdDesc());
+    requestType.setProductTypes(productTypes);
 
 
     requestType.setMetaData(metas);

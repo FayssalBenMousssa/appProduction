@@ -1,5 +1,6 @@
 package dev.fenix.application.production.treatment.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.fenix.application.business.model.Company;
@@ -18,9 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Getter
@@ -56,8 +55,10 @@ public class Document {
 
   @LazyCollection(LazyCollectionOption.FALSE)
   @Fetch(value = FetchMode.SUBSELECT)
-  @OneToMany(cascade = {CascadeType.ALL}) // javax.persistent.CascadeType
+  @OneToMany(cascade = {CascadeType.ALL} , orphanRemoval = true) // javax.persistent.CascadeType
   @JoinColumn(name = "document_id") // parent's foreign key
+  @JsonManagedReference
+
   private List<DocumentProduct> documentProduct = new ArrayList<>();
 
 
@@ -66,14 +67,17 @@ public class Document {
   @OneToMany(cascade = {CascadeType.ALL}) // javax.persistent.CascadeType
   @JoinColumn(name = "document_id")
   @JsonIgnoreProperties(ignoreUnknown = true)
+  @JsonManagedReference
+  @JsonIgnore
   private List<Trace> traces = new ArrayList<>();
 
 
   @LazyCollection(LazyCollectionOption.FALSE)
   @Fetch(value = FetchMode.SUBSELECT)
-  @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = false) // javax.persistent.CascadeType
+  @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true) // javax.persistent.CascadeType
   @JoinColumn(name = "document_id") // parent's foreign key
   @JsonManagedReference
+  @JsonIgnore
   private List<DocumentDataValue> documentDataValues = new ArrayList<>();
 
   @NotNull(message = "Please enter the date")
@@ -110,8 +114,97 @@ public class Document {
   private Company destination;
 
 
+  @ManyToMany(cascade={CascadeType.ALL})
+  @JoinTable(name="trt__doc_related",
+          joinColumns={@JoinColumn(name="document_id")},
+          inverseJoinColumns={@JoinColumn(name="related_to_id")})
+  private Set<Document> related = new HashSet<Document>();
+
+
+  @JsonIgnore
+  @JsonManagedReference
+  @ManyToMany(mappedBy="related")
+  private Set<Document> relatedTo = new HashSet<Document>();
+
+
+
 
   public JSONObject toJson() {
+    JSONObject documentJSON = new JSONObject();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    try {
+      documentJSON.put("id", this.getId());
+      documentJSON.put("name", this.getName());
+      documentJSON.put("code", this.getCode());
+      documentJSON.put("active", this.getActive());
+      documentJSON.put("status", this.getStatus());
+      documentJSON.put("type", this.getType().toJson());
+      documentJSON.put("source", this.getSource().toJson());
+      documentJSON.put("destination", this.getDestination().toJson());
+/*
+      if (this.getRelated() != null) {
+        JSONArray relatedDocumentsList = new JSONArray();
+        for (Document  document : this.getRelated()) {
+          if (document != null && document.getActive()) {
+            relatedDocumentsList.put(document.toSmallJson());
+          }
+        }
+        documentJSON.put("related", relatedDocumentsList);
+      }
+
+      if (this.getRelatedTo() != null) {
+        JSONArray relatedToDocumentsList = new JSONArray();
+        for (Document  document : this.getRelatedTo()) {
+          if (document != null && document.getActive()) {
+            relatedToDocumentsList.put(document.toSmallJson());
+          }
+        }
+        documentJSON.put("relatedTo",  relatedToDocumentsList);
+      }
+
+*/
+
+      if (this.getDocumentProduct() != null) {
+        JSONArray documentProductsList = new JSONArray();
+        for (DocumentProduct documentProduct : this.getDocumentProduct()) {
+          if (documentProduct != null && documentProduct.isActive()) {
+            documentProductsList.put(documentProduct.toJson());
+          }
+        }
+        documentJSON.put("documentProduct", documentProductsList);
+      }
+
+
+      if (this.getDocumentDataValues() != null) {
+        JSONArray documentDataValues = new JSONArray();
+        for (DocumentDataValue documentDataValue : this.getDocumentDataValues()) {
+          if (documentDataValue != null && documentDataValue.isActive()) {
+            documentDataValues.put(documentDataValue.toJson());
+          }
+        }
+        documentJSON.put("documentDataValues", documentDataValues);
+      }
+
+
+
+      if (this.getDate() != null) {
+        documentJSON.put("date", formatter.format(this.getDate()));
+      }
+
+      if (this.getModifyDate() != null) {
+        documentJSON.put("modifyDate", formatter.format(this.getModifyDate()));
+      }
+      if (this.getCreateDate() != null) {
+        documentJSON.put("createDate", formatter.format(this.getCreateDate()));
+      }
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return documentJSON;
+  }
+
+
+  public JSONObject toSmallJson() {
     JSONObject documentJSON = new JSONObject();
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     try {

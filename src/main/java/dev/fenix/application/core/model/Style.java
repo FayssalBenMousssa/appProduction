@@ -20,7 +20,13 @@ public class Style {
   @Column(columnDefinition = "varchar(255) default '#D6D6D6'")
   private String color;
 
-  @Column(columnDefinition = "varchar(255) default 'arrow-right'")
+  @Column(columnDefinition = "varchar(255) default '#ffffff'")
+  private String backgroundColor;
+
+  @Column(columnDefinition = "varchar(255) default '#ffffff'")
+  private String iconColor;
+
+  @Column(columnDefinition = "varchar(255) default 'file'")
   private String icon;
 
 
@@ -30,6 +36,8 @@ public class Style {
     try {
       styleJSON.put("id", this.getId());
       styleJSON.put("color", this.getColor());
+      styleJSON.put("backgroundColor", this.getBackgroundColor());
+      styleJSON.put("iconColor", this.getIconColor());
       styleJSON.put("icon", this.getIcon());
     } catch (JSONException e) {
       e.printStackTrace();
