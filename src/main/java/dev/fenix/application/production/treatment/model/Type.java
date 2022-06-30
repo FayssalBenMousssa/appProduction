@@ -1,20 +1,24 @@
 package dev.fenix.application.production.treatment.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.fenix.application.business.model.CompanyType;
 import dev.fenix.application.core.model.MetaData;
 import dev.fenix.application.core.model.Style;
 import dev.fenix.application.production.product.model.CategoryPrice;
 import dev.fenix.application.production.product.model.ProductType;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -71,7 +75,7 @@ public class Type {
 
 
   @Column(columnDefinition = "tinyint(1) default 1")
-  private boolean hasBatchNumber;
+  private boolean hasBatch;
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
@@ -98,6 +102,16 @@ public class Type {
   @ManyToMany(cascade = CascadeType.DETACH)
   @JoinTable(name = "trt__doc_type_category_price", joinColumns = @JoinColumn(name = "type_id"),inverseJoinColumns = @JoinColumn(name = "category_price_id"))
   private List<CategoryPrice> categoryPrices;
+
+
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @Fetch(value = FetchMode.SUBSELECT)
+  @OneToMany(cascade = {CascadeType.ALL} ,  orphanRemoval = true) // javax.persistent.CascadeType
+  @JoinColumn(name = "type_id") // parent's foreign key
+  @JsonManagedReference
+  private List<TypeRelation> TypeRelations = new ArrayList<>();
+
+
 
 
   @Column(columnDefinition="int(1) default 0")
@@ -131,7 +145,8 @@ public class Type {
       typeJSON.put("inStock",this.getInStock());
       typeJSON.put("inSales",this.getInSales());
       typeJSON.put("hasPrice",this.isHasPrice());
-      typeJSON.put("hasBatch",this.isHasBatchNumber());
+      typeJSON.put("hasBatch",this.isHasBatch());
+
 
       if (this.getCategory() != null) { typeJSON.put("category", this.getCategory().toJson()); }
       typeJSON.put("source", this.getSource());
@@ -173,9 +188,24 @@ public class Type {
         typeJSON.put("productTypes", productTypesList);
       }
 
+
+      if (this.getTypeRelations() != null && this.getTypeRelations().size() > 0) {
+        JSONArray typeRelations = new JSONArray();
+        for (TypeRelation typeRelation: this.getTypeRelations()) {
+
+           if(typeRelation != null) {
+             typeRelations.put(typeRelation.toJson());
+           }
+
+
+        }
+        typeJSON.put("typeRelations", typeRelations);
+      }
+
     } catch (JSONException e) {
       e.printStackTrace();
     }
     return typeJSON;
   }
+
 }

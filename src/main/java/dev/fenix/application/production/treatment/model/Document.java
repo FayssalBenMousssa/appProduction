@@ -1,11 +1,7 @@
 package dev.fenix.application.production.treatment.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import dev.fenix.application.business.model.Company;
-import dev.fenix.application.production.product.model.FormulaProduct;
-import dev.fenix.application.security.model.User;
 import lombok.*;
 import org.hibernate.annotations.*;
 import org.json.JSONArray;
@@ -32,7 +28,8 @@ import java.util.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Document {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,33 +48,29 @@ public class Document {
 
 
 
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @Fetch(value = FetchMode.SUBSELECT)
+  @OneToMany(cascade = {CascadeType.ALL} , orphanRemoval = true) // javax.persistent.CascadeType
+  @JoinColumn(name = "document_id") // parent's foreign key
+  @JsonManagedReference(value="document-log")
+  private List<DocumentLog> logs = new ArrayList<>();
 
 
   @LazyCollection(LazyCollectionOption.FALSE)
   @Fetch(value = FetchMode.SUBSELECT)
   @OneToMany(cascade = {CascadeType.ALL} , orphanRemoval = true) // javax.persistent.CascadeType
   @JoinColumn(name = "document_id") // parent's foreign key
-  @JsonManagedReference
-
+  @JsonManagedReference(value="document-product")
   private List<DocumentProduct> documentProduct = new ArrayList<>();
 
 
-  @LazyCollection(LazyCollectionOption.FALSE)
-  @Fetch(value = FetchMode.SUBSELECT)
-  @OneToMany(cascade = {CascadeType.ALL}) // javax.persistent.CascadeType
-  @JoinColumn(name = "document_id")
-  @JsonIgnoreProperties(ignoreUnknown = true)
-  @JsonManagedReference
-  @JsonIgnore
-  private List<Trace> traces = new ArrayList<>();
 
 
   @LazyCollection(LazyCollectionOption.FALSE)
   @Fetch(value = FetchMode.SUBSELECT)
   @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true) // javax.persistent.CascadeType
   @JoinColumn(name = "document_id") // parent's foreign key
-  @JsonManagedReference
-  @JsonIgnore
+  @JsonManagedReference(value="document-data-values")
   private List<DocumentDataValue> documentDataValues = new ArrayList<>();
 
   @NotNull(message = "Please enter the date")
@@ -113,16 +106,15 @@ public class Document {
   @JoinColumn(name = "destination_id", referencedColumnName = "id")
   private Company destination;
 
-
+  @JsonBackReference(value = "related-docs")
   @ManyToMany(cascade={CascadeType.ALL})
   @JoinTable(name="trt__doc_related",
           joinColumns={@JoinColumn(name="document_id")},
           inverseJoinColumns={@JoinColumn(name="related_to_id")})
   private Set<Document> related = new HashSet<Document>();
 
-
   @JsonIgnore
-  @JsonManagedReference
+  @JsonManagedReference(value = "related-docs")
   @ManyToMany(mappedBy="related")
   private Set<Document> relatedTo = new HashSet<Document>();
 
@@ -141,7 +133,7 @@ public class Document {
       documentJSON.put("type", this.getType().toJson());
       documentJSON.put("source", this.getSource().toJson());
       documentJSON.put("destination", this.getDestination().toJson());
-/*
+
       if (this.getRelated() != null) {
         JSONArray relatedDocumentsList = new JSONArray();
         for (Document  document : this.getRelated()) {
@@ -152,7 +144,7 @@ public class Document {
         documentJSON.put("related", relatedDocumentsList);
       }
 
-      if (this.getRelatedTo() != null) {
+     if (this.getRelatedTo() != null) {
         JSONArray relatedToDocumentsList = new JSONArray();
         for (Document  document : this.getRelatedTo()) {
           if (document != null && document.getActive()) {
@@ -162,7 +154,7 @@ public class Document {
         documentJSON.put("relatedTo",  relatedToDocumentsList);
       }
 
-*/
+
 
       if (this.getDocumentProduct() != null) {
         JSONArray documentProductsList = new JSONArray();
@@ -187,6 +179,8 @@ public class Document {
 
 
 
+
+
       if (this.getDate() != null) {
         documentJSON.put("date", formatter.format(this.getDate()));
       }
@@ -203,6 +197,10 @@ public class Document {
     return documentJSON;
   }
 
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
+  }
 
   public JSONObject toSmallJson() {
     JSONObject documentJSON = new JSONObject();
@@ -236,6 +234,8 @@ public class Document {
         }
         documentJSON.put("documentDataValues", documentDataValues);
       }
+
+
 
 
 

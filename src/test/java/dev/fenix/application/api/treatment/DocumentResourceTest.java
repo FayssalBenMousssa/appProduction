@@ -98,12 +98,13 @@ class DocumentResourceTest {
       roles = {"USER", "ADMIN"})
   void indexDocumentWithParams() throws Exception {
     MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+    Type requestType = typeRepository.findTopByOrderByIdDesc();
 
 
     params.add("page", "0");
     params.add("size", "50");
     params.add("sort", "id,desc");
-   // params.add("type", "10128");
+    params.add("type", String.valueOf(requestType.getId()));
   // params.add("category", "1");
 
     this.mockMvc
@@ -183,7 +184,7 @@ class DocumentResourceTest {
 
     MvcResult result =
         this.mockMvc
-            .perform(get("/api/document/get/" + 1183L))
+            .perform(get("/api/document/get/" + requestDocument.getId()))
             .andDo(print())
             .andDo(
                 document(
@@ -201,6 +202,31 @@ class DocumentResourceTest {
 
     Assert.assertTrue(expectedDocument.getId().equals(1183L));
   }
+
+
+
+  @Test
+  @Order(3)
+  @WithMockUser(username = "fenix")
+  void getDocumentTrace() throws Exception {
+    Document requestDocument = documentRepository.findTopByOrderByIdDesc();
+
+    MvcResult result =
+            this.mockMvc
+                    .perform(get("/api/document/get/traces/" + requestDocument.getId()))
+                    .andDo(print())
+                    .andDo(
+                            document(
+                                    "{methodName}",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())))
+                    .andExpect(status().isOk())
+                    .andReturn();
+    String resultContent = result.getResponse().getContentAsString();
+
+  }
+
+
 
   @Test
   @WithMockUser(username = "fenix")

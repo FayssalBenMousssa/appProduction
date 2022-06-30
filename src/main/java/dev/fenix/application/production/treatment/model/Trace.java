@@ -1,26 +1,18 @@
 package dev.fenix.application.production.treatment.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import dev.fenix.application.business.model.Company;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import dev.fenix.application.security.model.User;
 import lombok.*;
-import org.hibernate.annotations.*;
-import org.json.JSONArray;
+import org.hibernate.annotations.CreationTimestamp;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Index;
-import javax.persistence.Table;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
@@ -29,7 +21,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Trace {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,9 +41,9 @@ public class Trace {
 
 
 
-  @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-  @JoinColumn(name = "document_id", referencedColumnName = "id")
-  @JsonBackReference
+  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
+  @JoinColumn(name = "document_id", referencedColumnName = "id" , insertable = false, updatable = false)
+  @JsonBackReference(value="trace-document")
   private Document document;
 
   public Trace(User user, String message) {
@@ -66,7 +58,7 @@ public class Trace {
     try {
       documentJSON.put("id", this.getId());
       documentJSON.put("message", this.getMessage());
-      documentJSON.put("person", this.getUser().getPerson().toJson());
+      documentJSON.put("person", this.getUser().getPerson().toSmallJson());
 
       if (this.getCreateDate() != null) {
         documentJSON.put("createDate", formatter.format(this.getCreateDate()));

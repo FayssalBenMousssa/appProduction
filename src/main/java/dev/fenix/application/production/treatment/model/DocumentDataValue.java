@@ -31,9 +31,10 @@ public class DocumentDataValue {
   @JoinColumn(name = "meta_data_id", referencedColumnName = "id")
   private MetaData metaData;
 
-  @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+
+  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "document_id", referencedColumnName = "id")
-  @JsonBackReference
+  @JsonBackReference(value="document-data-values")
   private Document document;
 
   @Column(columnDefinition = "tinyint(1) default 1")

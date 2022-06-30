@@ -1,7 +1,6 @@
 package dev.fenix.application.api.production.treatment;
 
 import dev.fenix.application.production.treatment.model.Category;
-import dev.fenix.application.production.treatment.model.Type;
 import dev.fenix.application.production.treatment.repository.CategoryRepository;
 import dev.fenix.application.production.treatment.repository.DocumentRepository;
 import javassist.NotFoundException;

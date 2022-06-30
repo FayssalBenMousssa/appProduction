@@ -1,24 +1,17 @@
 package dev.fenix.application.production.product.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.fenix.application.core.model.Period;
 import lombok.*;
-import org.hibernate.annotations.*;
-import org.json.JSONArray;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 @Entity
 @Getter

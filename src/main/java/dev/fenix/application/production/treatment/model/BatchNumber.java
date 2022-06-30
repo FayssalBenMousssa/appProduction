@@ -1,14 +1,8 @@
 package dev.fenix.application.production.treatment.model;
 
-import dev.fenix.application.business.model.CompanyType;
-import dev.fenix.application.core.model.MetaData;
-import dev.fenix.application.core.model.Style;
-import dev.fenix.application.production.product.model.CategoryPrice;
-import dev.fenix.application.production.product.model.ProductType;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,7 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter

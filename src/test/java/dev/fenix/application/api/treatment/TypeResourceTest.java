@@ -8,7 +8,9 @@ import dev.fenix.application.production.product.model.ProductType;
 import dev.fenix.application.production.product.repository.CategoryPriceRepository;
 import dev.fenix.application.production.product.repository.ProductTypeRepository;
 import dev.fenix.application.production.treatment.model.Category;
+import dev.fenix.application.production.treatment.model.Operation;
 import dev.fenix.application.production.treatment.model.Type;
+import dev.fenix.application.production.treatment.model.TypeRelation;
 import dev.fenix.application.production.treatment.repository.CategoryRepository;
 import dev.fenix.application.production.treatment.repository.TypeRepository;
 import org.junit.Assert;
@@ -145,7 +147,27 @@ class TypeResourceTest {
   @Order(2)
   void updateType() throws Exception {
     Type requestType = typeRepository.findTopByOrderByIdDesc();
+
     requestType.setName(requestType.getName() + " Updated Type Test");
+
+
+    List<TypeRelation> typeRelations = requestType.getTypeRelations();
+    TypeRelation typeRelation = new TypeRelation();
+    typeRelation.setOperation(Operation.NOTHING);
+    typeRelation.setRelated(typeRepository.findTopByOrderByIdAsc());
+    typeRelations.add(typeRelation);
+
+
+    TypeRelation typeRelation_1 = new TypeRelation();
+    typeRelation_1.setOperation(Operation.NOTHING);
+    typeRelation_1.setRelated(typeRepository.findOneById(1049L));
+
+    typeRelations.add(typeRelation_1);
+
+
+
+
+    requestType.setTypeRelations(typeRelations);
 
 
     MetaData meta = new MetaData();

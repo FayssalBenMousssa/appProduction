@@ -1,12 +1,13 @@
 package dev.fenix.application.api.production.treatment;
 
 
-import dev.fenix.application.business.model.CompanyType;
 import dev.fenix.application.business.repository.CompanyRepository;
 import dev.fenix.application.production.treatment.model.Document;
+import dev.fenix.application.production.treatment.model.DocumentLog;
 import dev.fenix.application.production.treatment.model.Trace;
 import dev.fenix.application.production.treatment.model.Type;
 import dev.fenix.application.production.treatment.repository.DocumentRepository;
+import dev.fenix.application.production.treatment.repository.TraceRepository;
 import dev.fenix.application.production.treatment.repository.TypeRepository;
 import dev.fenix.application.production.treatment.service.DocumentService;
 import dev.fenix.application.security.model.User;
@@ -40,6 +41,8 @@ public class DocumentResource {
   @Autowired private UserRepository userRepository;
   @Autowired private CompanyRepository companyRepository;
 
+  @Autowired private TraceRepository traceRepository;
+
   @RequestMapping(
       value = {"/", ""},
       method = RequestMethod.GET,
@@ -64,26 +67,31 @@ public class DocumentResource {
       throws InterruptedException {
 
     log.trace("DocumentResource.index method accessed");
-
+    long startTime = System.nanoTime();
     JSONArray jArray = new JSONArray();
-
     List<Document> documents = documentService.getAllDocuments(page, size, sort, query, type, category);
-
+    long queryTime = System.nanoTime();
+    log.info("queryTime : " + String.valueOf((queryTime - startTime)/1000000 ));
     for (Document document : documents) {
-      jArray.put(document.toJson());
+      jArray.put(document.toSmallJson());
     }
-
     JSONObject response = new JSONObject();
+    long endTime = System.nanoTime();
+    long duration = (endTime - startTime);
+    log.info("durationTime : " + String.valueOf((duration)/1000000));
 
     try {
       response.put("results", jArray);
       response.put("total_type", documentService.getCount());
       response.put("count", jArray.length());
       response.put("total", documentService.getCountAll());
+      response.put("duration",(endTime - startTime));
       return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     } catch (JSONException e) {
       e.printStackTrace();
     }
+
+
     return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
   }
 
@@ -101,6 +109,30 @@ public class DocumentResource {
     return new ResponseEntity<>(document.toJson().toString(), HttpStatus.OK);
   }
 
+
+  @RequestMapping(
+          value = "/get/traces/{id}",
+          method = RequestMethod.GET,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> getTrace(HttpServletRequest request, @PathVariable Long id) throws NotFoundException {
+    log.trace("DocumentResource.getTrace method accessed");
+
+
+    List<Trace> Traces  = traceRepository.findByDocumentId(id) ;
+    JSONArray jArray = new JSONArray();
+
+    for (Trace trace : Traces) {
+      jArray.put(trace.toJson());
+    }
+    JSONObject response = new JSONObject();
+    try {
+      response.put("results", jArray);
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+  }
+
   @RequestMapping(
       value = "/save",
       method = RequestMethod.POST,
@@ -113,8 +145,12 @@ public class DocumentResource {
       document.setCode(this.getNewCode(document.getType()));
       document.setActive(true);
 
-      document.getTraces().add(new Trace(this.getCurrentUser(),"save"));
 
+
+      List<DocumentLog> logs = document.getLogs() ;
+
+      DocumentLog documentLog = new DocumentLog();
+      documentLog.setName("delete");
       Document savedDocument = documentRepository.save(document);
       return new ResponseEntity<>(savedDocument.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
@@ -132,8 +168,27 @@ public class DocumentResource {
   public ResponseEntity<?> update(@Valid @RequestBody Document document, HttpServletRequest request) {
     log.trace("DocumentResource.update method accessed");
     try {
-      document.getTraces().add(new Trace(this.getCurrentUser(),"update"));
+      List<DocumentLog> logs = document.getLogs() ;
+
+      DocumentLog documentLog = new DocumentLog();
+      documentLog.setName("update");
+      logs.add(documentLog);
+
+
+      document.setLogs(logs);
       document.setActive(true);
+
+
+      if  (document.getRelated() != null ) {
+        for (Document  documentRelated : document.getRelated()) {
+          if(documentRelated.getCode() == null) {
+            documentRelated.setCode(this.getNewCode(documentRelated.getType()));
+          }
+
+        }
+      }
+
+
       Document updatedDocument = documentRepository.save(document);
       return new ResponseEntity<>(updatedDocument.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
@@ -150,7 +205,8 @@ public class DocumentResource {
     log.trace("DocumentResource.delete method accessed");
     Document document = documentRepository.getOne(id);
     try {
-      document.getTraces().add(new Trace(this.getCurrentUser(),"delete"));
+
+
       document.setActive(false);
       Document savedDocument = documentRepository.save(document);
       return ResponseEntity.ok(savedDocument.toJson().toString());

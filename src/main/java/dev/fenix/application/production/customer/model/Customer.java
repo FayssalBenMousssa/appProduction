@@ -1,21 +1,18 @@
 package dev.fenix.application.production.customer.model;
 
-import dev.fenix.application.core.model.Address;
 import dev.fenix.application.business.model.Company;
+import dev.fenix.application.core.model.Address;
 import dev.fenix.application.core.model.Contact;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Entity
 @Getter

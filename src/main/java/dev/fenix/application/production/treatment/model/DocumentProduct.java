@@ -1,7 +1,6 @@
 package dev.fenix.application.production.treatment.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import dev.fenix.application.production.product.model.Formula;
 import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.model.SiUnit;
 import lombok.*;
@@ -36,7 +35,7 @@ public class DocumentProduct {
 
   @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "document_id", referencedColumnName = "id")
-  @JsonBackReference
+  @JsonBackReference(value="document-product")
   private Document document;
 
 

@@ -2,7 +2,6 @@ package dev.fenix.application.production.product.repository;
 
 
 import dev.fenix.application.production.product.model.CategoryPrice;
-import dev.fenix.application.production.product.model.Tax;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

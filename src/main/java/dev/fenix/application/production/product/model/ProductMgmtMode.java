@@ -1,15 +1,12 @@
 package dev.fenix.application.production.product.model;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Entity
 @Getter

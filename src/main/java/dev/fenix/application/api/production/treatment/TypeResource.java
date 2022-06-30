@@ -1,8 +1,5 @@
 package dev.fenix.application.api.production.treatment;
 
-import dev.fenix.application.production.customer.model.Customer;
-import dev.fenix.application.production.product.model.Classification;
-import dev.fenix.application.production.treatment.model.Document;
 import dev.fenix.application.production.treatment.model.Type;
 import dev.fenix.application.production.treatment.repository.DocumentRepository;
 import dev.fenix.application.production.treatment.repository.TypeRepository;
@@ -52,7 +49,7 @@ public class TypeResource {
       throws NotFoundException {
     log.trace("ProductResource.get method accessed");
     Type Type =
-        typeRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+        typeRepository.findById(id).orElseThrow(() -> new NotFoundException("Type  not found"));
     return new ResponseEntity<>(Type.toJson().toString(), HttpStatus.OK);
   }
 

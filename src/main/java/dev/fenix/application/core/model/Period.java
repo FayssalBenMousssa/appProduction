@@ -1,7 +1,9 @@
 package dev.fenix.application.core.model;
+
 import lombok.*;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;

@@ -2,16 +2,15 @@ package dev.fenix.application.business.model;
 
 import dev.fenix.application.core.model.Address;
 import dev.fenix.application.core.model.Contact;
-import dev.fenix.application.production.supplier.model.SupplierClassification;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.text.SimpleDateFormat;
 
 @Entity

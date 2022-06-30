@@ -104,4 +104,33 @@ public class Person {
   public String getFullName() {
     return this.getLastName() + " " + this.getFirstName();
   }
+
+  public JSONObject toSmallJson() {
+    JSONObject personJSON = new JSONObject();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    try {
+      personJSON.put("id", this.getId());
+      personJSON.put("firstName", this.getFirstName());
+      personJSON.put("lastName", this.getLastName());
+      personJSON.put("fullName", this.getFullName());
+      if (this.getGender() != null) {
+        personJSON.put("gender", this.getGender());
+      }
+
+      if (this.getBirthDate() != null) {
+        personJSON.put("birthDate", formatter.format(this.getBirthDate()));
+      }
+      if (this.getModifyDate() != null) {
+        personJSON.put("modifyDate", formatter.format(this.getModifyDate()));
+      }
+      if (this.getCreateDate() != null) {
+        personJSON.put("createDate", formatter.format(this.getCreateDate()));
+      }
+
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return personJSON;
+  }
 }
