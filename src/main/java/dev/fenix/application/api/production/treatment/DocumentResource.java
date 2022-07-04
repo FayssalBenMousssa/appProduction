@@ -1,13 +1,12 @@
 package dev.fenix.application.api.production.treatment;
 
-
 import dev.fenix.application.business.repository.CompanyRepository;
+import dev.fenix.application.production.treatment.model.Action;
 import dev.fenix.application.production.treatment.model.Document;
 import dev.fenix.application.production.treatment.model.DocumentLog;
-import dev.fenix.application.production.treatment.model.Trace;
 import dev.fenix.application.production.treatment.model.Type;
+import dev.fenix.application.production.treatment.repository.DocumentLogRepository;
 import dev.fenix.application.production.treatment.repository.DocumentRepository;
-import dev.fenix.application.production.treatment.repository.TraceRepository;
 import dev.fenix.application.production.treatment.repository.TypeRepository;
 import dev.fenix.application.production.treatment.service.DocumentService;
 import dev.fenix.application.security.model.User;
@@ -28,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController()
@@ -40,8 +40,7 @@ public class DocumentResource {
   @Autowired private DocumentService documentService;
   @Autowired private UserRepository userRepository;
   @Autowired private CompanyRepository companyRepository;
-
-  @Autowired private TraceRepository traceRepository;
+  @Autowired private DocumentLogRepository documentLogRepository;
 
   @RequestMapping(
       value = {"/", ""},
@@ -69,28 +68,28 @@ public class DocumentResource {
     log.trace("DocumentResource.index method accessed");
     long startTime = System.nanoTime();
     JSONArray jArray = new JSONArray();
-    List<Document> documents = documentService.getAllDocuments(page, size, sort, query, type, category);
+    List<Document> documents =
+        documentService.getAllDocuments(page, size, sort, query, type, category);
     long queryTime = System.nanoTime();
-    log.info("queryTime : " + String.valueOf((queryTime - startTime)/1000000 ));
+    log.info("queryTime : " + String.valueOf((queryTime - startTime) / 1000000));
     for (Document document : documents) {
       jArray.put(document.toSmallJson());
     }
     JSONObject response = new JSONObject();
     long endTime = System.nanoTime();
     long duration = (endTime - startTime);
-    log.info("durationTime : " + String.valueOf((duration)/1000000));
+    log.info("durationTime : " + String.valueOf((duration) / 1000000));
 
     try {
       response.put("results", jArray);
       response.put("total_type", documentService.getCount());
       response.put("count", jArray.length());
       response.put("total", documentService.getCountAll());
-      response.put("duration",(endTime - startTime));
+      response.put("duration", (endTime - startTime));
       return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     } catch (JSONException e) {
       e.printStackTrace();
     }
-
 
     return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
   }
@@ -109,20 +108,18 @@ public class DocumentResource {
     return new ResponseEntity<>(document.toJson().toString(), HttpStatus.OK);
   }
 
-
   @RequestMapping(
-          value = "/get/traces/{id}",
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> getTrace(HttpServletRequest request, @PathVariable Long id) throws NotFoundException {
-    log.trace("DocumentResource.getTrace method accessed");
+      value = "/get/logs/{id}",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> getTrace(HttpServletRequest request, @PathVariable Long id)
+      throws NotFoundException {
+    List<DocumentLog> documentLogs = documentLogRepository.findByDocumentId(id);
 
-
-    List<Trace> Traces  = traceRepository.findByDocumentId(id) ;
     JSONArray jArray = new JSONArray();
 
-    for (Trace trace : Traces) {
-      jArray.put(trace.toJson());
+    for (DocumentLog documentLog : documentLogs) {
+      jArray.put(documentLog.toJson());
     }
     JSONObject response = new JSONObject();
     try {
@@ -144,13 +141,7 @@ public class DocumentResource {
       document.setName(document.getType().getName() + " " + this.getNewCode(document.getType()));
       document.setCode(this.getNewCode(document.getType()));
       document.setActive(true);
-
-
-
-      List<DocumentLog> logs = document.getLogs() ;
-
-      DocumentLog documentLog = new DocumentLog();
-      documentLog.setName("delete");
+      document.setLogs(getDocumentLogs(document, Action.ADD));
       Document savedDocument = documentRepository.save(document);
       return new ResponseEntity<>(savedDocument.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
@@ -159,35 +150,26 @@ public class DocumentResource {
     }
   }
 
-
   @RequestMapping(
       value = "/update",
       method = RequestMethod.PUT,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public ResponseEntity<?> update(@Valid @RequestBody Document document, HttpServletRequest request) {
+  public ResponseEntity<?> update(
+      @Valid @RequestBody Document document, HttpServletRequest request) {
     log.trace("DocumentResource.update method accessed");
     try {
-      List<DocumentLog> logs = document.getLogs() ;
 
-      DocumentLog documentLog = new DocumentLog();
-      documentLog.setName("update");
-      logs.add(documentLog);
-
-
-      document.setLogs(logs);
+      document.setLogs(getDocumentLogs(document, Action.EDIT));
       document.setActive(true);
 
-
-      if  (document.getRelated() != null ) {
-        for (Document  documentRelated : document.getRelated()) {
-          if(documentRelated.getCode() == null) {
+      if (document.getRelated() != null) {
+        for (Document documentRelated : document.getRelated()) {
+          if (documentRelated.getCode() == null) {
             documentRelated.setCode(this.getNewCode(documentRelated.getType()));
           }
-
         }
       }
-
 
       Document updatedDocument = documentRepository.save(document);
       return new ResponseEntity<>(updatedDocument.toJson().toString(), HttpStatus.OK);
@@ -206,7 +188,7 @@ public class DocumentResource {
     Document document = documentRepository.getOne(id);
     try {
 
-
+      document.setLogs(getDocumentLogs(document, Action.DELETE));
       document.setActive(false);
       Document savedDocument = documentRepository.save(document);
       return ResponseEntity.ok(savedDocument.toJson().toString());
@@ -216,21 +198,35 @@ public class DocumentResource {
     }
   }
 
-  private String getNewCode(Type type){
+  private String getNewCode(Type type) {
     int count = documentRepository.countByType(type);
-    return  type.getAbbreviation() + "." + String.format("%07d" , count + 1);
+    return type.getAbbreviation() + "." + String.format("%07d", count + 1);
   }
 
+  private List<DocumentLog> getDocumentLogs(Document document, Action action) {
 
+    List<DocumentLog> logs = new ArrayList();
+    if(action == Action.DELETE ||  action == Action.EDIT) {
+      Document oldDocument = documentRepository.getOne(document.getId());
+      logs = oldDocument.getLogs();
+      final StringBuilder builder = new StringBuilder();
+      document.getDifferent(oldDocument).forEach((val)->{builder.append(val + ","); });
+      String messages = builder.toString();
+      DocumentLog documentLog = new DocumentLog(action, document, messages, this.getCurrentUser().getUserName());
+      logs.add(documentLog);
+    }else if(action == Action.ADD ) {
+      DocumentLog documentLog = new DocumentLog(action, document, null,this.getCurrentUser().getUserName());
+      logs.add(documentLog);
+    }
 
+    return logs;
+  }
 
-
-
-  private User getCurrentUser(){
-    UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+  private User getCurrentUser() {
+    UserDetails userDetails =
+        (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     String username = userDetails.getUsername();
     User user = userRepository.findOneByUserName(username);
     return user;
   }
-
 }

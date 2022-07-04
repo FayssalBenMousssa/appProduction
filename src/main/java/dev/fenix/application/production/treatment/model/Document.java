@@ -119,7 +119,19 @@ public class Document {
   private Set<Document> relatedTo = new HashSet<Document>();
 
 
+  public List<String> getDifferent(Document newDocument) {
+    List<String> differents = new ArrayList<String>();
 
+    if(!this.name.equals(newDocument.getName())) differents.add( "name : " +  this.name + " <> "  + newDocument.getName() );
+    if(!this.code.equals(newDocument.getCode())) differents.add("code : " +  this.code + " <> "  + newDocument.getCode() );
+    if(this.getStatus() != newDocument.getStatus()) differents.add( "status : " + this.getStatus() + " <> "  + newDocument.getStatus());
+
+     /// TODO
+
+
+    return differents;
+
+  }
 
   public JSONObject toJson() {
     JSONObject documentJSON = new JSONObject();
@@ -254,4 +266,8 @@ public class Document {
     }
     return documentJSON;
   }
+
+
+
+
 }
