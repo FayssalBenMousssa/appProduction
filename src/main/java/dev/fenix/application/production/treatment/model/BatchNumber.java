@@ -1,5 +1,6 @@
 package dev.fenix.application.production.treatment.model;
 
+import dev.fenix.application.core.model.TrimAndLowerCaseConverter;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -24,6 +25,7 @@ public class BatchNumber {
   private Long id;
 
   @NotNull(message = "Please enter the code")
+  @Convert(converter = TrimAndLowerCaseConverter.class)
   private String code;
 
   @NotNull(message = "Please enter the expiration date")
@@ -38,6 +40,7 @@ public class BatchNumber {
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "create_date", updatable = false)
   private Date createDate;
+
 
   @UpdateTimestamp
   @Temporal(TemporalType.TIMESTAMP)

@@ -1,6 +1,5 @@
 package dev.fenix.application;
 
-import dev.fenix.application.app.util.DatabaseUtil;
 import dev.fenix.application.person.model.Gender;
 import dev.fenix.application.person.model.Person;
 import dev.fenix.application.person.repository.PersonRepository;
@@ -22,13 +21,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -41,44 +34,10 @@ public class Application {
   @Autowired private RoleRepository roleRepository;
   @Autowired private ClassificationRepository classNameRepository;
   @Autowired private ProductRepository productRepository;
-
   private static final Logger log = LoggerFactory.getLogger(Application.class);
   @Autowired private Environment env;
 
- // @PostConstruct
-  private void runDbBackup() {
-    //log.trace("{methodName}  method accessed");
-    LocalDateTime now = LocalDateTime.now(); // current date and time
-    LocalDateTime midnight = now.toLocalDate().plusDays(1).atStartOfDay();
 
-    long delay = Duration.between(now, midnight).toMinutes();
-    //log.trace(delay + " min  to start Backup time");
-
-    ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-    exec.scheduleAtFixedRate(
-        new Runnable() {
-          @Override
-          public void run() {
-           // log.trace("Application.runDbBackup runnable  method accessed");
-            try {
-              DatabaseUtil.backup(
-                  env.getProperty("spring.datasource.username"),
-                  env.getProperty("spring.datasource.password"),
-                  env.getProperty("DATABASE_NAME"),
-                  env.getProperty("DATABASE_NAME"));
-            } catch (IOException e) {
-              log.error("catch Exception");
-              e.printStackTrace();
-            } catch (InterruptedException e) {
-              log.error("catch Exception");
-              e.printStackTrace();
-            }
-          }
-        },
-        delay,
-        Long.parseLong(env.getProperty("app.backup.period")),
-        TimeUnit.MINUTES);
-  }
 
  // @PostConstruct
   private void insertDbDefault() {
@@ -138,7 +97,7 @@ public class Application {
       person.setCreateDate(date);
       person.setModifyDate(date);
       user.CryptPassword();
-      person.setUser(user);
+      person.setUserAccount(user);
       /** save all */
       Person savedPerson = personRepository.save(person);
       log.trace("Save New Person " + person.toString());
@@ -169,8 +128,7 @@ public class Application {
       }
 
       classNameRepository.save(classification);
-    }
-    ;
+    };
 
     Iterable<Product> allProducts = productRepository.findAll();
     for (Product product : allProducts) {

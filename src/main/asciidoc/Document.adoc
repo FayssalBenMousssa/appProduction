@@ -22,3 +22,10 @@ IMPORTANT:  Params
 * Param(required = false) String[] query.
 
 
+
+==== http Request
+.request
+include::{snippets}/saveDocument/http-request.adoc[]
+
+.response
+include::{snippets}/saveDocument/http-response.adoc[]

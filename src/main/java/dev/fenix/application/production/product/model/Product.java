@@ -1,5 +1,6 @@
 package dev.fenix.application.production.product.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.*;
 import org.json.JSONArray;
@@ -12,10 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Entity
 @Getter
@@ -45,6 +43,14 @@ public class Product {
   @JoinColumn(name = "classification_id", referencedColumnName = "id")
   private Classification classification;
 
+
+
+
+  @Fetch(value = FetchMode.SELECT)
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "product_id")
+  private Set<ProductAttachment> attachments;
+
   @NotNull(message = "Please enter the packaging")
   @ManyToOne(
       cascade = {CascadeType.DETACH},
@@ -54,9 +60,7 @@ public class Product {
 
 
   @NotNull(message = "Please enter the ProductMgmtMode")
-  @ManyToOne(
-          cascade = {CascadeType.DETACH},
-          fetch = FetchType.EAGER)
+  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "product_mgmt_mode_id", referencedColumnName = "id")
   private ProductMgmtMode productMgmtMode;
 
@@ -81,9 +85,7 @@ public class Product {
   @JoinColumn(name = "product_type_id", referencedColumnName = "id")
   private ProductType productType;
 
-  @ManyToOne(
-      cascade = {CascadeType.DETACH},
-      fetch = FetchType.EAGER)
+  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
   private SiUnit siUnit;
 
   private String description;
@@ -131,9 +133,6 @@ public class Product {
         productJSON.put("productMgmtMode",  this.getProductMgmtMode().toJson());
       }
 
-
-
-
       if (this.getCreateDate() != null) {
         productJSON.put("createDate", formatter.format(this.getCreateDate()));
       }
@@ -154,6 +153,21 @@ public class Product {
       if (this.getPackaging() != null) {
         productJSON.put("packaging", this.getPackaging().toJson());
       }
+
+
+      if (this.getAttachments() != null && this.getAttachments().size() > 0) {
+        JSONArray attachmentsList = new JSONArray();
+
+        for (ProductAttachment productAttachment : this.getAttachments()) {
+          if (productAttachment.isActive()) {
+            attachmentsList.put(productAttachment.toJson());
+          }
+        }
+        productJSON.put("attachments", attachmentsList);
+      }
+
+
+
       if (this.getProductionUnits() != null && this.getProductionUnits().size() > 0) {
         JSONArray productionUnitList = new JSONArray();
         for (ProductionUnit productionUnit : this.getProductionUnits()) {

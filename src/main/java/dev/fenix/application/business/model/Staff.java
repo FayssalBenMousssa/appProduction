@@ -1,5 +1,6 @@
 package dev.fenix.application.business.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.fenix.application.person.model.Person;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,11 +28,10 @@ public class Staff {
   @JoinColumn(name = "job_id", nullable = false)
   private Job job;
 
+ // @JsonIgnore
   @NotNull(message = "{staff.personnel.null}")
   @JoinColumn(name = "personnel_id", nullable = false)
-  @ManyToOne(
-      fetch = FetchType.EAGER,
-      cascade = {CascadeType.ALL})
+  @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
   private Person person;
 
   private Boolean active;
@@ -39,7 +39,6 @@ public class Staff {
   @NotNull(message = "{staff.start_date.null}")
   // @PastOrPresent(message = "{staff.start_date.invalid}")
   private Date startDate;
-
   private Date endDate;
 
   @CreationTimestamp

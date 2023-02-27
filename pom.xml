@@ -51,7 +51,10 @@ http://maven.apache.org/POM/4.0.0 ">
         </dependency>
 
 
-        <!-- Hibernate validator - Bean validation API Implementation -->
+        <!-- Hibernate validator - Bean validation API Implementation
+        Hibernate Validator 7 implements the (newer) Jakarta Bean Validation API,
+        which is almost the same but with the javax.validation package renamed to jakarta.validation
+        -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
@@ -209,22 +212,22 @@ http://maven.apache.org/POM/4.0.0 ">
             <artifactId>spring-restdocs-mockmvc</artifactId>
             <scope>test</scope>
         </dependency>
-
-
         <!-- MySQL -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
-
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.9.1</version>
+        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -257,10 +260,15 @@ http://maven.apache.org/POM/4.0.0 ">
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>15</source>
+                    <target>15</target>
+                </configuration>
+            </plugin>
         </plugins>
         <finalName>app_${version}</finalName>
-
     </build>
-
-
 </project>

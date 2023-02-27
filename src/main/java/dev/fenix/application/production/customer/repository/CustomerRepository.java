@@ -23,4 +23,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
   Page<Customer> findAllBySocialReasonContainingAndActiveTrue(String socialReason, Pageable paging);
   //
   Page<Customer> findAllByAndActiveTrue(String socialReason, Pageable paging);
+
+    Customer findOneById(Long idCustomer);
 }

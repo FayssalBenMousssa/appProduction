@@ -19,7 +19,6 @@ import java.util.Set;
 @Table(name = "prds__classification")
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class Classification {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

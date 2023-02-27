@@ -1,17 +1,30 @@
 package dev.fenix.application.production.treatment.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import dev.fenix.application.api.production.treatment.DocumentResource;
+import dev.fenix.application.production.product.model.Classification;
+import dev.fenix.application.production.product.model.Formula;
 import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.model.SiUnit;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -21,87 +34,137 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 public class DocumentProduct {
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
-
-  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
-  @JoinColumn(name = "product_id", referencedColumnName = "id")
-  private Product product;
-
-  @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-  @JoinColumn(name = "batch_id", referencedColumnName = "id")
-  private BatchNumber batch;
-
-  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
-  @JoinColumn(name = "document_id", referencedColumnName = "id")
-  @JsonBackReference(value="document-product")
-  private Document document;
 
 
-  private Double  tax;
-  private Double  price;
-  private Double  discount;
+    private static final Logger log = LoggerFactory.getLogger(DocumentProduct.class);
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
+
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "batch_id", referencedColumnName = "id")
+    private BatchNumber batch;
+
+    @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "document_id", referencedColumnName = "id")
+    @JsonBackReference(value = "document-product")
+    private Document document;
 
 
-  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
-  @JoinColumn(name = "si_unit_id", referencedColumnName = "id")
-  private SiUnit siUnit;
+    private Double tax;
+    private Double price;
+    private Double discount;
 
-  @Column(columnDefinition = "tinyint(1) default 1")
-  private boolean active;
 
-  @CreationTimestamp
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "create_date", updatable = false)
-  private Date createDate;
+    @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "si_unit_id", referencedColumnName = "id")
+    private SiUnit siUnit;
 
-  @UpdateTimestamp
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "modify_date")
-  private Date modifyDate;
+    @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "formula_id", referencedColumnName = "id")
+    private Formula formula;
 
-  private float quantity;
+    @Column(columnDefinition = "tinyint(1) default 1")
+    private boolean active;
 
-  public JSONObject toJson() {
-    JSONObject formulaProductJSON = new JSONObject();
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_date", updatable = false)
+    private Date createDate;
 
-    try {
-      formulaProductJSON.put("id", this.getId());
-      formulaProductJSON.put("quantity", this.getQuantity());
-      formulaProductJSON.put("siUnit", this.getSiUnit().toJson());
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "modify_date")
+    private Date modifyDate;
 
-        if (this.getPrice() != null) {
-            formulaProductJSON.put("price", this.getPrice());
-        }
+    private float quantity;
 
-      if (this.getBatch() != null) {
-        formulaProductJSON.put("batch", this.getBatch().toJson());
-      }
 
-      if (this.getPrice() != null) {
-        formulaProductJSON.put("tax", this.getTax());
-      }
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent_id", referencedColumnName = "id" , updatable = false)
+    // @JsonBackReference(value = "document-product")
 
-      if (this.getPrice() != null) {
-        formulaProductJSON.put("discount", this.getDiscount());
-      }
+    private DocumentProduct parent;
 
-      if (this.getModifyDate() != null) {
-        formulaProductJSON.put("modifyDate", formatter.format(this.getModifyDate()));
-      }
-      if (this.getCreateDate() != null) {
-        formulaProductJSON.put("createDate", formatter.format(this.getCreateDate()));
-      }
-      formulaProductJSON.put("active", this.isActive());
-      if (this.getProduct() != null) {
-        formulaProductJSON.put("product", this.getProduct().toJson());
-      }
 
-    } catch (JSONException e) {
-      e.printStackTrace();
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = {CascadeType.ALL})  // javax.persistent.CascadeType
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JoinColumn(name = "parent_id") // parent's foreign key
+    private List<DocumentProduct> children = new ArrayList<>();
+
+
+    @PrePersist
+    @PreUpdate
+    @PreRemove
+    private void beforeAnyUpdate() {
+     /*   log.info( "before Any Update DocumentProduct" + (parent != null ? parent.getDocument().getId()  : " No id") );
+        if (parent != null)
+        this.setDocument(parent.getDocument());*/
     }
-    return formulaProductJSON;
-  }
+
+
+    public JSONObject toJson() {
+        JSONObject documentProductJSON = new JSONObject();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+        try {
+            documentProductJSON.put("id", this.getId());
+            documentProductJSON.put("quantity", this.getQuantity());
+
+
+          //  if(this.getSiUnit() != null)
+            documentProductJSON.put("siUnit", this.getSiUnit().toJson());
+
+
+            if (this.getPrice() != null) {
+                documentProductJSON.put("price", this.getPrice());
+            }
+
+            if (this.getBatch() != null) {
+                documentProductJSON.put("batch", this.getBatch().toJson());
+            }
+
+            if (this.getPrice() != null) {
+                documentProductJSON.put("tax", this.getTax());
+            }
+
+            if (this.getPrice() != null) {
+                documentProductJSON.put("discount", this.getDiscount());
+            }
+
+            if (this.getModifyDate() != null) {
+                documentProductJSON.put("modifyDate", formatter.format(this.getModifyDate()));
+            }
+            if (this.getCreateDate() != null) {
+                documentProductJSON.put("createDate", formatter.format(this.getCreateDate()));
+            }
+            documentProductJSON.put("active", this.isActive());
+            if (this.getProduct() != null) {
+                documentProductJSON.put("product", this.getProduct().toJson());
+            }
+
+            if (this.getFormula() != null) {
+                documentProductJSON.put("formula", this.getFormula().toJson());
+            }
+            if (this.getChildren() != null && this.getChildren().size() > 0) {
+                JSONArray children = new JSONArray();
+                for (DocumentProduct documentProduct : this.getChildren()) {
+                    if (documentProduct.isActive()) {
+                        children.put(documentProduct.toJson());
+                    }
+                }
+                documentProductJSON.put("children", children);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return documentProductJSON;
+    }
 }

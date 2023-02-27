@@ -76,20 +76,20 @@ public class UserController {
   public String addUser(@Valid Person person, BindingResult result, Model model) {
     ApplicationData data = new ApplicationData();
     model.addAttribute("data", data);
-    User registeredUserName = userRepository.findOneByUserName(person.getUser().getUserName());
+    User registeredUserName = userRepository.findOneByUserName(person.getUserAccount().getUserName());
     if (registeredUserName != null) {
       result.rejectValue(
           "user.userName",
           "error.user.userName",
-          "There is already a person registered with " + person.getUser().getUserName());
+          "There is already a person registered with " + person.getUserAccount().getUserName());
     }
 
-    User registeredUserEmail = userRepository.findOneByEmail(person.getUser().getEmail());
+    User registeredUserEmail = userRepository.findOneByEmail(person.getUserAccount().getEmail());
     if (registeredUserEmail != null) {
       result.rejectValue(
           "user.email  ",
           "error.user.email",
-          "There is already a person registered with " + person.getUser().getEmail());
+          "There is already a person registered with " + person.getUserAccount().getEmail());
     }
 
     if (result.hasErrors()) {
@@ -97,7 +97,7 @@ public class UserController {
       result.getAllErrors().forEach(error -> log.info(error.toString()));
       return "security/add-user";
     }
-    person.getUser().CryptPassword();
+    person.getUserAccount().CryptPassword();
     personRepository.save(person);
     return "redirect:/security/index";
   }
@@ -122,7 +122,7 @@ public class UserController {
     ApplicationData data = new ApplicationData();
     model.addAttribute("data", data);
 
-    log.info(person.getUser().getUserpassword());
+    log.info(person.getUserAccount().getUserpassword());
 
     // log.info(person.toString());
     if (result.hasErrors()) {
@@ -133,11 +133,11 @@ public class UserController {
     }
     // log.info(person.toString());
 
-    User user = personRepository.getPersonById(person.getId()).getUser();
+    User user = personRepository.getPersonById(person.getId()).getUserAccount();
     Date date = new Date();
     user.setModifyDate(date);
 
-    person.setUser(user);
+    person.setUserAccount(user);
 
     personRepository.save(person);
     return "redirect:/security/index";
@@ -159,10 +159,10 @@ public class UserController {
   public String activateUser(@PathVariable("id") Long id, Model model) {
     Person person = personRepository.getPersonById(id);
     /*.orElseThrow(() -> new IllegalArgumentException("Invalid  person Id:" + id));*/
-    person.getUser().setActive(!person.getUser().isActive());
+    person.getUserAccount().setActive(!person.getUserAccount().isActive());
     Date date = new Date();
 
-    person.getUser().setModifyDate(date);
+    person.getUserAccount().setModifyDate(date);
 
     personRepository.save(person);
 

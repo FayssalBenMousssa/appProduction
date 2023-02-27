@@ -1,7 +1,9 @@
 package dev.fenix.application.production.product.service;
 
 import dev.fenix.application.production.product.model.Formula;
+import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.repository.FormulaRepository;
+import dev.fenix.application.production.product.repository.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import java.util.*;
 @Service
 public class FormulaService {
   @Autowired private FormulaRepository formulaRepository;
+  @Autowired private ProductRepository productRepository;
 
   private static final Logger log = LoggerFactory.getLogger(FormulaService.class);
   private int count = 0;
@@ -26,17 +29,8 @@ public class FormulaService {
    * @param sortBy list of sort & direction
    * @param query list of query to filter data
    */
-  public List<Formula> getAllFormula(
-      Integer pageNo, Integer pageSize, String[] sortBy, String[] query) {
+  public List<Formula> getAllFormula(Integer pageNo, Integer pageSize, String[] sortBy, String[] query) {
 
-    log.trace("FormulaService.getAllFormula method accessed");
-
-    log.trace("pageNo : " + pageNo);
-    log.trace("pageSize : " + pageSize);
-    log.trace(
-        "sortBy : " + (sortBy != null && sortBy.length > 0 ? Arrays.toString(sortBy) : "no sort"));
-    log.trace(
-        "query : " + (query != null && query.length > 0 ? Arrays.toString(query) : "no query"));
 
     //// Order
     List<Sort.Order> orders = new ArrayList<Sort.Order>();
@@ -71,10 +65,15 @@ public class FormulaService {
         String value = entry.getValue();
         switch (key) {
           case "name":
-            filteringFormulas.addAll(
-                formulaRepository.findAllByNameContainsAndActiveTrue(value, paging).getContent());
+            filteringFormulas.addAll(formulaRepository.findAllByNameContainsAndActiveTrue(value, paging).getContent());
             count = formulaRepository.countByNameContainsAndActiveTrue(value);
             log.info(count + " formulas by name [" + value + "] for all types");
+            break;
+          case "product":
+            Product product = productRepository.findOneById(Long.valueOf(value));
+            filteringFormulas.addAll(formulaRepository.findAllByProductAndActiveTrue(product, paging).getContent());
+            count = formulaRepository.countByProductAndActiveTrue(product);
+            log.info(count + " formulas by product [" + product.getName() + "] for all types");
             break;
           default:
             log.info("value not in list of search !");

@@ -6,4 +6,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface CompanyRepository extends PagingAndSortingRepository<Company, Long> {
 
   Company findTopByOrderByIdDesc();
+
+    Company findOneById(Long valueOf);
 }

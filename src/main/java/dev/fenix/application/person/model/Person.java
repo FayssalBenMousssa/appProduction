@@ -1,6 +1,8 @@
 package dev.fenix.application.person.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.fenix.application.security.model.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +28,11 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Person {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id", nullable = false)
+  private Long id;
+
   @NotNull(message = "firstName is mandatory")
   private String firstName;
 
@@ -35,6 +42,16 @@ public class Person {
   @Enumerated(EnumType.STRING)
   @Column(length = 10)
   private Gender gender;
+
+
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  @Valid
+  @JsonManagedReference(value = "user-account")
+  @JsonIgnore
+  private User userAccount;
+
+  private Date birthDate;
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
@@ -46,17 +63,6 @@ public class Person {
   @Column(name = "modify_date")
   private Date modifyDate;
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinColumn(name = "user_id", referencedColumnName = "id")
-  @Valid
-  private User user;
-
-  private Date birthDate;
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "id", nullable = false)
-  private Long id;
 
   public Person(
       Long id,
@@ -91,8 +97,8 @@ public class Person {
         personJSON.put("createDate", formatter.format(this.getCreateDate()));
       }
 
-      if (this.getUser() != null) {
-        personJSON.put("user", this.getUser()._toJson());
+      if (this.getUserAccount() != null) {
+        personJSON.put("user", this.getUserAccount()._toJson());
       }
 
     } catch (JSONException e) {

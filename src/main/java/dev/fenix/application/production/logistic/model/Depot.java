@@ -1,5 +1,7 @@
 package dev.fenix.application.production.logistic.model;
 
+import dev.fenix.application.production.product.model.ProductType;
+import dev.fenix.application.production.product.model.ProductionUnit;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -33,6 +35,8 @@ public class Depot {
   @NotNull(message = "Please enter the address")
   private String address;
 
+
+
   @NotNull(message = "Please enter the active")
   private Boolean active;
 
@@ -46,6 +50,15 @@ public class Depot {
   @Column(name = "modify_date")
   private Date modifyDate;
 
+
+  /**
+   * @ManyToOne is used to insert manyeth (numerically one, not many) record that to associate with one record of other table
+   */
+  @ManyToOne(cascade={CascadeType.ALL})
+  @JoinColumn(name = "production_unit_id", referencedColumnName = "id")
+  private ProductionUnit productionUnit;
+
+
   public JSONObject toJson() {
     JSONObject depotJSON = new JSONObject();
     try {
@@ -57,6 +70,7 @@ public class Depot {
       depotJSON.put("active", this.getActive());
       depotJSON.put("createDate", this.getCreateDate());
       depotJSON.put("modifyDate", this.getModifyDate());
+
     } catch (JSONException e) {
       e.printStackTrace();
     }

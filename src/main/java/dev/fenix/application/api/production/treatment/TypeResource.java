@@ -22,7 +22,6 @@ import javax.validation.Valid;
 @RequestMapping("/api/document/type")
 public class TypeResource {
   private static final Logger log = LoggerFactory.getLogger(TypeResource.class);
-
   @Autowired private TypeRepository typeRepository;
   @Autowired private DocumentRepository documentRepository;
 

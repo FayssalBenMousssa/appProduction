@@ -17,28 +17,29 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Period {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @NotNull(message = "Please enter the startDate")
-    private Date startDate;
-    private Date endDate;
+  @NotNull(message = "Please enter the startDate")
+  private Date startDate;
 
-    public JSONObject toJson() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        JSONObject CategoryJSON = new JSONObject();
-        try {
-            CategoryJSON.put("id", this.getId());
-            if (this.getStartDate() != null) {
-                CategoryJSON.put("startDate", formatter.format(this.getStartDate()));
-            }
-            if (this.getEndDate() != null) {
-                CategoryJSON.put("endDate", formatter.format(this.getEndDate()));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return CategoryJSON;
+  private Date endDate;
+
+  public JSONObject toJson() {
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    JSONObject CategoryJSON = new JSONObject();
+    try {
+      CategoryJSON.put("id", this.getId());
+      if (this.getStartDate() != null) {
+        CategoryJSON.put("startDate", formatter.format(this.getStartDate()));
+      }
+      if (this.getEndDate() != null) {
+        CategoryJSON.put("endDate", formatter.format(this.getEndDate()));
+      }
+    } catch (JSONException e) {
+      e.printStackTrace();
     }
+    return CategoryJSON;
+  }
 }

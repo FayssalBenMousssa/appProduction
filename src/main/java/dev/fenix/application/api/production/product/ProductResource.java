@@ -1,5 +1,9 @@
 package dev.fenix.application.api.production.product;
 
+import dev.fenix.application.production.product.model.ProductAttachment;
+import dev.fenix.application.app.model.ResponseData;
+import dev.fenix.application.production.product.repository.ProductAttachmentRepository;
+import dev.fenix.application.production.product.service.AttachmentService;
 import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.model.ProductType;
 import dev.fenix.application.production.product.repository.ProductRepository;
@@ -12,10 +16,15 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -30,8 +39,51 @@ public class ProductResource {
 
   @Autowired private ProductRepository productRepository;
   @Autowired private ProductTypeRepository productTypeRepository;
-
   @Autowired private ProductService productService;
+
+  @Autowired private AttachmentService attachmentService;
+  @Autowired private ProductAttachmentRepository attachmentRepository;
+
+  @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file , @RequestParam("id") String id) throws Exception {
+    ProductAttachment attachment;
+    Product product = productRepository.getOne(Long.valueOf(id));
+    String downloadURL = "";
+    attachment = attachmentService.saveAttachment(file , product);
+    downloadURL =
+        ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("/api/product/download/")
+            .path(attachment.getId())
+            .toUriString();
+    ResponseData reponse = new ResponseData(attachment.getFileName(), downloadURL, file.getContentType(), file.getSize() , attachment.getId());
+    return    ResponseEntity.ok(attachment.getId().toString());
+  }
+
+  @RequestMapping(value = "/upload/delete/{id}",  method = RequestMethod.DELETE )
+  public ResponseEntity uploadDelete( @RequestParam("id") String id)  {
+    try {
+      ProductAttachment  attachment  = attachmentRepository.getOne(id) ;
+      attachment.setActive(false);
+      attachment =  attachmentRepository.save(attachment);
+      return    ResponseEntity.ok(attachment.getId().toString());
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+  }
+
+  @GetMapping("/download/{fileId}")
+  public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) throws Exception {
+    ProductAttachment attachment = null;
+    attachment = attachmentService.getAttachment(fileId);
+    return ResponseEntity.ok()
+        .contentType(MediaType.parseMediaType(attachment.getFileType()))
+        .header(
+            HttpHeaders.CONTENT_DISPOSITION,
+            "attachement;filename \"" + attachment.getFileName() + "\"")
+        .body(new ByteArrayResource(attachment.getData()));
+  }
 
   @RequestMapping(
       value = {"/", ""},

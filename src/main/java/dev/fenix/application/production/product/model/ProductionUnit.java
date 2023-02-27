@@ -1,13 +1,21 @@
 package dev.fenix.application.production.product.model;
 
+import dev.fenix.application.production.logistic.model.Depot;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,6 +31,13 @@ public class ProductionUnit {
 
   @NotNull(message = "Please enter the name")
   private String name;
+
+
+  //bidirectional many-to-one association to depots
+  @OneToMany(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
+  @JoinColumn(name = "production_unit_id")
+  private List<Depot> depots;
+
 
   @Column(name = "create_date")
   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -49,6 +64,18 @@ public class ProductionUnit {
     try {
       productionUnitJSON.put("id", this.getId());
       productionUnitJSON.put("name", this.getName());
+
+      if (this.getDepots() != null && this.getDepots().size() > 0) {
+        JSONArray depotsList = new JSONArray();
+
+        for (Depot depot : this.getDepots()) {
+
+         if (depot != null && depot.getName() != null)
+          depotsList.put(depot.toJson());
+
+        }
+        productionUnitJSON.put("depots", depotsList);
+      }
       productionUnitJSON.put("active", this.isActive());
     } catch (JSONException e) {
       e.printStackTrace();

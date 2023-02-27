@@ -5,8 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Integer> {
-  Role findByRole(String role);
+public interface RoleRepository extends JpaRepository<Role, Long> {
+
+
+  Role findByRole(String role_user);
+
+  Role findTopByOrderByIdDesc();
 }
 //// todo
 // https://medium.com/@gustavo.ponce.ch/spring-boot-spring-mvc-spring-security-mysql-a5d8545d837d

@@ -18,7 +18,7 @@ import java.util.Date;
 @Table(name = "prds__meta_data_value")
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+
 public class MetaDataValue {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

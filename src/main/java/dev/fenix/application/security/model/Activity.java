@@ -1,5 +1,6 @@
 package dev.fenix.application.security.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class Activity {
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   @Valid
+  @JsonBackReference(value = "user-activity")
   private User user;
 
   @NotBlank(message = "Location is mandatory")

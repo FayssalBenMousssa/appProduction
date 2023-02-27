@@ -22,7 +22,7 @@ import java.util.Set;
 @Setter
 public class Team {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
   @Size(max = 20, min = 3, message = "{user.name.invalid}")

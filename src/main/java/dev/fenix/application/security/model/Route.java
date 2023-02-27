@@ -1,8 +1,6 @@
 package dev.fenix.application.security.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,7 +19,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property  = "id", scope = Long.class)
 public class Route {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,7 +44,7 @@ public class Route {
 
   private String cssClass;
 
-  @Column(name = "orderNum")
+  @Column(name = "order_num")
   private int orderNum;
 
   @Column(name = "color", nullable = false, columnDefinition = "varchar(20) default '#ff0000'")
@@ -55,7 +53,7 @@ public class Route {
   @ManyToOne(cascade = {CascadeType.ALL})
   @JoinColumn(name = "parent_id")
   @NotFound(action = NotFoundAction.IGNORE)
-  @JsonBackReference
+  @JsonBackReference()
   private Route parent;
 
   @OneToMany(mappedBy = "parent")
@@ -68,12 +66,13 @@ public class Route {
   private int level;
 
   @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-  @JsonIgnoreProperties("roles")
+  @JsonManagedReference(value="role-route")
+  @JsonIdentityReference(alwaysAsId = true)
   @JoinTable(
       name = "sc__routes_role",
       joinColumns = @JoinColumn(name = "route_id"),
       inverseJoinColumns = @JoinColumn(name = "role_id"))
-  private Set<Role> roles;
+  private Set<Role> rolesRoute;
 
   public JSONObject toJson( Role role) {
 
@@ -99,10 +98,12 @@ public class Route {
     return routeJSON;
   }
 
+
+
   public JSONArray jsonSubRoutes(Route route ,Role role) {
     JSONArray subRoutes = new JSONArray();
     for (Route subRoute : route.getSubRoutes()) {
-        for (Role subRole : subRoute.getRoles()) {
+        for (Role subRole : subRoute.getRolesRoute()) {
           if (role.getId() == subRole.getId()) {
             subRoutes.put(subRoute.toJson(role));
           }

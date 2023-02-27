@@ -1,6 +1,8 @@
 package dev.fenix.application.security.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.fenix.application.person.model.Person;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,7 +38,6 @@ public class User {
   @NotBlank(message = "userName is mandatory")
   @NotNull(message = "userName cannot be null")
   @Size(min = 4, max = 120, message = "message size must be between 2 and 12")
-  @Type(type = "text")
   @Column(name = "user_name")
   @ColumnTransformer(forColumn = "user_name", read = "LOWER(user_name)", write = "LOWER(?)")
   private String userName;
@@ -60,18 +61,18 @@ public class User {
       inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles;
 
-  @OneToOne(
-      mappedBy = "user",
-      fetch = FetchType.LAZY,
-      cascade = {CascadeType.ALL})
+
   @Valid
-  @JsonIgnore
+  @JsonBackReference(value = "user-account")
+  @OneToOne(mappedBy = "userAccount",  cascade = {CascadeType.ALL})
   private Person person;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  @JsonManagedReference(value = "user-setting")
   private List<Setting> settings = new ArrayList<>();
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  @JsonManagedReference(value = "user-activity")
   private List<Activity> activities = new ArrayList<>();
 
   @NotBlank(message = "email is mandatory")

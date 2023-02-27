@@ -64,7 +64,7 @@ public class Type {
   @Column(columnDefinition = "tinyint(1) default 0")
   private boolean articleTax;
 
-  @Column(columnDefinition = "tinyint(1) default 0")
+  @Column(name = "article_price",columnDefinition = "tinyint(1) default 0" )
   private boolean articlePrice;
 
   @Column(columnDefinition = "tinyint(1) default 1")
@@ -72,6 +72,9 @@ public class Type {
 
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean hasPrice;
+
+  @Column(columnDefinition = "tinyint(1) default 1")
+  private boolean hasFormula = false;
 
 
   @Column(columnDefinition = "tinyint(1) default 1")
@@ -115,6 +118,7 @@ public class Type {
 
 
   @Column(columnDefinition="int(1) default 0")
+
   private int inAccounting;
 
   @Column(columnDefinition="int(1) default 0")
@@ -126,14 +130,21 @@ public class Type {
   @Column(columnDefinition="int(1) default 0")
   private int inProductions;
 
-  @Column(columnDefinition="int(1) default 0")
+  @Column(columnDefinition="int(1) default 0" , name = "in_stock" )
   private int inStock;
+
+  @Column(columnDefinition="int(1) default 0")
+  private boolean toInvoice;
+
+  @Column(columnDefinition="int(1) default 0")
+  private boolean codeEditable;
 
 
   public JSONObject toJson() {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     JSONObject typeJSON = new JSONObject();
     try {
+
       typeJSON.put("id", this.getId());
       typeJSON.put("name", this.getName());
       typeJSON.put("code", this.getCode());
@@ -145,22 +156,21 @@ public class Type {
       typeJSON.put("inStock",this.getInStock());
       typeJSON.put("inSales",this.getInSales());
       typeJSON.put("hasPrice",this.isHasPrice());
+      typeJSON.put("hasFormula",this.isHasFormula());
       typeJSON.put("hasBatch",this.isHasBatch());
-
+      typeJSON.put("toInvoice",this.isToInvoice());
+      typeJSON.put("codeEditable",this.isCodeEditable());
 
       if (this.getCategory() != null) { typeJSON.put("category", this.getCategory().toJson()); }
       typeJSON.put("source", this.getSource());
       typeJSON.put("destination",this.getDestination());
-
       if(this.getStyle() != null){ typeJSON.put("style", this.getStyle().toJson()); }
-
       if (this.getModifyDate() != null) { typeJSON.put("modifyDate", formatter.format(this.getModifyDate())); }
       if (this.getCreateDate() != null) { typeJSON.put("createDate", formatter.format(this.getCreateDate())); }
-
       if (this.getMetaData() != null && this.getMetaData().size() > 0) {
         JSONArray metadataList = new JSONArray();
         for (MetaData metadata : this.getMetaData()) {
-          if (metadata.isActive()) {
+          if (metadata != null && metadata.isActive()) {
             metadataList.put(metadata.toJson());
           }
         }
@@ -201,6 +211,35 @@ public class Type {
         }
         typeJSON.put("typeRelations", typeRelations);
       }
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return typeJSON;
+  }
+
+
+  public JSONObject toSmallJson() {
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    JSONObject typeJSON = new JSONObject();
+    try {
+      typeJSON.put("id", this.getId());
+      typeJSON.put("name", this.getName());
+      typeJSON.put("code", this.getCode());
+      typeJSON.put("active", this.isActive());
+      typeJSON.put("abbreviation", this.getAbbreviation());
+      typeJSON.put("inAccounting", this.getInAccounting());
+      typeJSON.put("inPurchases",this.getInPurchases());
+      typeJSON.put("inProductions",this.getInProductions());
+      typeJSON.put("inStock",this.getInStock());
+      typeJSON.put("inSales",this.getInSales());
+      typeJSON.put("hasPrice",this.isHasPrice());
+      typeJSON.put("hasFormula",this.isHasFormula());
+      typeJSON.put("hasBatch",this.isHasBatch());
+      typeJSON.put("toInvoice",this.isToInvoice());
+      typeJSON.put("codeEditable",this.isCodeEditable());
+
+
 
     } catch (JSONException e) {
       e.printStackTrace();

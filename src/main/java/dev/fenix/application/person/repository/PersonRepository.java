@@ -13,7 +13,7 @@ import java.util.Optional;
 @EnableJpaRepositories
 public interface PersonRepository extends PagingAndSortingRepository<Person, Long> {
 
-  @Query(" from Person as person join person.user  where person.id = ?1")
+ // @Query(" from Person as person join person.user  where person.id = ?1")
   Person getPersonById(Long id);
 
   Person save(Person person);
@@ -23,7 +23,7 @@ public interface PersonRepository extends PagingAndSortingRepository<Person, Lon
   @Query("SELECT p FROM Person p ")
   Optional<Person> findActivePersons(Boolean active);
 
-  User getUserById(Integer id);
+  User getUserAccountById(Integer id);
 
   Page<Person> findAllByOrderByIdDesc(Pageable pageable);
 }
