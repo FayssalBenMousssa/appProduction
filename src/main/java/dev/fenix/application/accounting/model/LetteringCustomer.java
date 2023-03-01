@@ -1,5 +1,6 @@
 package dev.fenix.application.accounting.model;
 
+import dev.fenix.application.production.customer.model.Customer;
 import dev.fenix.application.production.payment.model.PaymentCustomer;
 import dev.fenix.application.production.treatment.model.Document;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,12 @@ public class LetteringCustomer {
   @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "letter_id", referencedColumnName = "id")
   private Letter letter;
+
+  @NotNull(message = "Please enter the customer")
+  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
+  @JoinColumn(name = "customer_id", referencedColumnName = "id")
+  private Customer customer;
+
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "create_date", updatable = false)
@@ -59,6 +66,7 @@ public class LetteringCustomer {
       LetteringCustomerJSON.put("id", this.getId());
       LetteringCustomerJSON.put("document", this.getDocument().toSmallJson());
       LetteringCustomerJSON.put("paymentCustomer", this.getPaymentCustomer().toJson());
+      LetteringCustomerJSON.put("customer", this.getCustomer().toJson());
       if (this.getModifyDate() != null) {
         LetteringCustomerJSON.put("modifyDate", formatter.format(this.getModifyDate()));
       }

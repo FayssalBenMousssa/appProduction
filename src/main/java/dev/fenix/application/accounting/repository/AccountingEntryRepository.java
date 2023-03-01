@@ -58,12 +58,13 @@ public interface AccountingEntryRepository extends JpaRepository<Company, Long> 
             "    bz__company.social_reason," +
             "    payment__customer.payment_date AS date," +
             "    payment__method.code AS piece," +
-            "    accounting__letter.code as letter," +
+
             "    CONCAT_WS(' ',payment__method.name,payment__method.code) AS label," +
             "    payment__method.code AS type," +
             "    0 AS debit," +
             "    payment__customer.montant AS credit," +
-            "    'TODO' AS status" +
+            "    'TODO' AS status," +
+            "    accounting__letter.code as letter" +
             " FROM" +
             "    bz__company" +
             "        JOIN  payment__customer ON payment__customer.customer_id = bz__company.id" +
