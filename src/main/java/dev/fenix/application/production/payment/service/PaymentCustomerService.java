@@ -105,26 +105,7 @@ public class PaymentCustomerService {
     private List<PaymentCustomer> loadPaymentCustomer(Pageable paging, Map<String, String> filters) throws ParseException {
         Page<PaymentCustomer> pagedResult;
 
-       /*
-    *
-    *
-    startDate
-    endDate
-    idCustomer
-    paymentStatus
-    paymentMethod
-    *
-    idCustomer
-    idCustomer - paymentStatus
-    idCustomer - paymentMethod
-    paymentStatus - paymentMethod
-    idCustomer - paymentStatus - paymentMethod
-
-    */
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
-
-
 
         if (filters.containsKey("startDate") && filters.containsKey("endDate") && filters.containsKey("paymentStatus") && filters.containsKey("idCustomer") && filters.containsKey("paymentMethod")) {
             Customer customer = customerRepository.findOneById(Long.valueOf(filters.get("idCustomer")));

@@ -33,6 +33,8 @@ public class PaymentStatus {
   @NotNull(message = "Please enter the active")
   private Boolean active;
 
+
+
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "create_date", updatable = false)

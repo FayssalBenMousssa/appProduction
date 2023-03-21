@@ -31,7 +31,6 @@ import java.util.*;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Document {
 
-
   private static final Logger log = LoggerFactory.getLogger(Document.class);
 
   @Id
@@ -71,7 +70,9 @@ public class Document {
 
   @LazyCollection(LazyCollectionOption.FALSE)
   @Fetch(value = FetchMode.SUBSELECT)
-  @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true) // javax.persistent.CascadeType
+  @OneToMany(
+      cascade = {CascadeType.ALL},
+      orphanRemoval = true) // javax.persistent.CascadeType
   @JoinColumn(name = "document_id") // parent's foreign key
   @JsonManagedReference(value = "document-data-values")
   private List<DocumentDataValue> documentDataValues = new ArrayList<>();
@@ -98,10 +99,10 @@ public class Document {
   @Column(length = 30)
   private Status status;
 
-
-
   @NotNull(message = "Please enter the source")
-  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
+  @ManyToOne(
+      cascade = {CascadeType.DETACH},
+      fetch = FetchType.EAGER)
   @JoinColumn(name = "source_id", referencedColumnName = "id")
   private Company source;
 
@@ -112,12 +113,12 @@ public class Document {
   @JoinColumn(name = "destination_id", referencedColumnName = "id")
   private Company destination;
 
-
-
-
   @JsonBackReference(value = "related-docs")
   @ManyToMany(cascade = {CascadeType.MERGE})
-  @JoinTable(name = "trt__doc_related", joinColumns = {@JoinColumn(name = "document_id")}, inverseJoinColumns = {@JoinColumn(name = "related_to_id")})
+  @JoinTable(
+      name = "trt__doc_related",
+      joinColumns = {@JoinColumn(name = "document_id")},
+      inverseJoinColumns = {@JoinColumn(name = "related_to_id")})
   private Set<Document> related = new HashSet<Document>();
 
   @JsonIgnore
@@ -125,7 +126,7 @@ public class Document {
   @ManyToMany(mappedBy = "related")
   private Set<Document> relatedTo = new HashSet<Document>();
 
-  @Formula( "CONCAT_WS( '_', type_id, status )")
+  @Formula("CONCAT_WS( '_', type_id, status )")
   private String access;
 
   @PrePersist
@@ -133,8 +134,15 @@ public class Document {
   @PreRemove
   private void beforeAnyUpdate() {
 
-    log.info( "before Any Update Document");
+    log.info("before Any Update Document");
+  }
 
+  public Double totalDocument() {
+    Double total = 0d;
+    for (DocumentProduct productDoc : this.getDocumentProduct()) {
+      total += productDoc.totalProduct();
+    }
+    return total;
   }
 
   public List<String> getDifferent(Document newDocument) {
@@ -234,6 +242,7 @@ public class Document {
       documentJSON.put("code", this.getCode());
       documentJSON.put("active", this.isActive());
       documentJSON.put("status", this.getStatus());
+
       documentJSON.put("type", this.getType().toJson());
       documentJSON.put("source", this.getSource().toJson());
       documentJSON.put("destination", this.getDestination().toJson());
@@ -276,30 +285,37 @@ public class Document {
   public String getResumeInfo() {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     return "\n==========================="
-        + "\nID : " + this.getId()
-        + "\nCode : " + this.code
-        + "\nSource : " + this.getSource().getSocialReason()
-        + "\nDestination :" + this.getDestination().getSocialReason()
-        + "\nStatus : " + this.getStatus().name()
-       + "\nDate : " +  formatter.format(this.getDate())
-       + "\nmodifyDate : " +  formatter.format(this.getModifyDate())
-       + "\ncreateDate : " +   formatter.format(this.getCreateDate())
-            ;
+        + "\nID : "
+        + this.getId()
+        + "\nCode : "
+        + this.code
+        + "\nSource : "
+        + this.getSource().getSocialReason()
+        + "\nDestination :"
+        + this.getDestination().getSocialReason()
+        + "\nStatus : "
+        + this.getStatus().name()
+        + "\nDate : "
+        + formatter.format(this.getDate())
+        + "\nmodifyDate : "
+        + formatter.format(this.getModifyDate())
+        + "\ncreateDate : "
+        + formatter.format(this.getCreateDate());
   }
 
   public JSONObject getDifferenceJson(Document newDocument) {
 
     JSONObject differenceJSON = new JSONObject();
     try {
-      if (this.getDate().compareTo( newDocument.getDate()) != 0) {
-        differenceJSON.put("date", this.getDate() + "|" + newDocument.getDate() );
+      if (this.getDate().compareTo(newDocument.getDate()) != 0) {
+        differenceJSON.put("date", this.getDate() + "|" + newDocument.getDate());
       }
       if (!this.name.equals(newDocument.getName()))
-        differenceJSON.put("name" , this.name + "|" + newDocument.getName());
+        differenceJSON.put("name", this.name + "|" + newDocument.getName());
       if (!this.code.equals(newDocument.getCode()))
-        differenceJSON.put("code" , this.code + "|" + newDocument.getCode());
+        differenceJSON.put("code", this.code + "|" + newDocument.getCode());
       if (this.getStatus() != newDocument.getStatus())
-        differenceJSON.put("status" , this.getStatus() + "|" + newDocument.getStatus());
+        differenceJSON.put("status", this.getStatus() + "|" + newDocument.getStatus());
     } catch (JSONException e) {
       throw new RuntimeException(e);
     }

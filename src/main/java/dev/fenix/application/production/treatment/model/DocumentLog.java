@@ -50,7 +50,7 @@ public class DocumentLog {
   public DocumentLog(@NotNull(message = "Please enter the action") Action action, Document document, String message , String userName) {
     this.action = action;
     this.document = document;
-this.userName = userName;
+    this.userName = userName;
     this.message = message;
   }
 

@@ -1,5 +1,8 @@
 package dev.fenix.application.production.payment.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import dev.fenix.application.accounting.model.LetteringCustomer;
 import dev.fenix.application.production.customer.model.Customer;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -79,6 +82,10 @@ public class PaymentCustomer {
     @Column(name = "modify_date")
     private Date modifyDate;
 
+    @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "lettering_id", referencedColumnName = "id")
+    @JsonBackReference(value = "payments-customer")
+    private LetteringCustomer letteringCustomer;
 
     public JSONObject toJson() {
         JSONObject paymentCustomerJSON = new JSONObject();
@@ -87,11 +94,21 @@ public class PaymentCustomer {
         try {
             paymentCustomerJSON.put("id", this.getId());
             paymentCustomerJSON.put("code", this.getCode());
-            paymentCustomerJSON.put("customer", this.getCustomer().toJson());
-            paymentCustomerJSON.put("paymentMethod", this.getPaymentMethod().toJson());
-            paymentCustomerJSON.put("paymentStatus", this.getPaymentStatus().toJson());
+            if (this.getCustomer() != null) {
+                paymentCustomerJSON.put("customer", this.getCustomer().toJson());
+            }
+            if (this.getPaymentMethod() != null) {
+                paymentCustomerJSON.put("paymentMethod", this.getPaymentMethod().toJson());
+            }
+            if (this.getPaymentMethod() != null) {
+                paymentCustomerJSON.put("paymentStatus", this.getPaymentMethod().toJson());
+            }
+
             paymentCustomerJSON.put("montant", this.getMontant());
 
+            if (this.getLetteringCustomer() != null) {
+                paymentCustomerJSON.put("letteringCustomer", this.getLetteringCustomer());
+            }
 
             if (this.getLabel() != null) {
                 paymentCustomerJSON.put("label", this.getLabel());

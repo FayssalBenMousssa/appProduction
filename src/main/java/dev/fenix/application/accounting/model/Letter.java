@@ -20,19 +20,25 @@ public class Letter {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-  @NotNull(message = "Please enter the code")
+
+ @NotNull(message = "Please enter the code as string")
   private String code;
+
+ @NotNull(message = "Please enter the code as string")
+ @Enumerated(EnumType.STRING)
+ private LetterCase letterCase;
 
 
   public JSONObject toJson() {
-    JSONObject vendorClassificationJSON = new JSONObject();
+    JSONObject LetterJSON = new JSONObject();
     try {
-      vendorClassificationJSON.put("id", this.getId());
-      vendorClassificationJSON.put("letter", this.getCode());
+        LetterJSON.put("id", this.getId());
+        LetterJSON.put("code", this.getCode());
+        LetterJSON.put("letterCase", this.getLetterCase());
 
     } catch (JSONException e) {
       e.printStackTrace();
     }
-    return vendorClassificationJSON;
+    return LetterJSON;
   }
 }

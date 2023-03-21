@@ -39,7 +39,7 @@ public interface AccountingEntry {
             stockCountJSON.put("debit", this.getDebit());
             stockCountJSON.put("credit", this.getCredit());
             stockCountJSON.put("type", this.getType());
-            stockCountJSON.put("letter", this.getLetter());
+            stockCountJSON.put("letter", this.getLetter() );
 
 
         } catch (JSONException e) {

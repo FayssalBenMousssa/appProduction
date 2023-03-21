@@ -109,6 +109,11 @@ public class DocumentProduct {
     }
 
 
+    public Double totalProduct(){
+       ///  (trt__doc_product.quantity * trt__doc_product.price) * (1 - trt__doc_product.discount / 100)) * (1 + trt__doc_product.tax / 100)
+        return (price * quantity) * (1 - discount / 100) * (1+tax / 100);
+    }
+
     public JSONObject toJson() {
         JSONObject documentProductJSON = new JSONObject();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");

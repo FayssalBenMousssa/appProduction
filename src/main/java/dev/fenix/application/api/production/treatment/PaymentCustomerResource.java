@@ -61,7 +61,7 @@ public class PaymentCustomerResource {
     try {
       response.put("results", jArray);
       response.put("count", jArray.length());
-      response.put("total", paymentCustomerService.getCountAll());
+      response.put("total", paymentCustomerService.getCount());
 
       return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     } catch (JSONException e) {

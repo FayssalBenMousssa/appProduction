@@ -77,6 +77,7 @@ public class DocumentResource {
 
         log.trace("DocumentResource.index method accessed");
         log.trace("GetUserName : " + getCurrentUser().getUserName());
+
         long startTime = System.nanoTime();
         JSONArray jArray = new JSONArray();
         List<Document> documents = documentService.getAllDocuments(page, size, sort, query, type, category, toInvoice, this.getCurrentUser());
