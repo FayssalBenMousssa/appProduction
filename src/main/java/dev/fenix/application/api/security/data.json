@@ -1,0 +1,14 @@
+{
+  "firstName":"fayssal",
+  "lastName":"benmoussa",
+  "gender":"MALE",
+  "fullName":"benmoussa fayssal",
+  "id":5,
+  "birthDate":"1985-03-17T15:46:50",
+  "user":{
+    "UserName":"fenix",
+    "userpassword" : "123456",
+    "id":10,
+    "email":"fayssal.note@gmail.com"
+  }
+}

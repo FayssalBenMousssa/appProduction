@@ -1,7 +1,6 @@
 package dev.fenix.application.production.payment.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.fenix.application.accounting.model.LetteringCustomer;
 import dev.fenix.application.production.customer.model.Customer;
 import lombok.*;

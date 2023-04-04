@@ -2,8 +2,6 @@ package dev.fenix.application.api.security;
 
 import dev.fenix.application.person.model.Person;
 import dev.fenix.application.person.repository.PersonRepository;
-import dev.fenix.application.production.logistic.model.Depot;
-import dev.fenix.application.production.product.model.Tax;
 import dev.fenix.application.security.exception.UserFoundException;
 import dev.fenix.application.security.model.Action;
 import dev.fenix.application.security.model.Role;
@@ -20,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;

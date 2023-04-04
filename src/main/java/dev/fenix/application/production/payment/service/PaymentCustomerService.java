@@ -1,7 +1,6 @@
 package dev.fenix.application.production.payment.service;
 
 
-import dev.fenix.application.business.model.Company;
 import dev.fenix.application.production.customer.model.Customer;
 import dev.fenix.application.production.customer.repository.CustomerRepository;
 import dev.fenix.application.production.payment.model.PaymentCustomer;
@@ -13,7 +12,10 @@ import dev.fenix.application.production.payment.repository.PaymentStatusReposito
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -48,21 +50,21 @@ public class PaymentCustomerService {
      */
     public List<PaymentCustomer> getAllPaymentCustomers(
             Integer pageNo, Integer pageSize, String[] sortBy, String[] query) {
-        log.trace("customerService.get Allcustomers method accessed");
-        log.trace("pageNo : " + pageNo);
-        log.trace("pageSize : " + pageSize);
-        log.trace("sortBy : " + (sortBy != null && sortBy.length > 0 ? Arrays.toString(sortBy) : "no sort"));
-        log.trace("query : " + (query != null && query.length > 0 ? Arrays.toString(query) : "no query"));
+        //log.trace("customerService.get Allcustomers method accessed");
+        //log.trace("pageNo : " + pageNo);
+        //log.trace("pageSize : " + pageSize);
+        //log.trace("sortBy : " + (sortBy != null && sortBy.length > 0 ? Arrays.toString(sortBy) : "no sort"));
+        //log.trace("query : " + (query != null && query.length > 0 ? Arrays.toString(query) : "no query"));
 
         //// Order
         List<Sort.Order> orders = new ArrayList<Sort.Order>();
         if (sortBy[0].contains(",")) {
             // will sort more than 2 columns
-            log.trace("we will sort more than 2 columns ");
+            //log.trace("we will sort more than 2 columns ");
             for (String sortOrder : sortBy) {
                 // sortOrder="column, direction"
                 String[] _sort = sortOrder.split(",");
-                log.trace("sortOrder : " + _sort[1] + " " + _sort[0]);
+                //log.trace("sortOrder : " + _sort[1] + " " + _sort[0]);
                 orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
             }
         } else {
@@ -76,7 +78,7 @@ public class PaymentCustomerService {
         List<PaymentCustomer> filteringpaymentCustomers = new ArrayList<PaymentCustomer>();
 
         countAll = paymentCustomerRepository.countByActiveTrue();
-        log.info(countAll + " paymentCustomers active in DB");
+        //log.info(countAll + " paymentCustomers active in DB");
         Page<PaymentCustomer> pagedResult;
 
 
@@ -87,7 +89,7 @@ public class PaymentCustomerService {
                 throw new RuntimeException(e);
             }
         } else {
-            log.info("all active paymentCustomers");
+            //log.info("all active paymentCustomers");
 
             Date startDate = new Date();
             Date endDate = new Date();
@@ -97,7 +99,7 @@ public class PaymentCustomerService {
             count = paymentCustomerRepository.countByActiveTrueAndPaymentDateBetween(startDate, endDate);
 
 
-            log.info(count + " paymentCustomers ");
+            //log.info(count + " paymentCustomers ");
             return pagedResult.getContent();
         }
     }
@@ -115,7 +117,7 @@ public class PaymentCustomerService {
             Date endDate = formatter.parse(filters.get("endDate"));
             pagedResult = paymentCustomerRepository.findByActiveTrueAndPaymentDateBetweenAndCustomerAndPaymentStatusAndPaymentMethod(startDate, endDate, customer,paymentStatus,paymentMethod, paging);
             count = paymentCustomerRepository.countByActiveTrueAndPaymentDateBetweenAndCustomerAndPaymentStatusAndPaymentMethod(startDate, endDate, customer,paymentStatus,paymentMethod);
-            log.info("startDate / endDate  / paymentStatus / idCustomer / paymentMethod: ");
+            //log.info("startDate / endDate  / paymentStatus / idCustomer / paymentMethod: ");
         }
 
         else if (filters.containsKey("startDate") && filters.containsKey("endDate") && filters.containsKey("paymentStatus")  && filters.containsKey("paymentMethod")) {
@@ -126,7 +128,7 @@ public class PaymentCustomerService {
             Date endDate = formatter.parse(filters.get("endDate"));
             pagedResult = paymentCustomerRepository.findByActiveTrueAndPaymentDateBetweenAndPaymentStatusAndPaymentMethod(startDate, endDate,paymentStatus,paymentMethod, paging);
             count = paymentCustomerRepository.countByActiveTrueAndPaymentDateBetweenAndPaymentStatusAndPaymentMethod(startDate, endDate,paymentStatus,paymentMethod);
-            log.info("startDate / endDate / paymentStatus  / paymentMethod ");
+            //log.info("startDate / endDate / paymentStatus  / paymentMethod ");
         }
 
       else  if (filters.containsKey("startDate") && filters.containsKey("endDate") &&   filters.containsKey("idCustomer") && filters.containsKey("paymentMethod")) {
@@ -136,7 +138,7 @@ public class PaymentCustomerService {
             Date endDate = formatter.parse(filters.get("endDate"));
             pagedResult = paymentCustomerRepository.findByActiveTrueAndPaymentDateBetweenAndCustomerAndPaymentMethod(startDate, endDate, customer,paymentMethod, paging);
             count = paymentCustomerRepository.countByActiveTrueAndPaymentDateBetweenAndCustomerAndPaymentMethod(startDate, endDate, customer,paymentMethod);
-            log.info("startDate / endDate / idCustomer /  paymentMethod");
+            //log.info("startDate / endDate / idCustomer /  paymentMethod");
         }
         else  if (filters.containsKey("startDate") && filters.containsKey("endDate")   && filters.containsKey("paymentMethod")) {
 
@@ -145,7 +147,7 @@ public class PaymentCustomerService {
             Date endDate = formatter.parse(filters.get("endDate"));
             pagedResult = paymentCustomerRepository.findByActiveTrueAndPaymentDateBetweenAndPaymentMethod(startDate, endDate,paymentMethod, paging);
             count = paymentCustomerRepository.countByActiveTrueAndPaymentDateBetweenAndPaymentMethod(startDate, endDate,paymentMethod);
-            log.info("startDate / endDate  /  paymentMethod");
+            //log.info("startDate / endDate  /  paymentMethod");
         }
 
 
@@ -156,7 +158,7 @@ public class PaymentCustomerService {
             Date endDate = formatter.parse(filters.get("endDate"));
             pagedResult = paymentCustomerRepository.findByActiveTrueAndPaymentDateBetweenAndCustomerAndPaymentStatus(startDate, endDate, customer,paymentStatus, paging);
             count = paymentCustomerRepository.countByActiveTrueAndPaymentDateBetweenAndCustomerAndPaymentStatus(startDate, endDate, customer,paymentStatus);
-            log.info("startDate / endDate /  paymentStatus / idCustomer");
+            //log.info("startDate / endDate /  paymentStatus / idCustomer");
         }
         else if (filters.containsKey("startDate") && filters.containsKey("endDate") && filters.containsKey("paymentStatus")) {
             PaymentStatus paymentStatus = paymentStatusRepository.findOneById(Long.valueOf(filters.get("paymentStatus")));
@@ -164,7 +166,7 @@ public class PaymentCustomerService {
             Date endDate = formatter.parse(filters.get("endDate"));
             pagedResult = paymentCustomerRepository.findByActiveTrueAndPaymentDateBetweenAndPaymentStatus(startDate, endDate,paymentStatus, paging);
             count = paymentCustomerRepository.countByActiveTrueAndPaymentDateBetweenAndPaymentStatus(startDate, endDate,paymentStatus);
-            log.info("startDate / endDate / paymentStatus ");
+            //log.info("startDate / endDate / paymentStatus ");
         }
         else if (filters.containsKey("startDate") && filters.containsKey("endDate") && filters.containsKey("idCustomer")) {
             Customer customer = customerRepository.findOneById(Long.valueOf(filters.get("idCustomer")));
@@ -172,26 +174,26 @@ public class PaymentCustomerService {
             Date endDate = formatter.parse(filters.get("endDate"));
             pagedResult = paymentCustomerRepository.findByActiveTrueAndPaymentDateBetweenAndCustomer(startDate, endDate, customer, paging);
             count = paymentCustomerRepository.countByActiveTrueAndPaymentDateBetweenAndCustomer(startDate, endDate, customer);
-            log.info("startDate / endDate / idCustomer ");
+            //log.info("startDate / endDate / idCustomer ");
         } else if (filters.containsKey("startDate") && filters.containsKey("endDate")) {
             Date startDate = formatter.parse(filters.get("startDate"));
             Date endDate = formatter.parse(filters.get("endDate"));
             pagedResult = paymentCustomerRepository.findByActiveTrueAndPaymentDateBetween(startDate, endDate, paging);
             count = paymentCustomerRepository.countByActiveTrueAndPaymentDateBetween(startDate, endDate);
-            log.info("startDate / endDate : ");
+            //log.info("startDate / endDate : ");
         } else {
             Date startDate = new Date();
             Date endDate = new Date();
             pagedResult = paymentCustomerRepository.findByActiveTrueAndPaymentDateBetween(startDate, endDate, paging);
             count = paymentCustomerRepository.countByActiveTrueAndPaymentDateBetween(startDate, endDate);
-            log.info("all active paymentCustomer  ... today : ");
+            //log.info("all active paymentCustomer  ... today : ");
         }
         return pagedResult.getContent();
 
     }
 
     private Sort.Direction getSortDirection(String direction) {
-        log.trace("customerService.getSortDirection method accessed");
+        //log.trace("customerService.getSortDirection method accessed");
         if (direction.equals("asc")) {
             return Sort.Direction.ASC;
         } else if (direction.equals("desc")) {
@@ -201,19 +203,19 @@ public class PaymentCustomerService {
     }
 
     private Map<String, String> getFilters(String[] query) {
-        log.trace("customerService.getFilters method accessed");
+        //log.trace("customerService.getFilters method accessed");
         if (query != null && query[0].contains(":")) {
             Map<String, String> hashMap = new HashMap<String, String>();
             for (String keyValue : query) {
                 String[] _filter = keyValue.split(":");
                 if (_filter.length > 1) {
                     hashMap.put(_filter[0], _filter[1]);
-                    log.info("Filter found : " + _filter[0] + ":" + _filter[1]);
+                    //log.info("Filter found : " + _filter[0] + ":" + _filter[1]);
                 }
             }
             return hashMap;
         } else {
-            log.info("No filter found");
+            //log.info("No filter found");
             return null;
         }
     }

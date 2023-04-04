@@ -14,13 +14,6 @@ public enum Status {
    * activities being performed. This status is considered active. This might be the initial state
    * in simple editorial workflows. The equivalent task status is ‘Open’.
    */
-  IN_PROGRESS,
-  /**
-   * The document is considered complete. Any internal post-completion operations, such as the final
-   * editorial review before approval, should be conducted. This status is considered active. This
-   * might be the final state in simple editorial workflows. The equivalent task status is
-   * ‘Resolved’.
-   */
   COMPLETE,
   /**
    * An “Approver” has checked that the document is ready and that there are no longer any
@@ -38,11 +31,8 @@ public enum Status {
    * Work on the document has been stopped before its normal completion. This is a final state in
    * the document workflow. The equivalent task status is ‘Closed’.
    */
-  TERMINATED,
-
-  /**
-   * Work on the document has been stopped before its normal completion. This is a final state in
-   * the document workflow. The equivalent task status is ‘Closed’.
-   */
   CLOSED
+
+
+
 }

@@ -31,7 +31,7 @@ public class CategoryResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public String index(HttpServletRequest request) {
     JSONArray jArray = new JSONArray();
-    // log.trace("{methodName} method accessed");
+    // //log.trace("{methodName} method accessed");
     Iterable<Category> categories = categoryRepository.findByActiveTrue();
     for (Category category : categories) {
       jArray.put(category.toJson());
@@ -45,7 +45,7 @@ public class CategoryResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace("ProductResource.get method accessed");
+    //log.trace("ProductResource.get method accessed");
     Category category = categoryRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(category.toJson().toString(), HttpStatus.OK);
   }
@@ -56,7 +56,7 @@ public class CategoryResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> save(@Valid @RequestBody Category category, HttpServletRequest request) {
-    // log.trace("{methodName} method accessed");
+    // //log.trace("{methodName} method accessed");
     category.setActive(true);
     Category  savedCategory = categoryRepository.save(category);
     return ResponseEntity.ok(savedCategory.toJson().toString());
@@ -69,7 +69,7 @@ public class CategoryResource {
   @ResponseBody
   public ResponseEntity<?> update(@Valid @RequestBody Category category, HttpServletRequest request) {
     try {
-      // log.trace("{methodName} method accessed");
+      // //log.trace("{methodName} method accessed");
       category.setActive(true);
       Category updatedCategory = categoryRepository.save(category);
       return new ResponseEntity<>(updatedCategory.toJson().toString(), HttpStatus.OK);

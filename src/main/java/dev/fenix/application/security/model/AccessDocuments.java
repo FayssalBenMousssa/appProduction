@@ -1,6 +1,6 @@
 package dev.fenix.application.security.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import dev.fenix.application.production.treatment.model.Status;
 import dev.fenix.application.production.treatment.model.Type;
 import lombok.*;

@@ -47,8 +47,8 @@ public class Person {
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   @Valid
-  @JsonManagedReference(value = "user-account")
-  @JsonIgnore
+
+
   private User userAccount;
 
   private Date birthDate;

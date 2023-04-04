@@ -1,10 +1,6 @@
 package dev.fenix.application.production.treatment.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import dev.fenix.application.api.production.treatment.DocumentResource;
-import dev.fenix.application.production.product.model.Classification;
 import dev.fenix.application.production.product.model.Formula;
 import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.model.SiUnit;
@@ -16,15 +12,14 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -103,7 +98,7 @@ public class DocumentProduct {
     @PreUpdate
     @PreRemove
     private void beforeAnyUpdate() {
-     /*   log.info( "before Any Update DocumentProduct" + (parent != null ? parent.getDocument().getId()  : " No id") );
+     /*   //log.info( "before Any Update DocumentProduct" + (parent != null ? parent.getDocument().getId()  : " No id") );
         if (parent != null)
         this.setDocument(parent.getDocument());*/
     }

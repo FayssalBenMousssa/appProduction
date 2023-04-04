@@ -61,7 +61,7 @@ public class DepotResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace("ProductResource.get method accessed");
+    //log.trace("ProductResource.get method accessed");
     Depot depot =
         depotRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(depot.toJson().toString(), HttpStatus.OK);

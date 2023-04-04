@@ -66,7 +66,7 @@ public class CategoryPriceResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace("ProductResource.get method accessed");
+    //log.trace("ProductResource.get method accessed");
     CategoryPrice categoryPrice =
         categoryPriceRepository
             .findById(id)

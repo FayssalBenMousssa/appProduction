@@ -109,7 +109,7 @@ public class SecurityConfiguration {
                   String username = userDetails.getUsername();
 
                   User user = userRepository.findOneByUserName(username);
-                  log.info("The user " + username + " has logged out");
+                  //log.info("The user " + username + " has logged out");
                   activityRepository.save(
                       new Activity(
                           user,
@@ -136,7 +136,7 @@ public class SecurityConfiguration {
                   UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                   String username = userDetails.getUsername();
                   User user = userRepository.findOneByUserName(username);
-                  log.info("The user " + username + " has logged in.");
+                  //log.info("The user " + username + " has logged in.");
                   activityRepository.save(new Activity(user, request.getRemoteAddr(), request.getHeader("referer"), "The user " + username + " has logged in.", "INFO", request.getHeader("user-agent"), new Date()));
                   response.sendRedirect(request.getContextPath());
                 }
@@ -155,8 +155,7 @@ public class SecurityConfiguration {
                   String username = request.getParameter("username");
                   // String password = request.getParameter("password");
                   String error = exception.getMessage();
-                  log.info(
-                      "Failed login attempt with username : " + username + ". Reason: " + error);
+                  //log.info("Failed login attempt with username : " + username + ". Reason: " + error);
                   activityRepository.save(
                       new Activity(
                           null,

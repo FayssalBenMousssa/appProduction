@@ -1,10 +1,7 @@
 package dev.fenix.application.api.production.treatment;
 
-import dev.fenix.application.production.customer.model.Customer;
 import dev.fenix.application.production.payment.model.PaymentCustomer;
-import dev.fenix.application.production.payment.model.PaymentMethod;
 import dev.fenix.application.production.payment.repository.PaymentCustomerRepository;
-import dev.fenix.application.production.payment.repository.PaymentMethodRepository;
 import dev.fenix.application.production.payment.service.PaymentCustomerService;
 import javassist.NotFoundException;
 import org.json.JSONArray;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.concurrent.TimeUnit;
 
 @RestController()
 @RequestMapping("/api/payment/customer")
@@ -50,7 +46,7 @@ public class PaymentCustomerResource {
           @RequestParam(defaultValue = "id,desc") String[] sort,
           @RequestParam(required = false) String[] query)
           throws InterruptedException {
-    log.trace(String.format("%s method accessed .", new Object() {}.getClass().getEnclosingMethod().getName()));
+    //log.trace(String.format("%s method accessed .", new Object() {}.getClass().getEnclosingMethod().getName()));
     JSONArray jArray = new JSONArray();
     // Iterable<Customer> customers = customerRepository.findAll();
     Iterable<PaymentCustomer  > paymentCustomers = paymentCustomerService.getAllPaymentCustomers(page, size, sort, query);
@@ -87,7 +83,7 @@ public class PaymentCustomerResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace("ProductResource.get method accessed");
+    //log.trace("ProductResource.get method accessed");
     PaymentCustomer paymentCustomer =
         paymentCustomerRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(paymentCustomer.toJson().toString(), HttpStatus.OK);

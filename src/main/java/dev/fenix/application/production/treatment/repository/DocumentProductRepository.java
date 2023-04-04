@@ -1,8 +1,6 @@
 package dev.fenix.application.production.treatment.repository;
 
-import dev.fenix.application.production.treatment.model.Document;
 import dev.fenix.application.production.treatment.model.DocumentProduct;
-import dev.fenix.application.production.treatment.model.Type;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

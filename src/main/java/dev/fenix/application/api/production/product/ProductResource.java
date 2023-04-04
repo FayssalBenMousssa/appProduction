@@ -1,13 +1,13 @@
 package dev.fenix.application.api.production.product;
 
-import dev.fenix.application.production.product.model.ProductAttachment;
 import dev.fenix.application.app.model.ResponseData;
-import dev.fenix.application.production.product.repository.ProductAttachmentRepository;
-import dev.fenix.application.production.product.service.AttachmentService;
 import dev.fenix.application.production.product.model.Product;
+import dev.fenix.application.production.product.model.ProductAttachment;
 import dev.fenix.application.production.product.model.ProductType;
+import dev.fenix.application.production.product.repository.ProductAttachmentRepository;
 import dev.fenix.application.production.product.repository.ProductRepository;
 import dev.fenix.application.production.product.repository.ProductTypeRepository;
+import dev.fenix.application.production.product.service.AttachmentService;
 import dev.fenix.application.production.product.service.ProductService;
 import javassist.NotFoundException;
 import org.json.JSONArray;
@@ -91,7 +91,7 @@ public class ProductResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public String index() {
 
-    log.trace("ProductResource.index/ method accessed");
+    //log.trace("ProductResource.index/ method accessed");
     return JSONObject.quote("Api :" + this.getClass().getSimpleName());
   }
 
@@ -109,7 +109,7 @@ public class ProductResource {
       @RequestParam(required = false) Long[] types)
       throws InterruptedException {
 
-    log.trace("ProductResource.index method accessed");
+    //log.trace("ProductResource.index method accessed");
 
     JSONArray jArray = new JSONArray();
 
@@ -139,7 +139,7 @@ public class ProductResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace("ProductResource.get method accessed");
+    //log.trace("ProductResource.get method accessed");
     Product product =
         productRepository
             .findById(id)
@@ -153,7 +153,7 @@ public class ProductResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> save(@Valid @RequestBody Product product, HttpServletRequest request) {
-    log.trace("ProductResource.save method accessed");
+    //log.trace("ProductResource.save method accessed");
     try {
       product.setActive(true);
       Product savedProduct = productRepository.save(product);
@@ -170,7 +170,7 @@ public class ProductResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> update(@Valid @RequestBody Product product, HttpServletRequest request) {
-    log.trace("ProductResource.update method accessed");
+    //log.trace("ProductResource.update method accessed");
     try {
       product.setActive(true);
       Product updatedProduct = productRepository.save(product);
@@ -186,7 +186,7 @@ public class ProductResource {
       method = RequestMethod.DELETE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-    log.trace("ProductResource.delete method accessed");
+    //log.trace("ProductResource.delete method accessed");
     Product product = productRepository.getOne(id);
     try {
       product.setActive(false);
@@ -203,7 +203,7 @@ public class ProductResource {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity info() {
-    log.trace("ProductResource.info method accessed");
+    //log.trace("ProductResource.info method accessed");
     try {
       JSONObject information = new JSONObject();
       SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");

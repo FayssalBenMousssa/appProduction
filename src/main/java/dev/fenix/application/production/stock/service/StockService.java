@@ -36,7 +36,7 @@ public class StockService {
     private static final Logger log = LoggerFactory.getLogger(StockService.class);
     private int count = 0;
     private int countAll = 0;
-    private List<Status> statusStock = Arrays.asList(Status.APPROVED, Status.TERMINATED);
+    private List<Status> statusStock = Arrays.asList(Status.APPROVED, Status.CLOSED);
 
     /**
      * get list of Stocks
@@ -53,11 +53,11 @@ public class StockService {
         List<Sort.Order> orders = new ArrayList<Sort.Order>();
         if (sortBy[0].contains(",")) {
             // will sort more than 2 columns
-            log.trace("we will sort more than 2 columns ");
+            //log.trace("we will sort more than 2 columns ");
             for (String sortOrder : sortBy) {
                 // sortOrder="column, direction"
                 String[] _sort = sortOrder.split(",");
-                log.trace("sortOrder : " + _sort[1] + " " + _sort[0]);
+                //log.trace("sortOrder : " + _sort[1] + " " + _sort[0]);
                 orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
             }
         } else {
@@ -91,13 +91,13 @@ public class StockService {
         /// quantity:actual
 
         if(filters.containsKey("quantity") && filters.get("quantity").equals("actual") ){
-            log.info("quantity : actual");
-            statusStock = Arrays.asList(Status.APPROVED, Status.TERMINATED);
+            //log.info("quantity : actual");
+            statusStock = Arrays.asList(Status.APPROVED, Status.CLOSED);
         } else if (  filters.containsKey("quantity") && filters.get("quantity").equals("reserved") ) {
-            log.info("quantity : reserved");
-            statusStock = Arrays.asList(Status.APPROVED, Status.TERMINATED,Status.COMPLETE,Status.INITIATED);
+            //log.info("quantity : reserved");
+            statusStock = Arrays.asList(Status.APPROVED, Status.CLOSED,Status.COMPLETE,Status.INITIATED);
         }else {
-            statusStock = Arrays.asList(Status.APPROVED, Status.TERMINATED);
+            statusStock = Arrays.asList(Status.APPROVED, Status.CLOSED);
         }
 
 
@@ -112,11 +112,11 @@ public class StockService {
             return stockRepository.stockProductGroupProductDepot(statusStock, date, product, depot, paging);
         } else if (filters.containsKey("date") && filters.containsKey("idProduct") && filters.containsKey("groupedByBatch")) {
             Product product = productRepository.findById(Long.valueOf(filters.get("idProduct"))).orElse(null);
-            log.info("date & idProduct");
+            //log.info("date & idProduct");
             return stockRepository.stockProductGroupProductBatch(statusStock, date, product, paging);
         } else if (filters.containsKey("date") && filters.containsKey("idProduct")) {
             Product product = productRepository.findById(Long.valueOf(filters.get("idProduct"))).orElse(null);
-            log.info("date & idProduct");
+            //log.info("date & idProduct");
             return stockRepository.stockProductGroupProduct(statusStock, date, product, paging);
         } else if (filters.containsKey("date") && filters.containsKey("groupedByBatch") && filters.containsKey("depot")) {
             Depot depot = depotRepository.findById(Long.valueOf(filters.get("depot"))).orElse(null);
@@ -140,11 +140,11 @@ public class StockService {
         List<Sort.Order> orders = new ArrayList<Sort.Order>();
         if (sortBy[0].contains(",")) {
             // will sort more than 2 columns
-            log.trace("we will sort more than 2 columns ");
+            //log.trace("we will sort more than 2 columns ");
             for (String sortOrder : sortBy) {
                 // sortOrder="column, direction"
                 String[] _sort = sortOrder.split(",");
-                log.trace("sortOrder : " + _sort[1] + " " + _sort[0]);
+                //log.trace("sortOrder : " + _sort[1] + " " + _sort[0]);
                 orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
             }
         } else {
@@ -180,7 +180,7 @@ public class StockService {
 
 
     private Sort.Direction getSortDirection(String direction) {
-        log.trace("StockService.getSortDirection method accessed");
+        //log.trace("StockService.getSortDirection method accessed");
         if (direction.equals("asc")) {
             return Sort.Direction.ASC;
         } else if (direction.equals("desc")) {
@@ -190,19 +190,19 @@ public class StockService {
     }
 
     private Map<String, String> getFilters(String[] query) {
-        log.trace("StockService.getFilters method accessed");
+        //log.trace("StockService.getFilters method accessed");
         if (query != null && query[0].contains(":")) {
             Map<String, String> hashMap = new HashMap<String, String>();
             for (String keyValue : query) {
                 String[] _filter = keyValue.split(":");
                 if (_filter.length > 1) {
                     hashMap.put(_filter[0], _filter[1]);
-                    log.info("Filter found : " + _filter[0] + ":" + _filter[1]);
+                    //log.info("Filter found : " + _filter[0] + ":" + _filter[1]);
                 }
             }
             return hashMap;
         } else {
-            log.info("No filter found");
+            //log.info("No filter found");
             return null;
         }
     }

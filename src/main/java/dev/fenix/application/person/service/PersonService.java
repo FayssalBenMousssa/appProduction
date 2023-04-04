@@ -21,7 +21,7 @@ public class PersonService {
   private EntityManager entityManager;
 
   public List<Person> getPersons() {
-    // log.info(" -> getPersons");
+    // //log.info(" -> getPersons");
     List<Person> people = new ArrayList();
     List<Object[]> results =
         this.entityManager
@@ -36,7 +36,7 @@ public class PersonService {
               people.add(new Person(id, firstName, lastName));
             });
     for (int i = 0; i < people.size(); i++) {
-      log.info(people.get(i).getFullName());
+      //log.info(people.get(i).getFullName());
     }
 
     return people;

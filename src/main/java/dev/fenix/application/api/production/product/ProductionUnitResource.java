@@ -67,7 +67,7 @@ public class ProductionUnitResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace("ProductResource.get method accessed");
+    //log.trace("ProductResource.get method accessed");
     ProductionUnit productionUnit =
         productionUnitRepository
             .findById(id)

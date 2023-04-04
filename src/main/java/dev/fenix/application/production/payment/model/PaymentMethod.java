@@ -1,7 +1,5 @@
 package dev.fenix.application.production.payment.model;
 
-import dev.fenix.application.production.product.model.ProductType;
-import dev.fenix.application.production.product.model.ProductionUnit;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;

@@ -46,7 +46,7 @@ public class FormulaResource {
       @RequestParam(required = false) String[] query) {
 
     JSONArray jArray = new JSONArray();
-    log.trace("PackagingResource.index method accessed");
+    //log.trace("PackagingResource.index method accessed");
 
     Iterable<Formula> formulas = formulaService.getAllFormula(page, size, sort, query);
     for (Formula formula : formulas) {
@@ -88,7 +88,7 @@ public class FormulaResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace("ProductResource.get method accessed");
+    //log.trace("ProductResource.get method accessed");
     Formula formula =
         formulaRepository
             .findById(id)

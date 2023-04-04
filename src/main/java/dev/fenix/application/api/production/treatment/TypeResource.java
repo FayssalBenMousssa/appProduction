@@ -31,7 +31,7 @@ public class TypeResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public String index(HttpServletRequest request) {
     JSONArray jArray = new JSONArray();
-    // log.trace("{methodName} method accessed");
+    // //log.trace("{methodName} method accessed");
 
     Iterable<Type> type = typeRepository.findByActiveTrue();
     for (Type classification : type) {
@@ -46,7 +46,7 @@ public class TypeResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace("ProductResource.get method accessed");
+    //log.trace("ProductResource.get method accessed");
     Type Type =
         typeRepository.findById(id).orElseThrow(() -> new NotFoundException("Type  not found"));
     return new ResponseEntity<>(Type.toJson().toString(), HttpStatus.OK);
@@ -58,7 +58,7 @@ public class TypeResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> save(@Valid @RequestBody Type type, HttpServletRequest request) {
-    // log.trace("{methodName} method accessed");
+    // //log.trace("{methodName} method accessed");
     type.setActive(true);
     Type savedType = typeRepository.save(type);
     return ResponseEntity.ok(savedType.toJson().toString());
@@ -71,7 +71,7 @@ public class TypeResource {
   @ResponseBody
   public ResponseEntity<?> update(@Valid @RequestBody Type type, HttpServletRequest request) {
     try {
-      // log.trace("{methodName} method accessed");
+      // //log.trace("{methodName} method accessed");
       type.setActive(true);
       Type updatedType = typeRepository.save(type);
       return new ResponseEntity<>(updatedType.toJson().toString(), HttpStatus.OK);

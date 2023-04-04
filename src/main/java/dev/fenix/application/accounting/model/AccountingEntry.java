@@ -17,13 +17,15 @@ public interface AccountingEntry {
 
     String getLabel();
 
-    Float getDebit();
+    double getDebit();
 
-    Float getCredit();
+    double getCredit();
 
     String getType();
 
     String getLetter();
+
+    int getIdLetteringCustomer();
 
 
     default JSONObject toJson() {
@@ -39,7 +41,8 @@ public interface AccountingEntry {
             stockCountJSON.put("debit", this.getDebit());
             stockCountJSON.put("credit", this.getCredit());
             stockCountJSON.put("type", this.getType());
-            stockCountJSON.put("letter", this.getLetter() );
+            stockCountJSON.put("letter", this.getLetter());
+            stockCountJSON.put("idLetteringCustomer", this.getIdLetteringCustomer());
 
 
         } catch (JSONException e) {

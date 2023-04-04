@@ -42,8 +42,8 @@ public class ForgotPasswordController {
     String email = request.getParameter("email");
     String token = RandomString.make(30);
 
-    log.info(email);
-    log.info(token);
+    //log.info(email);
+    //log.info(token);
 
     try {
       userService.updateResetPasswordToken(token, email);

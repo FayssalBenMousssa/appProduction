@@ -1,13 +1,11 @@
 package dev.fenix.application.security.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.fenix.application.person.model.Person;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
-import org.hibernate.annotations.Type;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

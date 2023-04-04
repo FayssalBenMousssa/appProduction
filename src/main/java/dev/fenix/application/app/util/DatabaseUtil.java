@@ -21,7 +21,7 @@ public final class DatabaseUtil {
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-hhmmss");
     String strDate = dateFormat.format(date);
 
-    log.info("Start database backup :" + outputFile + "_" + strDate);
+    //log.info("Start database backup :" + outputFile + "_" + strDate);
     String command =
         String.format(
             "docker exec appsDB sh -c \"mysqldump -u%s -p'%s' %s\" >  %s",
@@ -31,7 +31,7 @@ public final class DatabaseUtil {
             System.getProperty("user.dir") + "/DBBackup/" + outputFile + "_" + strDate + ".sql");
 
     Process process = Runtime.getRuntime().exec(new String[] {"cmd.exe", "/c", command});
-    log.info("End database backup :" + outputFile + "_" + strDate);
+    //log.info("End database backup :" + outputFile + "_" + strDate);
 
     int processComplete = process.waitFor();
 

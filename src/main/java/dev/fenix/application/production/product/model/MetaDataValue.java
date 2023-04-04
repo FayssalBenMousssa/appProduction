@@ -2,7 +2,10 @@ package dev.fenix.application.production.product.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import dev.fenix.application.core.model.MetaData;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.json.JSONException;

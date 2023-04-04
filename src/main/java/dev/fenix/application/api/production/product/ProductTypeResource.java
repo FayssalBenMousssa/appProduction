@@ -55,7 +55,7 @@ public class ProductTypeResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace("ProductType.get method accessed");
+    //log.trace("ProductType.get method accessed");
     ProductType type =
         productTypeRepository
             .findById(id)

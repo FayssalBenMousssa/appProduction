@@ -1,10 +1,7 @@
 package dev.fenix.application.api.production.treatment;
 
-import dev.fenix.application.production.logistic.model.Depot;
-import dev.fenix.application.production.logistic.repository.DepotRepository;
 import dev.fenix.application.production.payment.model.PaymentMethod;
 import dev.fenix.application.production.payment.repository.PaymentMethodRepository;
-import dev.fenix.application.production.treatment.model.Category;
 import javassist.NotFoundException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -61,7 +58,7 @@ public class PaymentMethodResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace("ProductResource.get method accessed");
+    //log.trace("ProductResource.get method accessed");
     PaymentMethod paymentMethod =
         paymentMethodRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(paymentMethod.toJson().toString(), HttpStatus.OK);

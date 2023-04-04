@@ -52,7 +52,7 @@ public class PersonController {
     model.addAttribute("data", data);
 
     if (result.hasErrors()) {
-      result.getAllErrors().forEach(error -> log.info(error.toString()));
+     // result.getAllErrors().forEach(error -> //log.info(error.toString()));
       return "person/add-person";
     }
 

@@ -9,12 +9,10 @@ import dev.fenix.application.production.treatment.model.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -39,16 +37,14 @@ public interface StockRepository extends JpaRepository<Document, Long> {
             "   left join doc_value.metaData as metadata" +
             "   left join doc.type as typ " +
             "where typ.inStock <> 0 " +
-            "and doc.active = true " +
-            "and metadata.code in ( 'depot_source','depot_destination')" +
-            "and docProd.active = true  " +
-            "and doc.status in  :statusStock " +
-            "and doc.date  <= :dateStock  group by  prod.id,prod.name,unit , metadata.code ")
+            "   and doc.active = true " +
+            "   and doc_value.active = true " +
+            "   and metadata.active = true" +
+            "   and metadata.code in ('depot_source','depot_destination','depot_production')" +
+            "   and docProd.active = true  " +
+            "   and doc.status in  :statusStock " +
+            "   and doc.date  <= :dateStock  group by  prod.id,prod.name,unit , metadata.code ")
     Page<StockCount> stockGroupProduct(@Param("statusStock") List<Status> statusStock, @Param("dateStock") Date dateStock, Pageable paging);
-
-
-
-
 
 
     @Query(value = " select " +
@@ -74,19 +70,15 @@ public interface StockRepository extends JpaRepository<Document, Long> {
             "        left join Depot  as depot on depot.id =  doc_value.value" +
             "   where doc.active = true" +
             "   and docProd.active = true" +
+            "   and doc_value.active = true " +
+            "   and metadata.active = true" +
             "   and typ.inStock <> 0" +
-            "   and metadata.code in ( 'depot_source','depot_destination')" +
+            "   and metadata.code in ('depot_source','depot_destination','depot_production')" +
             "   and doc.status in :statusStock" +
             "   and depot = :depot " +
             "   and doc.date  <= :dateStock" +
             "   group by product  ,depot ,batch.code , batch.productionDate , batch.expirationDate  ,unit , metadata.code  ")
     Page<StockCount> stockGroupProductBatchDepot(@Param("statusStock") List<Status> statusStock, @Param("dateStock") Date dateStock, @Param("depot") Depot depot, Pageable paging);
-
-
-
-
-
-
 
 
     @Query(value = "select " +
@@ -99,7 +91,6 @@ public interface StockRepository extends JpaRepository<Document, Long> {
             "unit.name as nameUnit," +
             "batch.productionDate as productionDate," +
             "batch.expirationDate as expirationDate," +
-
             "case  metadata.code when 'depot_source' then sum((docProd.quantity   * -1) ) " +
             "else  sum(docProd.quantity * typ.inStock) end as quantity " +
             "  from DocumentProduct as docProd" +
@@ -113,8 +104,10 @@ public interface StockRepository extends JpaRepository<Document, Long> {
             "        left join Depot  as depot on depot.id =  doc_value.value" +
             "   where doc.active = true" +
             "   and docProd.active = true" +
+            "   and doc_value.active = true " +
+            "   and metadata.active = true" +
             "   and typ.inStock <> 0" +
-            "   and metadata.code in ( 'depot_source','depot_destination')" +
+            "   and metadata.code in ('depot_source','depot_destination','depot_production')" +
             "   and doc.status in :statusStock" +
             "  and doc.date  <= :dateStock " +
             "  group by product  ,depot  ,batch.code , batch.productionDate , batch.expirationDate ,unit ,  metadata.code")
@@ -140,8 +133,10 @@ public interface StockRepository extends JpaRepository<Document, Long> {
             "        left join Depot  as depot on depot.id =  doc_value.value" +
             "   where doc.active = true" +
             "   and docProd.active = true" +
+            "   and doc_value.active = true " +
+            "   and metadata.active = true" +
             "   and typ.inStock <> 0" +
-            "   and metadata.code in ( 'depot_source','depot_destination')" +
+            "   and metadata.code in ('depot_source','depot_destination','depot_production')" +
             "   and depot = :depot " +
             "   and doc.status in :statusStock" +
             "   and doc.date  <= :dateStock" +
@@ -166,8 +161,10 @@ public interface StockRepository extends JpaRepository<Document, Long> {
             "        left join Depot  as depot on depot.id =  doc_value.value" +
             "   where doc.active = true" +
             "   and docProd.active = true" +
+            "   and doc_value.active = true " +
+            "   and metadata.active = true" +
             "   and typ.inStock <> 0" +
-            "   and metadata.code in ( 'depot_source','depot_destination')" +
+            "   and metadata.code in ('depot_source','depot_destination','depot_production')" +
             "   and product = :product " +
             "   and doc.status in :statusStock" +
             "   and doc.date  <= :dateStock" +
@@ -196,8 +193,10 @@ public interface StockRepository extends JpaRepository<Document, Long> {
             "        left join Depot  as depot on depot.id =  doc_value.value" +
             "   where doc.active = true" +
             "   and docProd.active = true" +
+            "   and doc_value.active = true " +
+            "   and metadata.active = true" +
             "   and typ.inStock <> 0" +
-            "   and metadata.code in ( 'depot_source','depot_destination')" +
+            "   and metadata.code in ('depot_source','depot_destination','depot_production')" +
             "   and product = :product " +
             "   and doc.status in :statusStock" +
             "   and doc.date  <= :dateStock" +
@@ -222,8 +221,10 @@ public interface StockRepository extends JpaRepository<Document, Long> {
             "        left join Depot  as depot on depot.id =  doc_value.value" +
             "   where doc.active = true" +
             "   and docProd.active = true" +
+            "   and doc_value.active = true " +
+            "   and metadata.active = true" +
             "   and typ.inStock <> 0" +
-            "   and metadata.code in ( 'depot_source','depot_destination')" +
+            "   and metadata.code in ('depot_source','depot_destination','depot_production')" +
             "   and product = :product " +
             "   and depot = :depot " +
             "   and doc.status in :statusStock" +
@@ -251,10 +252,12 @@ public interface StockRepository extends JpaRepository<Document, Long> {
             "        left join docProd.batch as batch" +
             "        left join product.siUnit as unit" +
             "        left join Depot  as depot on depot.id =  doc_value.value" +
-            "   where doc.active = true" +
+            "   where doc.active = true " +
+            "   and doc_value.active = true " +
+            "   and metadata.active = true" +
             "   and docProd.active = true" +
             "   and typ.inStock <> 0" +
-            "   and metadata.code in ( 'depot_source','depot_destination')" +
+            "   and metadata.code in ('depot_source','depot_destination','depot_production')" +
             "   and product = :product " +
             "   and depot = :depot " +
             "   and doc.status in :statusStock" +
@@ -279,7 +282,7 @@ public interface StockRepository extends JpaRepository<Document, Long> {
             "   left join prod.siUnit as unit" +
             "   left join doc.type as typ " +
             "where typ.inStock <> 0 " +
-            "   and doc.active = true " +
+            "   and doc.active = true    " +
             "   and docProd.active = true  " +
             "   and doc.status in  :statusStock " +
             "   and doc.date  <= :dateStock  " +
@@ -291,8 +294,12 @@ public interface StockRepository extends JpaRepository<Document, Long> {
     @Query(value = "select  bch.productionDate as  productionDate," +
             "doc.id as documentId ," +
             "doc.code as code ," +
+
+
             "case  metadata.code when 'depot_source' then ((docProd.quantity) * -1) " +
             "else  (docProd.quantity * typ.inStock) end as quantity ," +
+
+
             "typ.id as typeId ," +
             "typ.name as typeName ," +
             "doc.code as documentCode," +
@@ -306,7 +313,6 @@ public interface StockRepository extends JpaRepository<Document, Long> {
             "depot.id as idDepot," +
             "depot.name as nameDepot ," +
             "doc.date as dateDocument " +
-
             "from DocumentProduct as docProd " +
             "   left join docProd.product as prod  " +
             "   left join docProd.batch as bch " +
@@ -314,13 +320,11 @@ public interface StockRepository extends JpaRepository<Document, Long> {
             "   left join doc.type as typ" +
             "   left join doc.documentDataValues as doc_value" +
             "   left join doc_value.metaData as metadata" +
-            "   left join Depot  as depot on depot.id =  doc_value.value" +
+            "   left join Depot  as depot on depot.id =  doc_value.value  " +
             "   left join docProd.batch as batch" +
-
-            " where typ.inStock <> 0 and doc.active = true and docProd.active = true  and doc.status in :statusStock and metadata.code in ('depot_source','depot_destination')")
+            " where typ.inStock <> 0 and doc.active = true and docProd.active = true and doc_value.active = true and metadata.active = true" +
+            " and metadata.active = true  and doc.status in :statusStock and metadata.code in ('depot_source','depot_destination','depot_production') ")
     Page<StockMovement> getMovement(@Param("statusStock") List<Status> statusStock, Pageable paging);
-
-
 
 
 }

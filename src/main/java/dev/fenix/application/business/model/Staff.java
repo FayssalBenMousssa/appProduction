@@ -1,6 +1,5 @@
 package dev.fenix.application.business.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.fenix.application.person.model.Person;
 import lombok.Getter;
 import lombok.Setter;

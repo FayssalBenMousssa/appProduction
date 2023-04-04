@@ -58,7 +58,7 @@ public class PaymentStatusResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace("ProductResource.get method accessed");
+    //log.trace("ProductResource.get method accessed");
     PaymentStatus paymentStatus =
             paymentStatusRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
     return new ResponseEntity<>(paymentStatus.toJson().toString(), HttpStatus.OK);

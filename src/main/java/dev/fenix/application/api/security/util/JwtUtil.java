@@ -44,7 +44,7 @@ public class JwtUtil {
   }
 
   public String generateToken(UserDetails userDetails) {
-    // log.info("generateToken for : " + userDetails.getUsername());
+    // //log.info("generateToken for : " + userDetails.getUsername());
     Map<String, Object> claims = new HashMap<>();
     return createToken(claims, userDetails.getUsername());
   }
@@ -55,14 +55,14 @@ public class JwtUtil {
         .setClaims(claims)
         .setSubject(subject)
         .setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 5 ))
+        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 100 ))
         .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
         .compact();
   }
 
   public Boolean validateToken(String token, UserDetails userDetails) {
     final String username = extractUsername(token);
-    // log.info("validateToken for : " + userDetails.getUsername());
+    // //log.info("validateToken for : " + userDetails.getUsername());
     return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
   }
 }

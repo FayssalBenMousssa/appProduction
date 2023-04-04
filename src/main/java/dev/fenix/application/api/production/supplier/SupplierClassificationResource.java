@@ -28,7 +28,7 @@ public class SupplierClassificationResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public String index(HttpServletRequest request) {
     JSONArray jArray = new JSONArray();
-    // log.trace("{methodName} method accessed");
+    // //log.trace("{methodName} method accessed");
     Iterable<SupplierClassification> supplierClassification =
         supplierClassificationRepository.findByActiveTrue();
     for (SupplierClassification classification : supplierClassification) {
@@ -43,7 +43,7 @@ public class SupplierClassificationResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace("ProductResource.get method accessed");
+    //log.trace("ProductResource.get method accessed");
     SupplierClassification SupplierClassification =
         supplierClassificationRepository
             .findById(id)
@@ -59,7 +59,7 @@ public class SupplierClassificationResource {
   public ResponseEntity<?> save(
       @Valid @RequestBody SupplierClassification supplierClassification,
       HttpServletRequest request) {
-    // log.trace("{methodName} method accessed");
+    // //log.trace("{methodName} method accessed");
     supplierClassification.setActive(true);
     SupplierClassification savedSupplierClassification =
         supplierClassificationRepository.save(supplierClassification);
@@ -75,7 +75,7 @@ public class SupplierClassificationResource {
       @Valid @RequestBody SupplierClassification supplierClassification,
       HttpServletRequest request) {
     try {
-      // log.trace("{methodName} method accessed");
+      // //log.trace("{methodName} method accessed");
       supplierClassification.setActive(true);
       SupplierClassification updatedSupplierClassification =
           supplierClassificationRepository.save(supplierClassification);
@@ -93,7 +93,7 @@ public class SupplierClassificationResource {
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 
     try {
-      // log.trace("{methodName} method accessed");
+      // //log.trace("{methodName} method accessed");
       SupplierClassification supplierClassification = supplierClassificationRepository.getOne(id);
       supplierClassification.setActive(false);
       SupplierClassification savedSupplierClassification =

@@ -28,7 +28,7 @@ public class CustomerClassificationResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public String index(HttpServletRequest request) {
     JSONArray jArray = new JSONArray();
-    // log.trace("{methodName} method accessed");
+    // //log.trace("{methodName} method accessed");
     Iterable<CustomerClassification> customerClassification =
         customerClassificationRepository.findByActiveTrue();
     for (CustomerClassification classification : customerClassification) {
@@ -43,7 +43,7 @@ public class CustomerClassificationResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace("ProductResource.get method accessed");
+    //log.trace("ProductResource.get method accessed");
     CustomerClassification CustomerClassification =
         customerClassificationRepository
             .findById(id)
@@ -59,7 +59,7 @@ public class CustomerClassificationResource {
   public ResponseEntity<?> save(
       @Valid @RequestBody CustomerClassification customerClassification,
       HttpServletRequest request) {
-    // log.trace("{methodName} method accessed");
+    // //log.trace("{methodName} method accessed");
     customerClassification.setActive(true);
     CustomerClassification savedCustomerClassification =
         customerClassificationRepository.save(customerClassification);
@@ -75,7 +75,7 @@ public class CustomerClassificationResource {
       @Valid @RequestBody CustomerClassification customerClassification,
       HttpServletRequest request) {
     try {
-      // log.trace("{methodName} method accessed");
+      // //log.trace("{methodName} method accessed");
       customerClassification.setActive(true);
       CustomerClassification updatedCustomerClassification =
           customerClassificationRepository.save(customerClassification);
@@ -93,7 +93,7 @@ public class CustomerClassificationResource {
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 
     try {
-      // log.trace("{methodName} method accessed");
+      // //log.trace("{methodName} method accessed");
       CustomerClassification customerClassification = customerClassificationRepository.getOne(id);
       customerClassification.setActive(false);
       CustomerClassification savedCustomerClassification =

@@ -1,6 +1,7 @@
 package dev.fenix.application.production.treatment.model;
 
 import com.fasterxml.jackson.annotation.*;
+import dev.fenix.application.accounting.model.LetteringCustomer;
 import dev.fenix.application.business.model.Company;
 import lombok.*;
 import org.hibernate.annotations.*;
@@ -129,12 +130,18 @@ public class Document {
   @Formula("CONCAT_WS( '_', type_id, status )")
   private String access;
 
+
+  @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
+  @JoinColumn(name = "lettering_id", referencedColumnName = "id")
+  @JsonBackReference(value = "document-customer")
+  private LetteringCustomer letteringCustomer;
+
   @PrePersist
   @PreUpdate
   @PreRemove
   private void beforeAnyUpdate() {
 
-    log.info("before Any Update Document");
+    //log.info("before Any Update Document");
   }
 
   public Double totalDocument() {

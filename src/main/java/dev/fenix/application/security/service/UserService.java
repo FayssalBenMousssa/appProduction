@@ -26,7 +26,7 @@ public class UserService {
       user.setUserpassword("No_pass0");
       userRepository.save(user);
     } else {
-      log.warn("Could not find any customer with the email " + email);
+      //log.warn("Could not find any customer with the email " + email);
       throw new NotFoundException("Could not find any customer with the email " + email);
     }
   }

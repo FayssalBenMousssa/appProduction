@@ -55,7 +55,7 @@ public class ClassificationResource {
     }
 
     for (Classification classification : classifications) {
-      // log.info("Level : " + classification.getLevel());
+      // //log.info("Level : " + classification.getLevel());
       jArray.put(classification.toJson());
     }
     return jArray.toString();
@@ -70,7 +70,7 @@ public class ClassificationResource {
       @Valid @RequestBody Classification classification, HttpServletRequest request) {
     classification.setActive(true);
 
-    log.info(String.valueOf(classification));
+    //log.info(String.valueOf(classification));
 
   if (classification.getParent() != null) {
       Classification parent = classificationRepository.getOne(classification.getParent().getId());
@@ -129,7 +129,7 @@ public class ClassificationResource {
     try {
       classification.setActive(false);
       Classification savedClassification = classificationRepository.save(classification);
-      log.info(savedClassification.getName() + " Removed");
+      //log.info(savedClassification.getName() + " Removed");
       savedClassification
           .getChildren()
           .forEach(
@@ -137,7 +137,7 @@ public class ClassificationResource {
                 classificationChild.setActive(false);
                 Classification savedClassificationChild =
                     classificationRepository.save(classificationChild);
-                log.info(savedClassificationChild.getName() + " Removed");
+                //log.info(savedClassificationChild.getName() + " Removed");
                 savedClassificationChild
                     .getChildren()
                     .forEach(
@@ -145,7 +145,7 @@ public class ClassificationResource {
                           classificationChildOfChild.setActive(false);
                           Classification savedClassificationChildOfChild =
                               classificationRepository.save(classificationChildOfChild);
-                          log.info(savedClassificationChildOfChild.getName() + " Removed");
+                          //log.info(savedClassificationChildOfChild.getName() + " Removed");
                         });
               });
       return ResponseEntity.ok(savedClassification.toJson().toString());

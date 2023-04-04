@@ -43,8 +43,8 @@ public class UserController {
     Page<Person> page = personRepository.findAllByOrderByIdDesc(pageable);
     model.addAttribute("page", page);
 
-    // log.info(data.getAuth().getAuthorities().toString());
-    // log.info(String.valueOf(data.getAuth().isAuthenticated()));
+    // //log.info(data.getAuth().getAuthorities().toString());
+    // //log.info(String.valueOf(data.getAuth().isAuthenticated()));
 
     return "security/index";
   }
@@ -94,7 +94,7 @@ public class UserController {
 
     if (result.hasErrors()) {
       model.addAttribute("roles", roleRepository.findAll());
-      result.getAllErrors().forEach(error -> log.info(error.toString()));
+
       return "security/add-user";
     }
     person.getUserAccount().CryptPassword();
@@ -122,16 +122,16 @@ public class UserController {
     ApplicationData data = new ApplicationData();
     model.addAttribute("data", data);
 
-    log.info(person.getUserAccount().getUserpassword());
+    //log.info(person.getUserAccount().getUserpassword());
 
-    // log.info(person.toString());
+    // //log.info(person.toString());
     if (result.hasErrors()) {
       model.addAttribute("roles", roleRepository.findAll());
-      result.getAllErrors().forEach(error -> log.info(error.toString()));
+
       person.setId(id);
       return "security/update-user";
     }
-    // log.info(person.toString());
+    // //log.info(person.toString());
 
     User user = personRepository.getPersonById(person.getId()).getUserAccount();
     Date date = new Date();

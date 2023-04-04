@@ -27,7 +27,7 @@ public class CustomerAddressResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public String index(HttpServletRequest request) {
     JSONArray jArray = new JSONArray();
-   // log.trace("{methodName}  method accessed");
+   // //log.trace("{methodName}  method accessed");
     Iterable<Address> addresses = customerAddressRepository.findByActiveTrue();
 
     for (Address classification : addresses) {
@@ -43,7 +43,7 @@ public class CustomerAddressResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> save(@Valid @RequestBody Address address, HttpServletRequest request) {
-    // log.trace("{methodName} method accessed");
+    // //log.trace("{methodName} method accessed");
     address.setActive(true);
     Address savedAddress = customerAddressRepository.save(address);
     return ResponseEntity.ok(savedAddress.toJson().toString());
@@ -56,7 +56,7 @@ public class CustomerAddressResource {
   @ResponseBody
   public ResponseEntity<?> update(@Valid @RequestBody Address address, HttpServletRequest request) {
     try {
-      // log.trace("{methodName} method accessed");
+      // //log.trace("{methodName} method accessed");
       address.setActive(true);
       Address updatedAddress = customerAddressRepository.save(address);
       return new ResponseEntity<>(updatedAddress.toJson().toString(), HttpStatus.OK);
@@ -73,7 +73,7 @@ public class CustomerAddressResource {
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 
     try {
-      // log.trace("{methodName} method accessed");
+      // //log.trace("{methodName} method accessed");
       Address address = customerAddressRepository.getOne(id);
       address.setActive(false);
       Address deletedAddress = customerAddressRepository.save(address);

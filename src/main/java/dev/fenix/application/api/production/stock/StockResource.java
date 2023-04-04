@@ -1,12 +1,10 @@
 package dev.fenix.application.api.production.stock;
 
-import com.google.gson.Gson;
 import dev.fenix.application.production.stock.model.StockCount;
 import dev.fenix.application.production.stock.model.StockMovement;
 import dev.fenix.application.production.stock.repository.StockRepository;
 import dev.fenix.application.production.stock.service.StockService;
 import dev.fenix.application.production.treatment.model.Status;
-import javassist.NotFoundException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,13 +15,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController()
 @RequestMapping("api/stock")
@@ -36,7 +36,7 @@ public class StockResource {
     private StockService stockService;
 
 
-    private List<Status> statusStock = Arrays.asList(Status.APPROVED, Status.TERMINATED);
+    private List<Status> statusStock = Arrays.asList(Status.APPROVED , Status.CLOSED );
 
     @RequestMapping(
             value = "/index",
@@ -58,8 +58,9 @@ public class StockResource {
 
             JSONArray jsonArray = new JSONArray();
             dataStock.forEach((stock) -> {
-                log.info(stock.getNameProduct() + " : " + stock.getQuantity());
-                jsonArray.put(stock.toJson());
+                //log.info(stock.getNameProduct() + " : " + stock.getQuantity());
+                if (stock.getQuantity() != 0)
+                    jsonArray.put(stock.toJson());
             });
 
             JSONObject response = new JSONObject();
@@ -86,7 +87,7 @@ public class StockResource {
     */
     public void trace(List<StockCount> list) {
         list.forEach(pach -> {
-            log.info(pach.getIdProduct() + " -> " + pach.getNameProduct() + " " + pach.getBatchNumber() + " " + pach.getQuantity());
+            //log.info(pach.getIdProduct() + " -> " + pach.getNameProduct() + " " + pach.getBatchNumber() + " " + pach.getQuantity());
         });
     }
 

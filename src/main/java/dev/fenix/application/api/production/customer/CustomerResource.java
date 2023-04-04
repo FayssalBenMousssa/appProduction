@@ -5,6 +5,7 @@ import dev.fenix.application.production.customer.model.Customer;
 import dev.fenix.application.production.customer.repository.CustomerRepository;
 import dev.fenix.application.production.customer.service.CustomerService;
 import javassist.NotFoundException;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,9 +48,8 @@ public class CustomerResource {
       @RequestParam(defaultValue = "id,desc") String[] sort,
       @RequestParam(required = false) String[] query)
       throws InterruptedException {
-    log.trace(
-        String.format(
-            "%s method accessed .", new Object() {}.getClass().getEnclosingMethod().getName()));
+    //log.trace(
+
     JSONArray jArray = new JSONArray();
     // Iterable<Customer> customers = customerRepository.findAll();
 
@@ -78,9 +78,7 @@ public class CustomerResource {
   @ResponseBody
   public ResponseEntity<?> save(@Valid @RequestBody Customer customer, HttpServletRequest request) {
 
-    log.trace(
-        String.format(
-            "%s method accessed .", new Object() {}.getClass().getEnclosingMethod().getName()));
+
     customer.setActive(true);
     Customer savedCustomer = customerRepository.save(customer);
     return ResponseEntity.ok(savedCustomer.toJson().toString());
@@ -92,11 +90,12 @@ public class CustomerResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> update(
-      @Valid @RequestBody Customer customer, HttpServletRequest request) {
-    try {
-      log.trace(
-          String.format(
-              "%s method accessed .", new Object() {}.getClass().getEnclosingMethod().getName()));
+      @Valid @RequestBody Customer customer, HttpServletRequest request) throws Exception {
+
+
+
+
+   try {
       customer.setActive(true);
       Customer updatedCustomer = customerRepository.save(customer);
       return new ResponseEntity<>(updatedCustomer.toJson().toString(), HttpStatus.OK);
@@ -112,9 +111,8 @@ public class CustomerResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace(
-        String.format(
-            "%s method accessed", new Object() {}.getClass().getEnclosingMethod().getName()));
+    //log.trace(
+
     Customer customer =
         customerRepository
             .findById(id)
@@ -127,7 +125,7 @@ public class CustomerResource {
       method = RequestMethod.DELETE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-    log.trace(String.format("%s method accessed", new Object() {}.getClass().getEnclosingMethod().getName()));
+    //log.trace(String.format("%s method accessed", new Object() {}.getClass().getEnclosingMethod().getName()));
     Customer customer = customerRepository.getOne(id);
     try {
       customer.setActive(false);

@@ -46,9 +46,7 @@ public class SupplierResource {
       @RequestParam(defaultValue = "id,desc") String[] sort,
       @RequestParam(required = false) String[] query)
       throws InterruptedException {
-    log.trace(
-        String.format(
-            "%s method accessed .", new Object() {}.getClass().getEnclosingMethod().getName()));
+    //log.trace(String.format("%s method accessed .", new Object() {}.getClass().getEnclosingMethod().getName()));
     JSONArray jArray = new JSONArray();
     // Iterable<Supplier> vendors = supplierRepository.findAll();
 
@@ -77,9 +75,7 @@ public class SupplierResource {
   @ResponseBody
   public ResponseEntity<?> save(@Valid @RequestBody Supplier vendor, HttpServletRequest request) {
 
-    log.trace(
-        String.format(
-            "%s method accessed .", new Object() {}.getClass().getEnclosingMethod().getName()));
+    //log.trace(String.format("%s method accessed .", new Object() {}.getClass().getEnclosingMethod().getName()));
     vendor.setActive(true);
     Supplier savedVendor = supplierRepository.save(vendor);
     return ResponseEntity.ok(savedVendor.toJson().toString());
@@ -93,9 +89,7 @@ public class SupplierResource {
   public ResponseEntity<?> update(
       @Valid @RequestBody Supplier supplier, HttpServletRequest request) {
     try {
-      log.trace(
-          String.format(
-              "%s method accessed .", new Object() {}.getClass().getEnclosingMethod().getName()));
+      //log.trace(String.format("%s method accessed .", new Object() {}.getClass().getEnclosingMethod().getName()));
       supplier.setActive(true);
       Supplier updatedVendor = supplierRepository.save(supplier);
       return new ResponseEntity<>(updatedVendor.toJson().toString(), HttpStatus.OK);
@@ -111,9 +105,7 @@ public class SupplierResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace(
-        String.format(
-            "%s method accessed", new Object() {}.getClass().getEnclosingMethod().getName()));
+    //log.trace(String.format("%s method accessed", new Object() {}.getClass().getEnclosingMethod().getName()));
     Supplier vendor =
         supplierRepository
             .findById(id)
@@ -126,9 +118,7 @@ public class SupplierResource {
       method = RequestMethod.DELETE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-    log.trace(
-        String.format(
-            "%s method accessed", new Object() {}.getClass().getEnclosingMethod().getName()));
+    //log.trace(String.format("%s method accessed", new Object() {}.getClass().getEnclosingMethod().getName()));
     Supplier vendor = supplierRepository.getOne(id);
     try {
       vendor.setActive(false);

@@ -1,6 +1,7 @@
 package dev.fenix.application.production.product.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.fenix.application.core.model.Period;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,6 +32,7 @@ public class Price {
   @NotNull(message = "Please enter the category")
   @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "category_id", referencedColumnName = "id")
+
   private CategoryPrice category;
 
   @NotNull(message = "Please enter the Period")
@@ -46,15 +48,9 @@ public class Price {
 
   @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "product_id", referencedColumnName = "id")
-  @JsonBackReference
+  @JsonBackReference(value = "prices")
   private Product product;
 
-  /*
-    @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
-  @JoinColumn(name = "document_id", referencedColumnName = "id")
-  @JsonBackReference
-  private Document document;
-   */
 
   @NotNull(message = "Please enter the value")
   private Double  value;
@@ -62,11 +58,8 @@ public class Price {
   @NotNull(message = "Please enter the maxQte")
   private int  maxQte;
 
-
-
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
-
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
@@ -79,33 +72,59 @@ public class Price {
   private Date modifyDate;
 
   public JSONObject toJson() {
-    JSONObject productJSON = new JSONObject();
+    JSONObject priceJSON = new JSONObject();
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
     try {
-      productJSON.put("id", this.getId());
-      productJSON.put("name", this.getName());
-      productJSON.put("category", this.getCategory().toJson());
-      productJSON.put("period", this.getPeriod().toJson());
-      productJSON.put("tax", this.getTax().toJson());
+      priceJSON.put("id", this.getId());
+      priceJSON.put("name", this.getName());
 
-      productJSON.put("value", this.getValue());
-      productJSON.put("maxQte", this.getMaxQte());
-      productJSON.put("active", this.isActive());
+      if (this.getCategory() != null)
+      priceJSON.put("category", this.getCategory().toJson());
 
+      priceJSON.put("period", this.getPeriod().toJson());
+      priceJSON.put("tax", this.getTax().toJson());
+      priceJSON.put("value", this.getValue());
+      priceJSON.put("maxQte", this.getMaxQte());
+      priceJSON.put("active", this.isActive());
+      priceJSON.put("product" , this.getProduct().toSmallJson());
       if (this.getModifyDate() != null) {
-        productJSON.put("modifyDate", formatter.format(this.getModifyDate()));
+        priceJSON.put("modifyDate", formatter.format(this.getModifyDate()));
       }
       if (this.getCreateDate() != null) {
-        productJSON.put("createDate", formatter.format(this.getCreateDate()));
+        priceJSON.put("createDate", formatter.format(this.getCreateDate()));
       }
-
-
-
     } catch (JSONException e) {
       e.printStackTrace();
     }
-    return productJSON;
+    return priceJSON;
+  }
+
+
+  public JSONObject toSmallJson() {
+    JSONObject priceJSON = new JSONObject();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    try {
+      priceJSON.put("id", this.getId());
+      priceJSON.put("name", this.getName());
+
+      if (this.getCategory() != null)
+        priceJSON.put("category", this.getCategory().toJson());
+
+      priceJSON.put("period", this.getPeriod().toJson());
+      priceJSON.put("tax", this.getTax().toJson());
+      priceJSON.put("value", this.getValue());
+      priceJSON.put("maxQte", this.getMaxQte());
+      priceJSON.put("active", this.isActive());
+      if (this.getModifyDate() != null) {
+        priceJSON.put("modifyDate", formatter.format(this.getModifyDate()));
+      }
+      if (this.getCreateDate() != null) {
+        priceJSON.put("createDate", formatter.format(this.getCreateDate()));
+      }
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return priceJSON;
   }
 }
 

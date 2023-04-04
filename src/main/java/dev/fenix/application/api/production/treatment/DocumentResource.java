@@ -55,7 +55,7 @@ public class DocumentResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public String index() {
-        log.trace("DocumentResource.index/ method accessed");
+        //log.trace("DocumentResource.index/ method accessed");
         return JSONObject.quote("Api :" + this.getClass().getSimpleName());
     }
 
@@ -75,21 +75,21 @@ public class DocumentResource {
             @RequestParam(required = false) String[] query)
             throws InterruptedException, UnsupportedEncodingException {
 
-        log.trace("DocumentResource.index method accessed");
-        log.trace("GetUserName : " + getCurrentUser().getUserName());
+        //log.trace("DocumentResource.index method accessed");
+        //log.trace("GetUserName : " + getCurrentUser().getUserName());
 
         long startTime = System.nanoTime();
         JSONArray jArray = new JSONArray();
         List<Document> documents = documentService.getAllDocuments(page, size, sort, query, type, category, toInvoice, this.getCurrentUser());
         long queryTime = System.nanoTime();
-        log.info("queryTime : " + String.valueOf((queryTime - startTime) / 1000000));
+        //log.info("queryTime : " + String.valueOf((queryTime - startTime) / 1000000));
         for (Document document : documents) {
             jArray.put(document.toSmallJson());
         }
         JSONObject response = new JSONObject();
         long endTime = System.nanoTime();
         long duration = (endTime - startTime);
-        log.info("durationTime : " + String.valueOf((duration) / 1000000));
+        //log.info("durationTime : " + String.valueOf((duration) / 1000000));
 
         try {
             response.put("results", jArray);
@@ -111,7 +111,7 @@ public class DocumentResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
             throws NotFoundException {
-        log.trace("DocumentResource.get method accessed");
+        //log.trace("DocumentResource.get method accessed");
         Document document =
                 documentRepository
                         .findById(id)
@@ -145,7 +145,7 @@ public class DocumentResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> save(@Valid @RequestBody Document document, HttpServletRequest request) {
-        log.trace("DocumentResource.save method accessed");
+        //log.trace("DocumentResource.save method accessed");
         try {
             document.setName(document.getType().getName() + " " + this.getNewCode(document.getType()));
             document.setCode(this.getNewCode(document.getType()));
@@ -170,7 +170,7 @@ public class DocumentResource {
     @ResponseBody
     public ResponseEntity<?> update(
             @Valid @RequestBody Document document, HttpServletRequest request) {
-        log.trace("DocumentResource.update method accessed");
+        //log.trace("DocumentResource.update method accessed");
         try {
             document.setLogs(getDocumentLogs(document, Action.EDIT, null));
             document.setActive(true);
@@ -195,7 +195,7 @@ public class DocumentResource {
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        log.trace("DocumentResource.delete method accessed");
+        //log.trace("DocumentResource.delete method accessed");
         Document document = documentRepository.getOne(id);
         try {
 
@@ -217,7 +217,7 @@ public class DocumentResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> isUnique(HttpServletRequest request, @PathVariable String code) throws NotFoundException {
-        log.trace("DocumentResource.isUnique method accessed");
+        //log.trace("DocumentResource.isUnique method accessed");
         int count = documentRepository.countByActiveTrueAndCode(code);
         if (count > 0) {
             return new ResponseEntity<>(String.valueOf(false), HttpStatus.OK);

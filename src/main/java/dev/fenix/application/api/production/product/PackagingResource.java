@@ -46,12 +46,12 @@ public class PackagingResource {
       @RequestParam(required = false) String[] query) {
 
     JSONArray jArray = new JSONArray();
-    log.trace("PackagingResource.index method accessed");
+    //log.trace("PackagingResource.index method accessed");
 
     Iterable<Packaging> packagings =
         packagingService.getAllPackaging(page, size, sort, query, type);
     for (Packaging packaging : packagings) {
-      // log.trace("=> " + packaging.getName());
+      // //log.trace("=> " + packaging.getName());
       jArray.put(packaging.toJson());
     }
     /*
@@ -68,7 +68,7 @@ public class PackagingResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    log.trace("ProductResource.get method accessed");
+    //log.trace("ProductResource.get method accessed");
     Packaging packaging =
         packagingRepository
             .findById(id)

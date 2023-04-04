@@ -1,6 +1,6 @@
 package dev.fenix.application.production.product.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.*;
 import org.json.JSONArray;
@@ -105,6 +105,7 @@ public class Product {
   @Fetch(value = FetchMode.SUBSELECT)
   @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true) // javax.persistent.CascadeType
   @JoinColumn(name = "product_id") // parent's foreign key
+  @JsonManagedReference(value = "prices")
   private List<Price> prices = new ArrayList<>();
 
 
@@ -125,6 +126,7 @@ public class Product {
 
     try {
       productJSON.put("id", this.getId());
+
       if (this.getModifyDate() != null) {
         productJSON.put("modifyDate", formatter.format(this.getModifyDate()));
       }
@@ -182,7 +184,7 @@ public class Product {
         JSONArray pricesList = new JSONArray();
         for (Price price : this.getPrices()) {
           if (price.isActive()) {
-            pricesList.put(price.toJson());
+            pricesList.put(price.toSmallJson());
           }
         }
         productJSON.put("prices", pricesList);
@@ -209,6 +211,102 @@ public class Product {
     }
     return productJSON;
   }
+
+
+  public JSONObject toSmallJson() {
+    JSONObject productJSON = new JSONObject();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+    try {
+      productJSON.put("id", this.getId());
+
+      if (this.getModifyDate() != null) {
+        productJSON.put("modifyDate", formatter.format(this.getModifyDate()));
+      }
+
+      if (this.getProductMgmtMode() != null) {
+        productJSON.put("productMgmtMode",  this.getProductMgmtMode().toJson());
+      }
+
+      if (this.getCreateDate() != null) {
+        productJSON.put("createDate", formatter.format(this.getCreateDate()));
+      }
+      productJSON.put("id", this.getId());
+      productJSON.put("name", this.getName());
+      if (this.getCode() != null) {
+        productJSON.put("code", this.getCode().toUpperCase(Locale.ROOT));
+      }
+
+      if (this.getCodeDes() != null) {
+        productJSON.put("codeDes", this.getCodeDes());
+      }
+
+      if (this.getClassification() != null) {
+        productJSON.put("classification", this.getClassification().toJson());
+      }
+
+      if (this.getPackaging() != null) {
+        productJSON.put("packaging", this.getPackaging().toJson());
+      }
+
+
+      if (this.getAttachments() != null && this.getAttachments().size() > 0) {
+        JSONArray attachmentsList = new JSONArray();
+
+        for (ProductAttachment productAttachment : this.getAttachments()) {
+          if (productAttachment.isActive()) {
+            attachmentsList.put(productAttachment.toJson());
+          }
+        }
+        productJSON.put("attachments", attachmentsList);
+      }
+
+
+
+      if (this.getProductionUnits() != null && this.getProductionUnits().size() > 0) {
+        JSONArray productionUnitList = new JSONArray();
+        for (ProductionUnit productionUnit : this.getProductionUnits()) {
+          if (productionUnit.isActive()) {
+            productionUnitList.put(productionUnit.toJson());
+          }
+        }
+        productJSON.put("productionUnits", productionUnitList);
+      }
+
+      if (this.getPrices() != null && this.getPrices().size() > 0) {
+        JSONArray pricesList = new JSONArray();
+        for (Price price : this.getPrices()) {
+          if (price.isActive()) {
+            pricesList.put(price.toSmallJson());
+          }
+        }
+        productJSON.put("prices", pricesList);
+      }
+
+      if (this.getProductType() != null) {
+        productJSON.put("productType", this.getProductType().toJson());
+      }
+
+      if (this.getSiUnit() != null) {
+        productJSON.put("siUnit", this.getSiUnit().toJson());
+      }
+
+      if (this.getMetaDataValues() != null) {
+        JSONArray metaDataList = new JSONArray();
+        for (MetaDataValue metaData : this.getMetaDataValues()) {
+          metaDataList.put(metaData.toJson());
+        }
+        productJSON.put("metaDataValues", metaDataList);
+      }
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return productJSON;
+  }
+
+
+
 }
 
 //// https://www.stackchief.com/blog/One%20To%20Many%20Example%20%7C%20Spring%20Data%20JPA

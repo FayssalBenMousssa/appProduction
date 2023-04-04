@@ -41,16 +41,16 @@ public class Application {
 
  // @PostConstruct
   private void insertDbDefault() {
-   // log.trace("{methodName}  method accessed");
+   // //log.trace("{methodName}  method accessed");
     Date date = new GregorianCalendar(2021, Calendar.FEBRUARY, 11).getTime();
     /** find User with Name admin */
-    log.trace("find User with Name admin");
+    //log.trace("find User with Name admin");
     User admin = userRepository.findOneByUserName("admin");
     /** find role name ROLE_USER */
-    log.trace("find role name ROLE_USER");
+    //log.trace("find role name ROLE_USER");
     Role roleUser = roleRepository.findByRole("ROLE_USER");
     /** find role name ROLE_ADMIN */
-    log.trace("find role name ROLE_ADMIN");
+    //log.trace("find role name ROLE_ADMIN");
     Role roleAdmin = roleRepository.findByRole("ROLE_ADMIN");
     /** add ROLE_ADMIN */
     if (roleAdmin == null) {
@@ -100,7 +100,7 @@ public class Application {
       person.setUserAccount(user);
       /** save all */
       Person savedPerson = personRepository.save(person);
-      log.trace("Save New Person " + person.toString());
+      //log.trace("Save New Person " + person.toString());
     }
   }
 
@@ -119,7 +119,7 @@ public class Application {
           }
         }
         initials = initials.replaceAll(" ", "");
-        log.info(initials);
+        //log.info(initials);
         if (classification.getLevel() == 0) {
           classification.setCode("G" + initials.toUpperCase());
         } else if (classification.getLevel() == 1) {

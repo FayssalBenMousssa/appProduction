@@ -1,6 +1,5 @@
 package dev.fenix.application.production.logistic.model;
 
-import dev.fenix.application.production.product.model.ProductType;
 import dev.fenix.application.production.product.model.ProductionUnit;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

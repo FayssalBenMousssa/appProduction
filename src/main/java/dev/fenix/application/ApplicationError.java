@@ -35,7 +35,7 @@ public class ApplicationError implements ErrorController {
   @RequestMapping("/error")
   public @ResponseBody Object handleError(HttpServletRequest request) {
     ServletWebRequest webRequest = new ServletWebRequest(request);
-   // log.trace("ApplicationError.handleError method accessed");
+   // //log.trace("ApplicationError.handleError method accessed");
     @SuppressWarnings("deprecation")
     Map<String, Object> errors = errorAttributes.getErrorAttributes(webRequest, true);
     String username = null;
@@ -47,7 +47,7 @@ public class ApplicationError implements ErrorController {
     }
 
     User user = userRepository.findOneByUserName(username);
-    log.trace("UserName : " + username);
+    //log.trace("UserName : " + username);
 
     Exception exception = new Exception(errors, user);
     exception = exceptionRepository.save(exception);
@@ -57,7 +57,7 @@ public class ApplicationError implements ErrorController {
       modelAndView.addObject("exception", exception);
       if (exception.getStatus() != null) {
         Integer statusCode = Integer.valueOf(exception.getStatus());
-        log.trace("StatusCode : " + statusCode);
+        //log.trace("StatusCode : " + statusCode);
         if (statusCode == HttpStatus.NOT_FOUND.value()) {
           modelAndView.addObject("status", HttpStatus.NOT_FOUND);
           modelAndView.setViewName("errors/not_found");

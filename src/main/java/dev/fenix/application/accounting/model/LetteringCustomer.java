@@ -1,29 +1,24 @@
 package dev.fenix.application.accounting.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.fenix.application.production.customer.model.Customer;
 import dev.fenix.application.production.payment.model.PaymentCustomer;
-import dev.fenix.application.production.product.model.ProductAttachment;
 import dev.fenix.application.production.treatment.model.Document;
-import dev.fenix.application.production.treatment.model.DocumentProduct;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -38,12 +33,12 @@ public class LetteringCustomer {
     private Long id;
 
     @Fetch(value = FetchMode.SELECT)
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "lettering_id")
     private Set<Document> documents;
 
     @Fetch(value = FetchMode.SELECT)
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "lettering_id")
     private Set<PaymentCustomer> paymentsCustomer;
 
@@ -67,6 +62,8 @@ public class LetteringCustomer {
     @Column(name = "modify_date")
     private Date modifyDate;
 
+    @Transient
+    boolean transform ;
 
 
     public Double getTotalPaymentsCustomer(){
@@ -132,4 +129,6 @@ public class LetteringCustomer {
         }
         return letteringCustomerJSON;
     }
+
+
 }
