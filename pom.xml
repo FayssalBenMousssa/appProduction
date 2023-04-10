@@ -11,7 +11,7 @@ http://maven.apache.org/POM/4.0.0 ">
     </parent>
     <groupId>dev.fenix</groupId>
     <artifactId>application</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <name>application</name>
     <description>Application</description>
 

@@ -112,13 +112,20 @@ public class User {
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
     this.password = passwordEncoder.encode(this.userpassword);
   }
-
   public JSONObject _toJson() {
     JSONObject userJSON = new JSONObject();
     try {
       userJSON.put("id", this.getId());
       userJSON.put("email", this.getEmail());
       userJSON.put("UserName", this.getUserName());
+      userJSON.put("active", this.isActive());
+      if (this.getSettings() != null) {
+        JSONArray settingsJSon = new JSONArray();
+        for (Setting setting : this.getSettings()) {
+          settingsJSon.put(setting.toJson());
+        }
+        userJSON.put("settings", settingsJSon);
+      }
       if (this.getRoles() != null) {
         JSONArray userRoles = new JSONArray();
         for (Role role : this.getRoles()) {
@@ -126,7 +133,32 @@ public class User {
         }
         userJSON.put("roles", userRoles);
       }
-
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return userJSON;
+  }
+  public JSONObject toSmallJson() {
+    JSONObject userJSON = new JSONObject();
+    try {
+      userJSON.put("id", this.getId());
+      userJSON.put("email", this.getEmail());
+      userJSON.put("UserName", this.getUserName());
+      userJSON.put("active", this.isActive());
+      if (this.getRoles() != null) {
+        JSONArray userRoles = new JSONArray();
+        for (Role role : this.getRoles()) {
+          userRoles.put(role.toSmallJsonUser());
+        }
+        userJSON.put("roles", userRoles);
+      }
+      if (this.getSettings() != null) {
+        JSONArray settingsJSon = new JSONArray();
+        for (Setting setting : this.getSettings()) {
+          settingsJSon.put(setting.toJson());
+        }
+        userJSON.put("settings", settingsJSon);
+      }
     } catch (JSONException e) {
       e.printStackTrace();
     }

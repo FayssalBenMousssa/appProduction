@@ -1,7 +1,9 @@
 package dev.fenix.application.production.product.repository;
 
 
+import dev.fenix.application.production.customer.model.Customer;
 import dev.fenix.application.production.product.model.Price;
+import dev.fenix.application.production.product.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,8 +15,13 @@ public interface PriceRepository extends JpaRepository<Price, Long> {
   Price findOneById(long l);
   Price findTopByOrderByIdDesc();
 
+  List<Price> findByProductAndCustomersAndActiveTrue(Product product, Customer customers);
 
-  ///   Page<Document> findAllByCodeContainsAndActiveTrueAndTypeCategoryAndType(String value, Long category, Long type, Pageable paging);
+  List<Price> findByProductAndActiveTrueAndCustomersEmpty(Product product);
+
+
+
+
 
 
 }

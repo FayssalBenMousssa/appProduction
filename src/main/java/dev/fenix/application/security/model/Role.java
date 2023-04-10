@@ -126,4 +126,17 @@ public class Role {
     }
     return roleJSON;
   }
+
+  public JSONObject toSmallJsonUser() {
+    JSONObject roleJSON = new JSONObject();
+    try {
+      roleJSON.put("id", this.getId());
+      roleJSON.put("role", this.getRole());
+      roleJSON.put("name", this.getName());
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return roleJSON;
+  }
 }

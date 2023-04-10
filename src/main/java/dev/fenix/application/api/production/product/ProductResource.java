@@ -1,9 +1,13 @@
 package dev.fenix.application.api.production.product;
 
 import dev.fenix.application.app.model.ResponseData;
+import dev.fenix.application.production.customer.model.Customer;
+import dev.fenix.application.production.customer.repository.CustomerRepository;
+import dev.fenix.application.production.product.model.Price;
 import dev.fenix.application.production.product.model.Product;
 import dev.fenix.application.production.product.model.ProductAttachment;
 import dev.fenix.application.production.product.model.ProductType;
+import dev.fenix.application.production.product.repository.PriceRepository;
 import dev.fenix.application.production.product.repository.ProductAttachmentRepository;
 import dev.fenix.application.production.product.repository.ProductRepository;
 import dev.fenix.application.production.product.repository.ProductTypeRepository;
@@ -38,6 +42,10 @@ public class ProductResource {
   private static final Logger log = LoggerFactory.getLogger(ProductResource.class);
 
   @Autowired private ProductRepository productRepository;
+
+  @Autowired private PriceRepository priceRepository;
+
+  @Autowired private CustomerRepository customerRepository;
   @Autowired private ProductTypeRepository productTypeRepository;
   @Autowired private ProductService productService;
 
@@ -56,7 +64,7 @@ public class ProductResource {
             .path(attachment.getId())
             .toUriString();
     ResponseData reponse = new ResponseData(attachment.getFileName(), downloadURL, file.getContentType(), file.getSize() , attachment.getId());
-    return    ResponseEntity.ok(attachment.getId().toString());
+    return    ResponseEntity.ok(attachment.getId());
   }
 
   @RequestMapping(value = "/upload/delete/{id}",  method = RequestMethod.DELETE )
@@ -65,7 +73,7 @@ public class ProductResource {
       ProductAttachment  attachment  = attachmentRepository.getOne(id) ;
       attachment.setActive(false);
       attachment =  attachmentRepository.save(attachment);
-      return    ResponseEntity.ok(attachment.getId().toString());
+      return    ResponseEntity.ok(attachment.getId());
     } catch (Exception e) {
       e.printStackTrace();
       return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -137,13 +145,31 @@ public class ProductResource {
       value = "/get/{id}",
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
-      throws NotFoundException {
+  public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id ,
+  @RequestParam(required = false) Long customerId
+
+  ) throws NotFoundException {
     //log.trace("ProductResource.get method accessed");
-    Product product =
-        productRepository
-            .findById(id)
-            .orElseThrow(() -> new NotFoundException("Product  not found"));
+
+    Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+
+    if (customerId != null && customerId != 0) {
+     Customer customer = customerRepository.findOneById(customerId);
+     List<Price> prices = priceRepository.findByProductAndCustomersAndActiveTrue(product,customer);
+    if (!prices.isEmpty()) {
+      product.setPrices(prices);
+    }else {
+      prices = priceRepository.findByProductAndActiveTrueAndCustomersEmpty(product);
+      product.setPrices(prices);
+    }
+
+
+
+    }
+
+
+
+
     return new ResponseEntity<>(product.toJson().toString(), HttpStatus.OK);
   }
 

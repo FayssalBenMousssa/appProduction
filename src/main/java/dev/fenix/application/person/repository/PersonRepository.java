@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @EnableJpaRepositories
@@ -22,6 +23,9 @@ public interface PersonRepository extends PagingAndSortingRepository<Person, Lon
 
   @Query("SELECT p FROM Person p ")
   Optional<Person> findActivePersons(Boolean active);
+
+ @Query("SELECT person FROM Person person ")
+ List<Person> findPersons(Boolean active);
 
   User getUserAccountById(Integer id);
 

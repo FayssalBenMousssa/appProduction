@@ -41,13 +41,10 @@ public class UserResource {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public String index(HttpServletRequest request) {
-
     /// Get User from request
     Principal principal = request.getUserPrincipal();
-
     JSONArray jArray = new JSONArray();
     JSONObject jObject = new JSONObject();
-
     try {
       jObject.put("security", jArray);
     } catch (JSONException e) {
@@ -114,6 +111,32 @@ public class UserResource {
     return jArray.toString();
   }
 
+
+  @RequestMapping(
+          value = "/user/authorisation/",
+          method = RequestMethod.GET,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> authorisation(HttpServletRequest request) {
+
+
+    JSONArray jArray = new JSONArray();
+    Iterable<Person> people = personRepository.findPersons(true);
+    if (people!= null) {
+      people.forEach(person -> {jArray.put(person.toSmallJsonUser());});
+      return new ResponseEntity<>(jArray.toString() , HttpStatus.OK);
+    }
+
+    return new ResponseEntity<>("BAD_REQUEST" , HttpStatus.BAD_REQUEST);
+
+
+   /* JSONArray jArray = new JSONArray();
+    Iterable<Action> actions = actionRepository.findAll();
+    for (Action action : actions) {
+      jArray.put(action.toJson());
+    }
+    return jArray.toString();*/
+  }
+
   @RequestMapping(
       value = "/status",
       method = RequestMethod.GET,
@@ -141,11 +164,16 @@ public class UserResource {
       value = "/username/{username}",
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<String> readByUsername(@PathVariable("username") String username) {
+  public ResponseEntity<String> readByUsername(@PathVariable("username") String username
+  , @RequestParam(required = false) boolean optimise
+  ) {
     User user = userRepository.findOneByUserName(username);
     if (user == null) {
       throw new RuntimeException("Invalid  person Id : " + username);
     } else {
+      if (optimise){
+        return ResponseEntity.ok(user.getPerson().toSmallJsonUser().toString());
+      }
       return ResponseEntity.ok(user.getPerson().toJson().toString());
     }
   }

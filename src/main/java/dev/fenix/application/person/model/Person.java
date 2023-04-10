@@ -1,8 +1,6 @@
 package dev.fenix.application.person.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.fenix.application.security.model.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,11 +42,9 @@ public class Person {
   private Gender gender;
 
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   @Valid
-
-
   private User userAccount;
 
   private Date birthDate;
@@ -111,6 +107,37 @@ public class Person {
     return this.getLastName() + " " + this.getFirstName();
   }
 
+  public JSONObject toSmallJsonUser() {
+    JSONObject personJSON = new JSONObject();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    try {
+      personJSON.put("id", this.getId());
+      personJSON.put("firstName", this.getFirstName());
+      personJSON.put("lastName", this.getLastName());
+      personJSON.put("fullName", this.getFullName());
+      if (this.getUserAccount() != null) {
+        personJSON.put("user", this.getUserAccount().toSmallJson());
+      }
+      if (this.getGender() != null) {
+        personJSON.put("gender", this.getGender());
+      }
+
+      if (this.getBirthDate() != null) {
+        personJSON.put("birthDate", formatter.format(this.getBirthDate()));
+      }
+      if (this.getModifyDate() != null) {
+        personJSON.put("modifyDate", formatter.format(this.getModifyDate()));
+      }
+      if (this.getCreateDate() != null) {
+        personJSON.put("createDate", formatter.format(this.getCreateDate()));
+      }
+
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return personJSON;
+  }
   public JSONObject toSmallJson() {
     JSONObject personJSON = new JSONObject();
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");

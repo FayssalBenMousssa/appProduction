@@ -5,7 +5,6 @@ import dev.fenix.application.core.model.Address;
 import dev.fenix.application.core.model.Contact;
 import dev.fenix.application.production.product.model.CategoryPrice;
 import dev.fenix.application.production.product.model.Price;
-import dev.fenix.application.security.UserController;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -103,6 +102,25 @@ public class Customer extends Company {
     } catch (JSONException e) {
       e.printStackTrace();
     }
+    return customerJSON;
+  }
+
+
+  public JSONObject toSmallJson() {
+
+
+
+    JSONObject customerJSON = new JSONObject();
+    try {
+      customerJSON.put("id", this.getId());
+      customerJSON.put("code", this.getCode());
+      customerJSON.put("socialReason", this.getSocialReason());
+    } catch (JSONException e) {
+      throw new RuntimeException(e);
+    }
+
+
+
     return customerJSON;
   }
 }

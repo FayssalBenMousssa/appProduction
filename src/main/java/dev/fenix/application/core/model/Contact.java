@@ -30,6 +30,7 @@ public class Contact {
   private String note;
   private Boolean active;
 
+
   public JSONObject toJson() {
     JSONObject vendorJSON = new JSONObject();
     try {
@@ -37,7 +38,6 @@ public class Contact {
       vendorJSON.put("name", this.getName());
       vendorJSON.put("job", this.getJob());
       vendorJSON.put("telephone", this.getTelephone());
-
       vendorJSON.put("email", this.getEmail());
       vendorJSON.put("note", this.getNote());
       vendorJSON.put("active", this.getActive());
