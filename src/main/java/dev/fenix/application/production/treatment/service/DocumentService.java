@@ -60,7 +60,6 @@ public class DocumentService {
      * @param toInvoice document boolean
      */
     public List<Document> getAllDocuments(Integer pageNo, Integer pageSize, String[] sortBy, String[] query, Long type, Long category, boolean toInvoice, User CurrentUser) throws UnsupportedEncodingException {
-
         typeList = new ArrayList<>();
         accessList = new ArrayList<>();
         Set<Role> userRoles = CurrentUser.getRoles();
@@ -293,7 +292,7 @@ public class DocumentService {
 
     private Map<String, String> getFilters(String[] query) throws UnsupportedEncodingException {
         //// URLDecoder.decode(query[0], StandardCharsets.UTF_8.name())
-        if (query != null && java.net.URLDecoder.decode(query[0], StandardCharsets.UTF_8.name()).contains(":")) {
+        if (query != null && java.net.URLDecoder.decode(query[0], StandardCharsets.UTF_8).contains(":")) {
             Map<String, String> hashMap = new HashMap<String, String>();
             for (String keyValue : query) {
                 String[] _filter = keyValue.split(":");

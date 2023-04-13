@@ -35,7 +35,7 @@ public class User {
 
   @NotBlank(message = "userName is mandatory")
   @NotNull(message = "userName cannot be null")
-  @Size(min = 4, max = 120, message = "message size must be between 2 and 12")
+  @Size(min = 4, max = 120, message = "message size must be between 4 and 12")
   @Column(name = "user_name")
   @ColumnTransformer(forColumn = "user_name", read = "LOWER(user_name)", write = "LOWER(?)")
   private String userName;

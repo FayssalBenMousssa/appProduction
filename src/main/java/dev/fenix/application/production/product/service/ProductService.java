@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductService {
@@ -20,6 +23,7 @@ public class ProductService {
   private static final Logger log = LoggerFactory.getLogger(ProductService.class);
   private int count = 0;
   private int countAll = 0;
+  private Page<Product> pagedResult;
 
   /**
    * get list of products
@@ -30,14 +34,8 @@ public class ProductService {
    * @param query list of query to filter data
    * @param type type of product
    */
-  public List<Product> getAllProducts(
-      Integer pageNo, Integer pageSize, String[] sortBy, String[] query, Long type, Long[] types) {
+  public List<Product> getAllProducts(Integer pageNo, Integer pageSize, String[] sortBy, String[] query, Long type, Long[] types) {
 
-    //log.trace("ProductService.getAllProducts method accessed");
-    //log.trace("pageNo : " + pageNo);
-    //log.trace("pageSize : " + pageSize);
-    //log.trace("sortBy : " + (sortBy != null && sortBy.length > 0 ? Arrays.toString(sortBy) : "no sort"));
-    //log.trace("query : " + (query != null && query.length > 0 ? Arrays.toString(query) : "no query"));
 
     //// Order
     List<Sort.Order> orders = new ArrayList<Sort.Order>();
@@ -60,10 +58,9 @@ public class ProductService {
     Map<String, String> filters = getFilters(query);
     Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(orders));
     List<Product> filteringProducts = new ArrayList<Product>();
-
     countAll = productRepository.countByActiveTrue();
     //log.info(countAll + " products active in DB");
-    Page<Product> pagedResult;
+
     /// if we have filters and type
     if (filters != null && filters.size() != 0 && type != null) {
       ProductType productType = productTypeRepository.findOneById(type);
@@ -71,20 +68,12 @@ public class ProductService {
       for (Map.Entry<String, String> entry : filters.entrySet()) {
         String key = entry.getKey();
         String value = entry.getValue();
-        switch (key) {
-          case "name":
-            filteringProducts.addAll(
-                productRepository
-                    .findAllByNameContainsAndActiveTrueAndProductType(value, productType, paging)
-                    .getContent());
-            count =
-                productRepository.countByNameContainsAndActiveTrueAndProductType(
-                    value, productType);
-
-            break;
-          default:
-            //log.info("value not in list of search !");
-        }
+          //log.info("value not in list of search !");
+          if ("name".equals(key)) {
+              filteringProducts.addAll(
+                      productRepository.findAllByNameContainsAndActiveTrueAndProductType(value, productType, paging).getContent());
+              count = productRepository.countByNameContainsAndActiveTrueAndProductType(value, productType);
+          }
       }
       pagedResult = new PageImpl<>(filteringProducts, paging, pageSize);
       return pagedResult.getContent();
@@ -95,16 +84,12 @@ public class ProductService {
       for (Map.Entry<String, String> entry : filters.entrySet()) {
         String key = entry.getKey();
         String value = entry.getValue();
-        switch (key) {
-          case "name":
-            filteringProducts.addAll(
-                productRepository.findAllByNameContainsAndActiveTrue(value, paging).getContent());
-            count = productRepository.countByNameContainsAndActiveTrue(value);
-            //log.info(count + " Products by name [" + value + "] for all types");
-            break;
-          default:
-            //log.info("value not in list of search !");
-        }
+          //log.info("value not in list of search !");
+          if ("name".equals(key)) {
+              filteringProducts.addAll(productRepository.findAllByNameContainsAndActiveTrue(value, paging).getContent());
+              count = productRepository.countByNameContainsAndActiveTrue(value);
+              //log.info(count + " Products by name [" + value + "] for all types");
+          }
       }
       pagedResult = new PageImpl<>(filteringProducts, paging, pageSize);
       return pagedResult.getContent();
@@ -122,6 +107,16 @@ public class ProductService {
       //log.info(count + " Products ");
       return pagedResult.getContent();
     }
+  }
+
+
+  // public List<Document> loadDocuments(Pageable paging, Category documentCategory)
+  public List<Product> loadProducts(Pageable paging ) {
+    pagedResult = productRepository.findByActiveTrue(paging);
+    count = productRepository.countByActiveTrue();
+    //log.info(count + " Products ");
+    return pagedResult.getContent();
+
   }
 
   private Sort.Direction getSortDirection(String direction) {

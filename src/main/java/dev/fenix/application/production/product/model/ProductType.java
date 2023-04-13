@@ -27,6 +27,9 @@ public class ProductType {
   @NotNull(message = "Please enter the name")
   private String name;
 
+  @NotNull(message = "Please enter the code")
+  private String code;
+
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 
@@ -67,7 +70,7 @@ public class ProductType {
       ProductTypeJSON.put("id", this.getId());
       ProductTypeJSON.put("name", this.getName());
       ProductTypeJSON.put("icon", this.getIcon());
-
+      ProductTypeJSON.put("code", this.getCode());
       ProductTypeJSON.put("hasFormula", this.getHasFormula());
 
       if (this.getMetaData() != null && this.getMetaData().size() > 0) {

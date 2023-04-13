@@ -1,69 +1,8 @@
-2023-04-10 09:06:45.427 ERROR 652 --- [http-nio-80-exec-10] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.orm.jpa.JpaObjectRetrievalFailureException: Unable to find dev.fenix.application.person.model.Person with id 6565; nested exception is javax.persistence.EntityNotFoundException: Unable to find dev.fenix.application.person.model.Person with id 6565] with root cause
+2023-04-13 10:34:29.121 ERROR 8696 --- [http-nio-80-exec-3] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.RuntimeException: Invalid  person Id : undefined] with root cause
 
-javax.persistence.EntityNotFoundException: Unable to find dev.fenix.application.person.model.Person with id 6565
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl$JpaEntityNotFoundDelegate.handleEntityNotFound(EntityManagerFactoryBuilderImpl.java:163) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.event.internal.DefaultLoadEventListener.load(DefaultLoadEventListener.java:216) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.event.internal.DefaultLoadEventListener.proxyOrLoad(DefaultLoadEventListener.java:332) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.event.internal.DefaultLoadEventListener.doOnLoad(DefaultLoadEventListener.java:108) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.event.internal.DefaultLoadEventListener.onLoad(DefaultLoadEventListener.java:74) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:113) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.internal.SessionImpl.fireLoadNoChecks(SessionImpl.java:1186) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.internal.SessionImpl.internalLoad(SessionImpl.java:1051) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.type.EntityType.resolveIdentifier(EntityType.java:697) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.type.EntityType.resolve(EntityType.java:464) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.type.ManyToOneType.resolve(ManyToOneType.java:240) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.engine.internal.TwoPhaseLoad$EntityResolver.lambda$static$0(TwoPhaseLoad.java:605) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.engine.internal.TwoPhaseLoad.initializeEntityEntryLoadedState(TwoPhaseLoad.java:248) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.engine.internal.TwoPhaseLoad.initializeEntity(TwoPhaseLoad.java:182) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.engine.internal.TwoPhaseLoad.initializeEntity(TwoPhaseLoad.java:151) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.loader.Loader.initializeEntitiesAndCollections(Loader.java:1200) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.loader.Loader.processResultSet(Loader.java:1001) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.loader.Loader.doQuery(Loader.java:959) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.loader.Loader.doQueryAndInitializeNonLazyCollections(Loader.java:349) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.loader.Loader.doList(Loader.java:2850) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.loader.Loader.doList(Loader.java:2832) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.loader.Loader.listIgnoreQueryCache(Loader.java:2664) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.loader.Loader.list(Loader.java:2659) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.loader.hql.QueryLoader.list(QueryLoader.java:506) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.hql.internal.ast.QueryTranslatorImpl.list(QueryTranslatorImpl.java:400) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.engine.query.spi.HQLQueryPlan.performList(HQLQueryPlan.java:219) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.internal.SessionImpl.list(SessionImpl.java:1414) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.query.internal.AbstractProducedQuery.doList(AbstractProducedQuery.java:1625) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.query.internal.AbstractProducedQuery.list(AbstractProducedQuery.java:1593) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.query.Query.getResultList(Query.java:165) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at org.hibernate.query.criteria.internal.compile.CriteriaQueryTypeQueryAdapter.getResultList(CriteriaQueryTypeQueryAdapter.java:76) ~[hibernate-core-5.4.25.Final.jar:5.4.25.Final]
-	at jdk.internal.reflect.GeneratedMethodAccessor130.invoke(Unknown Source) ~[na:na]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:564) ~[na:na]
-	at org.springframework.orm.jpa.SharedEntityManagerCreator$DeferredQueryInvocationHandler.invoke(SharedEntityManagerCreator.java:406) ~[spring-orm-5.3.2.jar:5.3.2]
-	at com.sun.proxy.$Proxy214.getResultList(Unknown Source) ~[na:na]
-	at org.springframework.data.jpa.repository.query.JpaQueryExecution$PagedExecution.doExecute(JpaQueryExecution.java:177) ~[spring-data-jpa-2.4.2.jar:2.4.2]
-	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:88) ~[spring-data-jpa-2.4.2.jar:2.4.2]
-	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:155) ~[spring-data-jpa-2.4.2.jar:2.4.2]
-	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:143) ~[spring-data-jpa-2.4.2.jar:2.4.2]
-	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:137) ~[spring-data-commons-2.4.2.jar:2.4.2]
-	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:121) ~[spring-data-commons-2.4.2.jar:2.4.2]
-	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:152) ~[spring-data-commons-2.4.2.jar:2.4.2]
-	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:131) ~[spring-data-commons-2.4.2.jar:2.4.2]
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.3.2.jar:5.3.2]
-	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:80) ~[spring-data-commons-2.4.2.jar:2.4.2]
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.3.2.jar:5.3.2]
-	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) ~[spring-tx-5.3.2.jar:5.3.2]
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:388) ~[spring-tx-5.3.2.jar:5.3.2]
-	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-5.3.2.jar:5.3.2]
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.3.2.jar:5.3.2]
-	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:137) ~[spring-tx-5.3.2.jar:5.3.2]
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.3.2.jar:5.3.2]
-	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:145) ~[spring-data-jpa-2.4.2.jar:2.4.2]
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.3.2.jar:5.3.2]
-	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97) ~[spring-aop-5.3.2.jar:5.3.2]
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.3.2.jar:5.3.2]
-	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:215) ~[spring-aop-5.3.2.jar:5.3.2]
-	at com.sun.proxy.$Proxy168.findByActiveTrue(Unknown Source) ~[na:na]
-	at dev.fenix.application.business.service.StaffService.getAllStaffs(StaffService.java:89) ~[classes/:na]
-	at dev.fenix.application.api.business.StaffResource.index(StaffResource.java:50) ~[classes/:na]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:64) ~[na:na]
+java.lang.RuntimeException: Invalid  person Id : undefined
+	at dev.fenix.application.api.security.UserResource.readByUsername(UserResource.java:175) ~[classes/:na]
+	at jdk.internal.reflect.GeneratedMethodAccessor139.invoke(Unknown Source) ~[na:na]
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:564) ~[na:na]
 	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:197) ~[spring-web-5.3.2.jar:5.3.2]
@@ -160,83 +99,86 @@ javax.persistence.EntityNotFoundException: Unable to find dev.fenix.application.
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.41.jar:9.0.41]
 	at java.base/java.lang.Thread.run(Thread.java:832) ~[na:na]
 
-2023-04-10 09:51:22.464  INFO 652 --- [SpringContextShutdownHook] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
-2023-04-10 09:51:22.485  INFO 652 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
-2023-04-10 09:51:22.528  INFO 652 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2023-04-10 09:51:22.624  INFO 652 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2023-04-10 09:51:22.677  INFO 652 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
-2023-04-10 09:51:29.122  INFO 11272 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2023-04-10 09:51:29.129  INFO 11272 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2023-04-10 09:51:31.670  INFO 11272 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2023-04-10 09:51:32.217  INFO 11272 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 530 ms. Found 50 JPA repository interfaces.
-2023-04-10 09:51:33.903  INFO 11272 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 80 (http)
-2023-04-10 09:51:33.932  INFO 11272 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2023-04-10 09:51:33.933  INFO 11272 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
-2023-04-10 09:51:34.143  INFO 11272 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2023-04-10 09:51:34.144  INFO 11272 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5011 ms
-2023-04-10 09:51:34.548  INFO 11272 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2023-04-10 09:51:34.677  INFO 11272 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.25.Final
-2023-04-10 09:51:35.039  INFO 11272 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
-2023-04-10 09:51:35.237  INFO 11272 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2023-04-10 09:51:36.033  INFO 11272 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2023-04-10 09:51:36.066  INFO 11272 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
-2023-04-10 09:51:36.224  INFO 11272 --- [restartedMain] o.h.e.boot.internal.EnversServiceImpl    : Envers integration enabled? : true
-2023-04-10 09:51:36.620  WARN 11272 --- [restartedMain] org.hibernate.cfg.AnnotationBinder       : HHH000457: Joined inheritance hierarchy [dev.fenix.application.business.model.Company] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
-2023-04-10 09:51:42.208  INFO 11272 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2023-04-10 09:51:42.220  INFO 11272 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2023-04-10 09:51:43.341 DEBUG 11272 --- [restartedMain] d.f.a.api.filters.JwtRequestFilter       : Filter 'jwtRequestFilter' configured for use
-2023-04-10 09:51:43.392  INFO 11272 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2023-04-10 09:51:47.657  INFO 11272 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/resources/**'] with []
-2023-04-10 09:51:47.658  INFO 11272 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/static/**'] with []
-2023-04-10 09:51:47.659  INFO 11272 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/css/**'] with []
-2023-04-10 09:51:47.660  INFO 11272 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/js/**'] with []
-2023-04-10 09:51:47.661  INFO 11272 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/img/**'] with []
-2023-04-10 09:51:47.661  INFO 11272 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/icon/**'] with []
-2023-04-10 09:51:48.252  INFO 11272 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/api/**'] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@f29acca, org.springframework.security.web.context.SecurityContextPersistenceFilter@23724b5e, org.springframework.security.web.header.HeaderWriterFilter@477d5324, org.springframework.web.filter.CorsFilter@3537ac9e, org.springframework.security.web.authentication.logout.LogoutFilter@cd6f561, dev.fenix.application.api.filters.JwtRequestFilter@3433313c, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@1fbe3eeb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@55cab2ce, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@343659b5, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@13c35a8e, org.springframework.security.web.session.SessionManagementFilter@8556825, org.springframework.security.web.access.ExceptionTranslationFilter@50d60280, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@6e9b19ea]
-2023-04-10 09:51:48.285  INFO 11272 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/**'] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@53270d10, org.springframework.security.web.context.SecurityContextPersistenceFilter@52b6a7e2, org.springframework.security.web.header.HeaderWriterFilter@56c4fd0, org.springframework.security.web.csrf.CsrfFilter@5444c7d1, org.springframework.security.web.authentication.logout.LogoutFilter@6facb259, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@6582795d, org.springframework.security.web.session.ConcurrentSessionFilter@63e2eba0, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@267de9ff, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1414aa60, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2565c346, org.springframework.security.web.session.SessionManagementFilter@290c4e73, org.springframework.security.web.access.ExceptionTranslationFilter@15e5d386, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@2dc24ace]
-2023-04-10 09:51:48.519  INFO 11272 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
-2023-04-10 09:51:49.210  INFO 11272 --- [restartedMain] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
-2023-04-10 09:51:49.420  INFO 11272 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 80 (http) with context path ''
-2023-04-10 09:51:52.586  INFO 11272 --- [http-nio-80-exec-4] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2023-04-10 09:51:52.586  INFO 11272 --- [http-nio-80-exec-4] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2023-04-10 09:51:52.589  INFO 11272 --- [http-nio-80-exec-4] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
-2023-04-10 11:20:42.072  INFO 11272 --- [SpringContextShutdownHook] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
-2023-04-10 11:20:42.083  INFO 11272 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
-2023-04-10 11:20:42.109  INFO 11272 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2023-04-10 11:20:42.139  INFO 11272 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2023-04-10 11:20:42.150  INFO 11272 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
-2023-04-10 11:23:13.494  INFO 12056 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2023-04-10 11:23:13.502  INFO 12056 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2023-04-10 11:23:18.023  INFO 12056 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2023-04-10 11:23:19.021  INFO 12056 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 975 ms. Found 50 JPA repository interfaces.
-2023-04-10 11:23:23.433  INFO 12056 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 80 (http)
-2023-04-10 11:23:23.463  INFO 12056 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2023-04-10 11:23:23.463  INFO 12056 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
-2023-04-10 11:23:23.936  INFO 12056 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2023-04-10 11:23:23.937  INFO 12056 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 10433 ms
-2023-04-10 11:23:25.198  INFO 12056 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2023-04-10 11:23:25.522  INFO 12056 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.25.Final
-2023-04-10 11:23:26.296  INFO 12056 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
-2023-04-10 11:23:26.783  INFO 12056 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2023-04-10 11:23:28.500  INFO 12056 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2023-04-10 11:23:28.551  INFO 12056 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
-2023-04-10 11:23:29.153  INFO 12056 --- [restartedMain] o.h.e.boot.internal.EnversServiceImpl    : Envers integration enabled? : true
-2023-04-10 11:23:29.986  WARN 12056 --- [restartedMain] org.hibernate.cfg.AnnotationBinder       : HHH000457: Joined inheritance hierarchy [dev.fenix.application.business.model.Company] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
-2023-04-10 11:23:42.498  INFO 12056 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2023-04-10 11:23:42.518  INFO 12056 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2023-04-10 11:23:47.105 DEBUG 12056 --- [restartedMain] d.f.a.api.filters.JwtRequestFilter       : Filter 'jwtRequestFilter' configured for use
-2023-04-10 11:23:47.365  INFO 12056 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2023-04-10 11:23:52.639  INFO 12056 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/resources/**'] with []
-2023-04-10 11:23:52.640  INFO 12056 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/static/**'] with []
-2023-04-10 11:23:52.640  INFO 12056 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/css/**'] with []
-2023-04-10 11:23:52.641  INFO 12056 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/js/**'] with []
-2023-04-10 11:23:52.641  INFO 12056 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/img/**'] with []
-2023-04-10 11:23:52.642  INFO 12056 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/icon/**'] with []
-2023-04-10 11:23:53.507  INFO 12056 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/api/**'] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@17fc9545, org.springframework.security.web.context.SecurityContextPersistenceFilter@745662df, org.springframework.security.web.header.HeaderWriterFilter@2457dbe4, org.springframework.web.filter.CorsFilter@22b67c3b, org.springframework.security.web.authentication.logout.LogoutFilter@6ebc10c8, dev.fenix.application.api.filters.JwtRequestFilter@36d6f73, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@4eaaa232, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@60c5603c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@78828f86, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@8b14b97, org.springframework.security.web.session.SessionManagementFilter@414ff08, org.springframework.security.web.access.ExceptionTranslationFilter@29e86ba1, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@76b02476]
-2023-04-10 11:23:53.574  INFO 12056 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/**'] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@39f7901f, org.springframework.security.web.context.SecurityContextPersistenceFilter@16bc09ed, org.springframework.security.web.header.HeaderWriterFilter@6ef466db, org.springframework.security.web.csrf.CsrfFilter@59f1294e, org.springframework.security.web.authentication.logout.LogoutFilter@337c99c6, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@3aa6a8ec, org.springframework.security.web.session.ConcurrentSessionFilter@6a610049, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@74bd303b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@229d6c6c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1eb34523, org.springframework.security.web.session.SessionManagementFilter@1b90a1c6, org.springframework.security.web.access.ExceptionTranslationFilter@160aeabf, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7e0c6fd]
-2023-04-10 11:23:54.019  INFO 12056 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
-2023-04-10 11:23:55.430  INFO 12056 --- [restartedMain] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
-2023-04-10 11:23:55.827  INFO 12056 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 80 (http) with context path ''
-2023-04-10 11:24:36.568  INFO 12056 --- [http-nio-80-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2023-04-10 11:24:36.569  INFO 12056 --- [http-nio-80-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2023-04-10 11:24:36.573  INFO 12056 --- [http-nio-80-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2023-04-13 11:23:51.290  WARN 8696 --- [http-nio-80-exec-1] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' not supported]
+2023-04-13 11:24:10.198  WARN 8696 --- [http-nio-80-exec-8] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' not supported]
+2023-04-13 11:26:21.328  WARN 8696 --- [http-nio-80-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' not supported]
+2023-04-13 11:27:43.090  WARN 8696 --- [http-nio-80-exec-10] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' not supported]
+2023-04-13 11:28:03.241  WARN 8696 --- [http-nio-80-exec-6] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' not supported]
+2023-04-13 11:29:53.743  WARN 8696 --- [http-nio-80-exec-8] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' not supported]
+2023-04-13 11:30:49.100  INFO 8696 --- [SpringContextShutdownHook] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2023-04-13 11:30:49.123  INFO 8696 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2023-04-13 11:30:49.193  INFO 8696 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-04-13 11:30:49.409  INFO 8696 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-04-13 11:30:49.485  INFO 8696 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-04-13 11:31:05.581  INFO 8484 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-04-13 11:31:05.599  INFO 8484 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-04-13 11:31:07.819  INFO 8484 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-04-13 11:31:08.401  INFO 8484 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 533 ms. Found 50 JPA repository interfaces.
+2023-04-13 11:31:10.531  INFO 8484 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 80 (http)
+2023-04-13 11:31:10.561  INFO 8484 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-04-13 11:31:10.562  INFO 8484 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
+2023-04-13 11:31:10.786  INFO 8484 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-04-13 11:31:10.787  INFO 8484 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5186 ms
+2023-04-13 11:31:11.238  INFO 8484 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-04-13 11:31:11.379  INFO 8484 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.25.Final
+2023-04-13 11:31:11.745  INFO 8484 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-04-13 11:31:11.961  INFO 8484 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-04-13 11:31:12.919  INFO 8484 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-04-13 11:31:12.962  INFO 8484 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2023-04-13 11:31:13.281  INFO 8484 --- [restartedMain] o.h.e.boot.internal.EnversServiceImpl    : Envers integration enabled? : true
+2023-04-13 11:31:13.701  WARN 8484 --- [restartedMain] org.hibernate.cfg.AnnotationBinder       : HHH000457: Joined inheritance hierarchy [dev.fenix.application.business.model.Company] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+2023-04-13 11:31:18.826  INFO 8484 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-04-13 11:31:18.836  INFO 8484 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-04-13 11:31:20.308 DEBUG 8484 --- [restartedMain] d.f.a.api.filters.JwtRequestFilter       : Filter 'jwtRequestFilter' configured for use
+2023-04-13 11:31:20.613  INFO 8484 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-04-13 11:31:23.999  INFO 8484 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/resources/**'] with []
+2023-04-13 11:31:24.000  INFO 8484 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/static/**'] with []
+2023-04-13 11:31:24.000  INFO 8484 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/css/**'] with []
+2023-04-13 11:31:24.001  INFO 8484 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/js/**'] with []
+2023-04-13 11:31:24.001  INFO 8484 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/img/**'] with []
+2023-04-13 11:31:24.002  INFO 8484 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/icon/**'] with []
+2023-04-13 11:31:24.617  INFO 8484 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/api/**'] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@63d37b6f, org.springframework.security.web.context.SecurityContextPersistenceFilter@193f963a, org.springframework.security.web.header.HeaderWriterFilter@245725c9, org.springframework.web.filter.CorsFilter@156967f7, org.springframework.security.web.authentication.logout.LogoutFilter@2457dbe4, dev.fenix.application.api.filters.JwtRequestFilter@8fd2366, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@7812a0eb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4b46031, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@466de98d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7ba5882, org.springframework.security.web.session.SessionManagementFilter@7df18c01, org.springframework.security.web.access.ExceptionTranslationFilter@7060853f, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@2c3d0fe4]
+2023-04-13 11:31:24.642  INFO 8484 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/**'] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@47ea7948, org.springframework.security.web.context.SecurityContextPersistenceFilter@49d8b549, org.springframework.security.web.header.HeaderWriterFilter@52adde0b, org.springframework.security.web.csrf.CsrfFilter@5734601a, org.springframework.security.web.authentication.logout.LogoutFilter@2c0c8610, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@a650461, org.springframework.security.web.session.ConcurrentSessionFilter@6bc82f39, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6343eaac, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@15607912, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@59ea7ee2, org.springframework.security.web.session.SessionManagementFilter@bc61192, org.springframework.security.web.access.ExceptionTranslationFilter@464799ef, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4b7b40a3]
+2023-04-13 11:31:24.798  INFO 8484 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2023-04-13 11:31:25.562  INFO 8484 --- [restartedMain] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2023-04-13 11:31:26.048  INFO 8484 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 80 (http) with context path ''
+2023-04-13 11:31:34.365  INFO 8484 --- [SpringContextShutdownHook] o.s.s.c.ThreadPoolTaskScheduler          : Shutting down ExecutorService 'taskScheduler'
+2023-04-13 11:31:34.371  INFO 8484 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2023-04-13 11:31:34.402  INFO 8484 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-04-13 11:31:34.413  INFO 8484 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-04-13 11:31:34.451  INFO 8484 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-04-13 11:31:46.896  INFO 24164 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-04-13 11:31:46.902  INFO 24164 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-04-13 11:31:48.970  INFO 24164 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-04-13 11:31:49.546  INFO 24164 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 560 ms. Found 50 JPA repository interfaces.
+2023-04-13 11:31:51.268  INFO 24164 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 80 (http)
+2023-04-13 11:31:51.298  INFO 24164 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-04-13 11:31:51.300  INFO 24164 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.41]
+2023-04-13 11:31:51.499  INFO 24164 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-04-13 11:31:51.501  INFO 24164 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4597 ms
+2023-04-13 11:31:52.126  INFO 24164 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-04-13 11:31:52.235  INFO 24164 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.25.Final
+2023-04-13 11:31:52.524  INFO 24164 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-04-13 11:31:52.699  INFO 24164 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-04-13 11:31:53.315  INFO 24164 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-04-13 11:31:53.342  INFO 24164 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2023-04-13 11:31:53.488  INFO 24164 --- [restartedMain] o.h.e.boot.internal.EnversServiceImpl    : Envers integration enabled? : true
+2023-04-13 11:31:53.895  WARN 24164 --- [restartedMain] org.hibernate.cfg.AnnotationBinder       : HHH000457: Joined inheritance hierarchy [dev.fenix.application.business.model.Company] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+2023-04-13 11:31:58.847  INFO 24164 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-04-13 11:31:58.863  INFO 24164 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-04-13 11:31:59.918 DEBUG 24164 --- [restartedMain] d.f.a.api.filters.JwtRequestFilter       : Filter 'jwtRequestFilter' configured for use
+2023-04-13 11:31:59.956  INFO 24164 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-04-13 11:32:04.566  INFO 24164 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/resources/**'] with []
+2023-04-13 11:32:04.578  INFO 24164 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/static/**'] with []
+2023-04-13 11:32:04.592  INFO 24164 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/css/**'] with []
+2023-04-13 11:32:04.595  INFO 24164 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/js/**'] with []
+2023-04-13 11:32:04.608  INFO 24164 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/img/**'] with []
+2023-04-13 11:32:04.609  INFO 24164 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/icon/**'] with []
+2023-04-13 11:32:05.296  INFO 24164 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/api/**'] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6128ff81, org.springframework.security.web.context.SecurityContextPersistenceFilter@284f61be, org.springframework.security.web.header.HeaderWriterFilter@5c279188, org.springframework.web.filter.CorsFilter@7c4e4040, org.springframework.security.web.authentication.logout.LogoutFilter@2eaf84e0, dev.fenix.application.api.filters.JwtRequestFilter@4bf18de0, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@6687f8a0, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2e165512, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@77284b44, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6d756ab7, org.springframework.security.web.session.SessionManagementFilter@6f9652dc, org.springframework.security.web.access.ExceptionTranslationFilter@75547b1e, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@f18eccf]
+2023-04-13 11:32:05.325  INFO 24164 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure Ant [pattern='/**'] with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@229d6c6c, org.springframework.security.web.context.SecurityContextPersistenceFilter@3e833a34, org.springframework.security.web.header.HeaderWriterFilter@7b81aa9c, org.springframework.security.web.csrf.CsrfFilter@490bc524, org.springframework.security.web.authentication.logout.LogoutFilter@33bd1bda, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@74bd303b, org.springframework.security.web.session.ConcurrentSessionFilter@50660fb7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5e7891e4, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5a06243f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@45f913f5, org.springframework.security.web.session.SessionManagementFilter@5e6d6945, org.springframework.security.web.access.ExceptionTranslationFilter@6bc82f39, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@16bc09ed]
+2023-04-13 11:32:05.459  INFO 24164 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2023-04-13 11:32:06.236  INFO 24164 --- [restartedMain] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService 'taskScheduler'
+2023-04-13 11:32:06.553  INFO 24164 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 80 (http) with context path ''
+2023-04-13 11:34:42.379  INFO 24164 --- [http-nio-80-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-04-13 11:34:42.380  INFO 24164 --- [http-nio-80-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-04-13 11:34:42.384  INFO 24164 --- [http-nio-80-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms

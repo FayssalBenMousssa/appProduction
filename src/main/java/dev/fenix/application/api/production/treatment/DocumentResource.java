@@ -50,12 +50,8 @@ public class DocumentResource {
     @Autowired
     private DocumentLogRepository documentLogRepository;
 
-    @RequestMapping(
-            value = {"/", ""},
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = {"/", ""}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String index() {
-        //log.trace("DocumentResource.index/ method accessed");
         return JSONObject.quote("Api :" + this.getClass().getSimpleName());
     }
 
@@ -71,12 +67,10 @@ public class DocumentResource {
             @RequestParam(defaultValue = "200") Integer size,
             @RequestParam(defaultValue = "id,desc") String[] sort,
             @RequestParam(defaultValue = "false") boolean toInvoice,
-
             @RequestParam(required = false) String[] query)
             throws InterruptedException, UnsupportedEncodingException {
 
-        //log.trace("DocumentResource.index method accessed");
-        //log.trace("GetUserName : " + getCurrentUser().getUserName());
+
 
         long startTime = System.nanoTime();
         JSONArray jArray = new JSONArray();
