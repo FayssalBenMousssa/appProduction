@@ -258,14 +258,17 @@ public class UserResource {
 
             Person savedPerson = personRepository.save(person);
             return new ResponseEntity<>(savedPerson.toSmallJsonUser().toString(), HttpStatus.OK);
-
         }
         return new ResponseEntity<>("BAD_REQUEST", HttpStatus.BAD_REQUEST);
     }
 
     public boolean changePassword(String oldPassword, String newPassword, String email) {
         User user = userRepository.findByEmailIgnoreCase(email);
-        boolean passwordIsOk = passwordEncoder.matches(oldPassword, user.getPassword());
+
+        if (user == null){
+            return false;
+        }
+        boolean passwordIsOk = passwordEncoder.matches(oldPassword, user.getPassword() );
         if (passwordIsOk) {
             user.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user);

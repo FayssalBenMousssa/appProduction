@@ -24,17 +24,16 @@ public class ProductAttachment {
   private String id;
   private String fileName;
   private String fileType;
+
+  private String attachmentType;
   @Lob private byte[] data;
 
-
-
-
-
-  public ProductAttachment(String fileName, String fileType, byte[] data , Product product) {
+  public ProductAttachment(String fileName, String fileType, byte[] data , Product product ,String attachmentType) {
     this.fileName = fileName;
     this.fileType = fileType;
     this.data = data;
     this.product = product;
+    this.attachmentType = attachmentType;
   }
 
   @ManyToOne
@@ -68,6 +67,7 @@ public class ProductAttachment {
       attachmentJSON.put("id", this.getId());
       attachmentJSON.put("fileName", this.getFileName());
       attachmentJSON.put("fileType", this.getFileType());
+      attachmentJSON.put("attachmentType", this.getAttachmentType());
       attachmentJSON.put("active", this.isActive());
       if (this.getModifyDate() != null) {
         attachmentJSON.put("modifyDate", formatter.format(this.getModifyDate()));

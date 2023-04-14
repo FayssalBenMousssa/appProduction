@@ -34,10 +34,17 @@ public class Classification {
   private String code;
 
 
+  @NotNull(message = "Please enter the imageUrl")
+  private String imageUrl;
+
 
   @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
   @JoinColumn(name = "parent_id", referencedColumnName = "id")
   private Classification parent;
+
+  @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+  @JoinColumn(name = "type_id", referencedColumnName = "id")
+  private ProductType type;
 
 
 
@@ -81,9 +88,16 @@ public class Classification {
     try {
       classificationJSON.put("id", this.getId());
       classificationJSON.put("name", this.getName());
+
+      classificationJSON.put("type", this.getType().toJson());
       classificationJSON.put("active", this.isActive());
+
       if (this.getCode() != null) {
         classificationJSON.put("code", this.getCode());
+      }
+
+      if (this.getImageUrl() != null) {
+        classificationJSON.put("imageUrl", this.getImageUrl());
       }
 
       classificationJSON.put("level", this.getLevel());

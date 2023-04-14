@@ -53,18 +53,18 @@ public class ProductResource {
   @Autowired private ProductAttachmentRepository attachmentRepository;
 
   @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file , @RequestParam("id") String id) throws Exception {
+  public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file , @RequestParam("id") String id ,@RequestParam(defaultValue = "") String attachmentType) throws Exception {
     ProductAttachment attachment;
     Product product = productRepository.getOne(Long.valueOf(id));
     String downloadURL = "";
-    attachment = attachmentService.saveAttachment(file , product);
+    attachment = attachmentService.saveAttachment(file , product , attachmentType);
     downloadURL =
         ServletUriComponentsBuilder.fromCurrentContextPath()
             .path("/api/product/download/")
             .path(attachment.getId())
             .toUriString();
     ResponseData reponse = new ResponseData(attachment.getFileName(), downloadURL, file.getContentType(), file.getSize() , attachment.getId());
-    return    ResponseEntity.ok(attachment.getId());
+    return    ResponseEntity.ok(reponse);
   }
 
   @RequestMapping(value = "/upload/delete/{id}",  method = RequestMethod.DELETE )
@@ -109,19 +109,17 @@ public class ProductResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> index(
       HttpServletRequest request,
-      @RequestParam(required = false) Long type,
       @RequestParam(defaultValue = "0") Integer page,
       @RequestParam(defaultValue = "200") Integer size,
       @RequestParam(defaultValue = "name,asc") String[] sort,
-      @RequestParam(required = false) String[] query,
-      @RequestParam(required = false) Long[] types)
+      @RequestParam(required = false) String[] query)
       throws InterruptedException {
 
     //log.trace("ProductResource.index method accessed");
 
     JSONArray jArray = new JSONArray();
 
-    List<Product> products = productService.getAllProducts(page, size, sort, query, type, types);
+    List<Product> products = productService.getAllProducts(page, size, sort, query);
 
     for (Product product : products) {
       jArray.put(product.toJson());

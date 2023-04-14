@@ -7,7 +7,10 @@ import dev.fenix.application.production.product.repository.ProductTypeRepository
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,9 +35,8 @@ public class ProductService {
    * @param pageSize page size
    * @param sortBy list of sort & direction
    * @param query list of query to filter data
-   * @param type type of product
    */
-  public List<Product> getAllProducts(Integer pageNo, Integer pageSize, String[] sortBy, String[] query, Long type, Long[] types) {
+  public List<Product> getAllProducts(Integer pageNo, Integer pageSize, String[] sortBy, String[] query) {
 
 
     //// Order
@@ -60,63 +62,39 @@ public class ProductService {
     List<Product> filteringProducts = new ArrayList<Product>();
     countAll = productRepository.countByActiveTrue();
     //log.info(countAll + " products active in DB");
-
-    /// if we have filters and type
-    if (filters != null && filters.size() != 0 && type != null) {
-      ProductType productType = productTypeRepository.findOneById(type);
-      //log.info("We have filters and type : " + productType.getName());
-      for (Map.Entry<String, String> entry : filters.entrySet()) {
-        String key = entry.getKey();
-        String value = entry.getValue();
-          //log.info("value not in list of search !");
-          if ("name".equals(key)) {
-              filteringProducts.addAll(
-                      productRepository.findAllByNameContainsAndActiveTrueAndProductType(value, productType, paging).getContent());
-              count = productRepository.countByNameContainsAndActiveTrueAndProductType(value, productType);
-          }
-      }
-      pagedResult = new PageImpl<>(filteringProducts, paging, pageSize);
-      return pagedResult.getContent();
-    }
-    /// if just have filters
-    else if (filters != null && filters.size() != 0) {
-      //log.info("we have just have filters");
-      for (Map.Entry<String, String> entry : filters.entrySet()) {
-        String key = entry.getKey();
-        String value = entry.getValue();
-          //log.info("value not in list of search !");
-          if ("name".equals(key)) {
-              filteringProducts.addAll(productRepository.findAllByNameContainsAndActiveTrue(value, paging).getContent());
-              count = productRepository.countByNameContainsAndActiveTrue(value);
-              //log.info(count + " Products by name [" + value + "] for all types");
-          }
-      }
-      pagedResult = new PageImpl<>(filteringProducts, paging, pageSize);
-      return pagedResult.getContent();
-    } else if (filters == null && type != null) {
-      //log.info("we have just type");
-      ProductType productType = productTypeRepository.findOneById(type);
-      pagedResult = productRepository.findByActiveTrueAndProductType(productType, paging);
-      count = productRepository.countByActiveTrueAndProductType(productType);
-      //log.info(count + " Products of type" + productType.getName());
-      return pagedResult.getContent();
+    if (filters != null && filters.size() != 0 ) {
+      return loadProducts(filters,paging );
     } else {
-      //log.info("all active products");
-      pagedResult = productRepository.findByActiveTrue(paging);
-      count = productRepository.countByActiveTrue();
-      //log.info(count + " Products ");
-      return pagedResult.getContent();
+      return loadProducts(paging);
     }
   }
 
 
   // public List<Document> loadDocuments(Pageable paging, Category documentCategory)
+  public List<Product> loadProducts(Map<String, String> filters , Pageable paging ) {
+     if  (filters.containsKey("name")  && filters.containsKey("type_product") ){
+       ProductType productType = productTypeRepository.findOneByCode(filters.get("type_product"));
+       pagedResult = productRepository.findAllByNameContainsAndActiveTrueAndProductType(filters.get("name") ,productType, paging);
+       count = productRepository.countByNameContainsAndActiveTrueAndProductType(filters.get("name") , productType);
+
+    }else if  (filters.containsKey("type_product")  ) {
+       ProductType productType = productTypeRepository.findOneByCode(filters.get("type_product"));
+       pagedResult = productRepository.findByActiveTrueAndProductType(productType, paging);
+       count = productRepository.countByActiveTrueAndProductType(productType);
+     }
+    else if  (filters.containsKey("name")  ) {
+      pagedResult = productRepository.findAllByNameContainsAndActiveTrue(filters.get("name"), paging);
+      count = productRepository.countByNameContainsAndActiveTrue(filters.get("name"));
+    }
+    pagedResult = productRepository.findByActiveTrue(paging);
+    count = productRepository.countByActiveTrue();
+    return pagedResult.getContent();
+  }
+
   public List<Product> loadProducts(Pageable paging ) {
     pagedResult = productRepository.findByActiveTrue(paging);
     count = productRepository.countByActiveTrue();
-    //log.info(count + " Products ");
     return pagedResult.getContent();
-
   }
 
   private Sort.Direction getSortDirection(String direction) {

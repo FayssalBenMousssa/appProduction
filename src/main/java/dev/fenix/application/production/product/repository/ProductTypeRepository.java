@@ -13,4 +13,6 @@ public interface ProductTypeRepository extends JpaRepository<ProductType, Long> 
   ProductType findTopByOrderByIdDesc();
 
     ProductType findTopByOrderByIdAsc();
+
+    ProductType findOneByCode(String type_product);
 }

@@ -14,13 +14,13 @@ public class AttachmentServiceImpl implements  AttachmentService{
     @Autowired
     ProductAttachmentRepository attachmentRepository;
     @Override
-    public ProductAttachment saveAttachment(MultipartFile file, Product product) throws Exception {
+    public ProductAttachment saveAttachment(MultipartFile file, Product product ,String attachmentType) throws Exception {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         try {
             if (fileName.contains("..")) {
                 throw  new Exception("file name contains invalid path sequence " + fileName);
             }
-            ProductAttachment attachment = new ProductAttachment(fileName,file.getContentType(),file.getBytes()  ,product );
+            ProductAttachment attachment = new ProductAttachment(fileName,file.getContentType(),file.getBytes()  ,product ,attachmentType );
             attachment.setActive(true);
             return attachmentRepository.save(attachment);
         }catch (Exception e) {

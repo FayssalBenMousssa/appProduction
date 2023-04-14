@@ -76,6 +76,8 @@ public class Product {
   private List<ProductionUnit> productionUnits;
 
 
+  @NotNull(message = "Please enter the imageUrl")
+  private String imageUrl;
 
 
   @NotNull(message = "Please enter the productType")
@@ -154,6 +156,10 @@ public class Product {
 
       if (this.getPackaging() != null) {
         productJSON.put("packaging", this.getPackaging().toJson());
+      }
+
+      if (this.getImageUrl() != null) {
+        productJSON.put("imageUrl", this.getImageUrl());
       }
 
 
