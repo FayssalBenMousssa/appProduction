@@ -19,4 +19,8 @@ public interface ClassificationRepository extends JpaRepository<Classification, 
   List<Classification> findAllByLevel(Long level);
 
     Classification findTopByOrderByIdDesc();
+
+  List<Classification> findByActiveTrueAndType_CodeContains(String code);
+
+
 }

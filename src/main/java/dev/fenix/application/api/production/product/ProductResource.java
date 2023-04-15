@@ -53,16 +53,18 @@ public class ProductResource {
   @Autowired private ProductAttachmentRepository attachmentRepository;
 
   @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file , @RequestParam("id") String id ,@RequestParam(defaultValue = "") String attachmentType) throws Exception {
+  public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file , @RequestParam("id") String id ,@RequestParam(required = false) String attachmentType) throws Exception {
     ProductAttachment attachment;
     Product product = productRepository.getOne(Long.valueOf(id));
-    String downloadURL = "";
+
     attachment = attachmentService.saveAttachment(file , product , attachmentType);
-    downloadURL =
-        ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("/api/product/download/")
-            .path(attachment.getId())
-            .toUriString();
+    String downloadURL  = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/product/download/").path(attachment.getId()).toUriString();
+
+    if (attachmentType != null && (file.getContentType() == "image/png" || file.getContentType() == "timage/jpeg" ||  file.getContentType() == "timage/jpg"   ) ) {
+      product.setImageUrl(attachment.getId());
+      productRepository.save(product);
+    }
+
     ResponseData reponse = new ResponseData(attachment.getFileName(), downloadURL, file.getContentType(), file.getSize() , attachment.getId());
     return    ResponseEntity.ok(reponse);
   }
@@ -83,7 +85,7 @@ public class ProductResource {
 
   @GetMapping("/download/{fileId}")
   public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) throws Exception {
-    ProductAttachment attachment = null;
+    ProductAttachment attachment;
     attachment = attachmentService.getAttachment(fileId);
     return ResponseEntity.ok()
         .contentType(MediaType.parseMediaType(attachment.getFileType()))

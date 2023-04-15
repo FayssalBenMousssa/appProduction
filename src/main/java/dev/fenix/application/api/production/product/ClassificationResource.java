@@ -41,7 +41,9 @@ public class ClassificationResource {
       value = "/index",
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  public String index(HttpServletRequest request, @RequestParam(defaultValue = "0") Long level)
+  public String index(HttpServletRequest request, @RequestParam(defaultValue = "0") Long level,
+  @RequestParam(required = false) String type_product
+  )
       throws NotFoundException {
     JSONArray jArray = new JSONArray();
     Iterable<Classification> classifications;
@@ -50,7 +52,10 @@ public class ClassificationResource {
       //  Classification parent =  classificationRepository.findById(level).orElseThrow(() -> new
       // NotFoundException("Classification  not found"));
       classifications = classificationRepository.findByActiveTrueAndLevel(level);
-    } else {
+    } else if (type_product != null) {
+     log.info("classificationRepository ");
+      classifications = classificationRepository.findByActiveTrueAndType_CodeContains(type_product);
+    }else {
       classifications = classificationRepository.findByActiveTrue();
     }
 
@@ -166,7 +171,7 @@ public class ClassificationResource {
       SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
       Date date = new Date();
       information.put("date", formatter.format(date));
-      List<Classification> listClassification = classificationRepository.findAllByLevel(0l);
+      List<Classification> listClassification = classificationRepository.findAllByLevel(0L);
 
       /// start level 0
       for (Classification classification : listClassification) {

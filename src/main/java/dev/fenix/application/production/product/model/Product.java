@@ -77,6 +77,7 @@ public class Product {
 
 
   @NotNull(message = "Please enter the imageUrl")
+  @Column(name="image_url", columnDefinition="default 'b5946dc8-2482-4cc7-83c4-6ce9b98ce5ea'")
   private String imageUrl;
 
 
