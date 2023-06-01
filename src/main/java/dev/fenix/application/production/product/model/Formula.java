@@ -82,7 +82,7 @@ public class Formula {
       formulaJSON.put("code", this.getCode());
       formulaJSON.put("name", this.getName());
       formulaJSON.put("obsolete", this.isObsolete());
-      formulaJSON.put("product", this.getProduct().toJson());
+      formulaJSON.put("product", this.getProduct().toSmallJson());
 
       if (this.getModifyDate() != null) {
         formulaJSON.put("modifyDate", formatter.format(this.getModifyDate()));

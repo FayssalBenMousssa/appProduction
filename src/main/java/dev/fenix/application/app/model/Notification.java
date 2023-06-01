@@ -35,7 +35,11 @@ public class Notification {
   @NotBlank(message = "content is mandatory")
   private String content;
 
+
+  @Column(name = "is_read")
   private boolean isRead;
+
+  @Column(name = "is_trash")
   private boolean isTrash;
 
   @Column(name = "in_app")

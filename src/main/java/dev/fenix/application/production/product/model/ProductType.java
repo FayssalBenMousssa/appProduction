@@ -35,7 +35,7 @@ public class ProductType {
 
   private String icon;
 
-  @Column(columnDefinition = "tinyint(1) default NULL")
+  @Column(name = "has_formula" , columnDefinition = "tinyint(1) default NULL")
   private Boolean hasFormula;
 
   public ProductType(Long id, String name) {

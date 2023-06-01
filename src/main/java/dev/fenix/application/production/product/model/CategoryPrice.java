@@ -26,6 +26,9 @@ public class CategoryPrice {
   @NotNull(message = "Please enter the name")
   private String name;
 
+  @NotNull(message = "Please enter the code")
+  private String code;
+
 
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
@@ -47,6 +50,7 @@ public class CategoryPrice {
     try {
       taxJSON.put("id", this.getId());
       taxJSON.put("name", this.getName());
+      taxJSON.put("code", this.getCode());
       taxJSON.put("active", this.isActive());
       if (this.getModifyDate() != null) {
         taxJSON.put("modifyDate", formatter.format(this.getModifyDate()));

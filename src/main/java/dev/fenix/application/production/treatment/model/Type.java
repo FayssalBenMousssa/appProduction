@@ -61,7 +61,7 @@ public class Type {
   private Style style;
 
 
-  @Column(columnDefinition = "tinyint(1) default 0")
+  @Column(name = "article_tax" ,columnDefinition = "tinyint(1) default 0")
   private boolean articleTax;
 
   @Column(name = "article_price",columnDefinition = "tinyint(1) default 0" )
@@ -70,14 +70,14 @@ public class Type {
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 
-  @Column(columnDefinition = "tinyint(1) default 1")
+  @Column(name = "has_price",columnDefinition = "tinyint(1) default 1")
   private boolean hasPrice;
 
-  @Column(columnDefinition = "tinyint(1) default 1")
+  @Column(name = "has_formula",columnDefinition = "tinyint(1) default 1")
   private boolean hasFormula = false;
 
 
-  @Column(columnDefinition = "tinyint(1) default 1")
+  @Column(name = "has_batch",columnDefinition = "tinyint(1) default 1")
   private boolean hasBatch;
 
   @CreationTimestamp
@@ -117,26 +117,25 @@ public class Type {
 
 
 
-  @Column(columnDefinition="int(1) default 0")
-
+  @Column(name = "in_accounting",columnDefinition="int(1) default 0")
   private int inAccounting;
 
-  @Column(columnDefinition="int(1) default 0")
+  @Column(name = "in_purchases",columnDefinition="int(1) default 0")
   private int inPurchases;
 
-  @Column(columnDefinition="int(1) default 0")
+  @Column(name = "in_sales",columnDefinition="int(1) default 0")
   private int inSales;
 
-  @Column(columnDefinition="int(1) default 0")
+  @Column(name = "in_productions",columnDefinition="int(1) default 0")
   private int inProductions;
 
-  @Column(columnDefinition="int(1) default 0" , name = "in_stock" )
+  @Column(name = "in_stock",columnDefinition="int(1) default 0"  )
   private int inStock;
 
-  @Column(columnDefinition="int(1) default 0")
+  @Column(name = "to_invoice",columnDefinition="int(1) default 0")
   private boolean toInvoice;
 
-  @Column(columnDefinition="int(1) default 0")
+  @Column(name = "code_editable",columnDefinition="int(1) default 0")
   private boolean codeEditable;
 
 

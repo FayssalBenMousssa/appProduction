@@ -61,6 +61,7 @@ public class Price {
     private Double value;
 
     @NotNull(message = "Please enter the maxQte")
+    @Column(name = "max_qte")
     private int maxQte;
 
     @Column(columnDefinition = "tinyint(1) default 1")
@@ -82,10 +83,9 @@ public class Price {
         try {
             priceJSON.put("id", this.getId());
             priceJSON.put("name", this.getName());
-
-            if (this.getCategory() != null)
+            if (this.getCategory() != null) {
                 priceJSON.put("category", this.getCategory().toJson());
-
+            }
             priceJSON.put("period", this.getPeriod().toJson());
             priceJSON.put("tax", this.getTax().toJson());
             priceJSON.put("value", this.getValue());
@@ -111,10 +111,8 @@ public class Price {
         try {
             priceJSON.put("id", this.getId());
             priceJSON.put("name", this.getName());
-
             if (this.getCategory() != null)
                 priceJSON.put("category", this.getCategory().toJson());
-
             priceJSON.put("period", this.getPeriod().toJson());
             priceJSON.put("tax", this.getTax().toJson());
             priceJSON.put("value", this.getValue());

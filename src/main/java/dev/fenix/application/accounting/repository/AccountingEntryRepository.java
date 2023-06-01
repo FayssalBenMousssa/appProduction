@@ -63,7 +63,7 @@ public interface AccountingEntryRepository extends JpaRepository<Company, Long> 
                             + "        LEFT JOIN accounting__letter on accounting__letter.id = accounting__lettering_customer.letter_id"
                             + " WHERE"
                             + "    bz__company.id = :company  " +
-                            "     AND payment__customer.create_date between :startDate AND  :endDate",
+                            "     AND payment__customer.payment_date between :startDate AND  :endDate",
             countQuery = "select count(*) from ( " +
                     "SELECT trt__doc.id AS id "
                     + " FROM"

@@ -26,6 +26,7 @@ public class Letter {
 
  @NotNull(message = "Please enter the code as string")
  @Enumerated(EnumType.STRING)
+ @Column(name = "letter_case")
  private LetterCase letterCase;
 
 

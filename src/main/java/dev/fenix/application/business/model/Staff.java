@@ -37,7 +37,9 @@ public class Staff {
 
   @NotNull(message = "{staff.start_date.null}")
   // @PastOrPresent(message = "{staff.start_date.invalid}")
+  @Column(name = "start_date")
   private Date startDate;
+    @Column(name = "end_date")
   private Date endDate;
 
   @CreationTimestamp
@@ -80,4 +82,31 @@ public class Staff {
     }
     return staffJSON;
   }
+
+    public JSONObject toSmallJson() {
+        JSONObject staffJSON = new JSONObject();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+        try {
+            staffJSON.put("id", this.getId());
+            staffJSON.put("person", this.getPerson().toSmallJson());
+            staffJSON.put("job", this.getJob().toJson());
+            if (this.getStartDate() != null) {
+                staffJSON.put("startDate", formatter.format(this.getStartDate()));
+            }
+            if (this.getEndDate() != null) {
+                staffJSON.put("endDate", formatter.format(this.getEndDate()));
+            }
+            if (this.getModifyDate() != null) {
+                staffJSON.put("modifyDate", formatter.format(this.getModifyDate()));
+            }
+            if (this.getCreateDate() != null) {
+                staffJSON.put("createDate", formatter.format(this.getCreateDate()));
+            }
+            staffJSON.put("active", this.getActive());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return staffJSON;
+    }
 }

@@ -22,7 +22,7 @@ public class Country {
   @NotNull(message = "Please enter code")
   private String code;
 
-  @Column(name = "isoCode", nullable = false, length = 250)
+  @Column(name = "iso_code", nullable = false, length = 250)
   @NotNull(message = "Please enter isoCode")
   private String isoCode;
 

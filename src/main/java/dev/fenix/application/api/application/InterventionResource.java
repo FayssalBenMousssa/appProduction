@@ -1,6 +1,7 @@
 package dev.fenix.application.api.application;
 
 import dev.fenix.application.app.model.Intervention;
+import dev.fenix.application.app.model.Response;
 import dev.fenix.application.app.repository.InterventionRepository;
 import dev.fenix.application.security.model.User;
 import dev.fenix.application.security.repository.UserRepository;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -110,8 +110,19 @@ public class InterventionResource {
     @ResponseBody
     public ResponseEntity<?> update(@Valid @RequestBody Intervention intervention, HttpServletRequest request) {
         try {
-            intervention.setUser(this.getCurrentUser());
-            Intervention updatedIntervention = interventionRepository.save(intervention);
+            Intervention localIntervention = interventionRepository.getOne(intervention.getId());
+            for (Response response : intervention.getResponses()) {
+                if (response.getUser() == null) {
+                 log.info(response.toJson().toString());
+                    response.setUser(this.getCurrentUser());
+                    localIntervention.getResponses().add(response);
+                }
+            }
+            log.info(localIntervention.toJson().toString());
+           // localIntervention.setResponses(intervention.getResponses());
+            localIntervention.setInterventionStatuses(intervention.getInterventionStatuses());
+
+            Intervention updatedIntervention = interventionRepository.save(localIntervention);
             return new ResponseEntity<>(updatedIntervention.toJson().toString(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

@@ -22,7 +22,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   User findByResetPasswordToken(String token);
 
-  User findOneByUserName(String name);
+   User findOneByUserName(String name);
 
   User findOneByEmail(String email);
   User findByEmailIgnoreCase(String email);

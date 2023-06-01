@@ -42,27 +42,20 @@ import java.util.Date;
 public class SecurityConfiguration {
 
   private static final Logger log = LoggerFactory.getLogger(SecurityConfiguration.class);
-
   @Bean
   public PasswordEncoder encoder() {
     return new BCryptPasswordEncoder(12);
   }
-
   @Bean
   public SessionRegistry sessionRegistry() {
     return new SessionRegistryImpl();
   }
-
   @Configuration
   @Order(2)
   public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
     @Autowired UserDetailsService userDetailsService;
-
     @Autowired ActivityRepository activityRepository;
-
     @Autowired UserRepository userRepository;
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
       auth.userDetailsService(userDetailsService).passwordEncoder(encoder());
@@ -203,7 +196,7 @@ public class SecurityConfiguration {
           .csrf()
           .disable()
           .authorizeRequests()
-          .antMatchers("/api/authenticate", "/api/security/adduser")
+          .antMatchers("/api/authenticate", "/api/security/adduser" , "/api/product/download/**")
           .permitAll()
           .antMatchers("/api/**")
           .authenticated()

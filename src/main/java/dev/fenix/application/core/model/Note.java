@@ -1,5 +1,6 @@
 package dev.fenix.application.core.model;
 
+import dev.fenix.application.security.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -30,6 +32,11 @@ public class Note {
 
   @Column(name = "color", nullable = true)
   private String color;
+
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  @Valid
+  private User user;
 
   boolean active;
 
@@ -52,6 +59,10 @@ public class Note {
       noteJSON.put("content", this.getContent());
       noteJSON.put("color", this.getColor());
       noteJSON.put("active", this.isActive());
+      if(this.getUser() != null){
+        noteJSON.put("user", this.getUser().toSmallJson());
+      }
+
 
       if (this.getModifyDate() != null) {
         noteJSON.put("modifyDate", formatter.format(this.getModifyDate()));

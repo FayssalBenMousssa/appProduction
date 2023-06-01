@@ -25,6 +25,7 @@ public class SiUnit {
   private String name;
 
   @NotNull(message = "Please enter the quantityName")
+  @Column(name = "quantity_name")
   private String quantityName;
 
   @NotNull(message = "Please enter the symbol")

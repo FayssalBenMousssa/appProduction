@@ -23,7 +23,9 @@ public class documentFileAttachment {
   @Column(length = 64)
   private String id;
 
+  @Column(name ="file_name")
   private String fileName;
+  @Column(name ="file_type")
   private String fileType;
 
   @Lob private byte[] data;

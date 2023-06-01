@@ -47,6 +47,7 @@ public class Activity {
   private String priority;
 
   @NotBlank(message = "Location is mandatory")
+  @Column(name = "user_agent")
   private String userAgent;
 
   @Column(name = "create_date")

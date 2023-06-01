@@ -24,8 +24,12 @@ public class Address {
   @NotNull(message = "Please enter the addressOne")
   private String name;
 
+  @Column(name = "line_one")
   private String lineOne;
+
+  @Column(name = "line_tow")
   private String lineTow;
+  @Column(name = "zip_code")
   private long zipCode;
 
   @NotNull(message = "Please enter the addressTow")

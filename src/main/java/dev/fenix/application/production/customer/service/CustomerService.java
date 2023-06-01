@@ -1,23 +1,34 @@
 package dev.fenix.application.production.customer.service;
 
+import dev.fenix.application.person.model.Person;
+import dev.fenix.application.person.repository.PersonRepository;
 import dev.fenix.application.production.customer.model.Customer;
 import dev.fenix.application.production.customer.repository.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class CustomerService {
   @Autowired private CustomerRepository customerRepository;
+  @Autowired private PersonRepository personRepository;
 
   private static final Logger log = LoggerFactory.getLogger(CustomerService.class);
   private int count = 0;
   private int countAll = 0;
-
+  private Page<Customer> pagedResult;
   /**
    * get list of customers
    *
@@ -28,11 +39,7 @@ public class CustomerService {
    */
   public List<Customer> getAllCustomers(
       Integer pageNo, Integer pageSize, String[] sortBy, String[] query) {
-    //log.trace("customerService.get Allcustomers method accessed");
-    //log.trace("pageNo : " + pageNo);
-    //log.trace("pageSize : " + pageSize);
-    //log.trace("sortBy : " + (sortBy != null && sortBy.length > 0 ? Arrays.toString(sortBy) : "no sort"));
-    //log.trace("query : " + (query != null && query.length > 0 ? Arrays.toString(query) : "no query"));
+
 
     //// Order
     List<Sort.Order> orders = new ArrayList<Sort.Order>();
@@ -57,27 +64,10 @@ public class CustomerService {
 
     countAll = customerRepository.countByActiveTrue();
     //log.info(countAll + " customers active in DB");
-    Page<Customer> pagedResult;
+
     if (filters != null && filters.size() != 0) {
-      //log.info("we have just have filters");
-      for (Map.Entry<String, String> entry : filters.entrySet()) {
-        String key = entry.getKey();
-        String value = entry.getValue();
-        switch (key) {
-          case "social_reason":
-            filteringcustomers.addAll(
-                customerRepository
-                    .findAllBySocialReasonContainsAndActiveTrue(value, paging)
-                    .getContent());
-            count = customerRepository.countBySocialReasonContainsAndActiveTrue(value);
-            //log.info(count + " customers by name [" + value + "] for all types");
-            break;
-          default:
-            //log.info("value not in list of search !");
-        }
-      }
-      pagedResult = new PageImpl<>(filteringcustomers, paging, pageSize);
-      return pagedResult.getContent();
+
+     return loadCustomers(filters,paging);
 
     } else {
       //log.info("all active customers");
@@ -86,6 +76,34 @@ public class CustomerService {
       //log.info(count + " customers ");
       return pagedResult.getContent();
     }
+  }
+
+  public List<Customer> loadCustomers(Map<String, String> filters, Pageable paging){
+    log.info("loadCustomers");
+    if (filters.containsKey("social_reason") && filters.containsKey("user_customers")  ) {
+      //log.info("code :  companyId  : filterStatus");
+    } else if (filters.containsKey("social_reason")  ) {
+      pagedResult = customerRepository.findAllBySocialReasonContainsAndActiveTrue(filters.get("social_reason"), paging);
+      count = customerRepository.countBySocialReasonContainsAndActiveTrue(filters.get("social_reason"));
+      return pagedResult.getContent();
+
+    }else if ( filters.containsKey("user_customers")) {
+
+      log.info("user_customers");
+
+      UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+      String username = userDetails.getUsername();
+      Person person =   personRepository.findByUserAccount_UserNameAndUserAccount_ActiveTrue(username);
+      pagedResult = customerRepository.findByCustomerStaff_Staff_PersonAndCustomerStaff_ActiveTrue(person, paging);
+      count = customerRepository.countByCustomerStaff_Staff_PersonAndCustomerStaff_ActiveTrue(person);
+      return pagedResult.getContent();
+    }else {
+      pagedResult = customerRepository.findByActiveTrue(paging);
+      count = customerRepository.countByActiveTrue();
+      //log.info(count + " customers ");
+      return pagedResult.getContent();
+    }
+    return  null;
   }
 
   private Sort.Direction getSortDirection(String direction) {

@@ -20,10 +20,10 @@ public class Style {
   @Column(columnDefinition = "varchar(255) default '#D6D6D6'")
   private String color;
 
-  @Column(columnDefinition = "varchar(255) default '#ffffff'")
+  @Column( name = "background_color" ,columnDefinition = "varchar(255) default '#ffffff'")
   private String backgroundColor;
 
-  @Column(columnDefinition = "varchar(255) default '#ffffff'")
+  @Column(name = "icon_color" ,columnDefinition = "varchar(255) default '#ffffff'")
   private String iconColor;
 
   @Column(columnDefinition = "varchar(255) default 'file'")

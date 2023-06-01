@@ -22,8 +22,10 @@ public class Period {
   private Long id;
 
   @NotNull(message = "Please enter the startDate")
+  @Column(name = "start_date")
   private Date startDate;
 
+  @Column(name = "end_date")
   private Date endDate;
 
   public JSONObject toJson() {

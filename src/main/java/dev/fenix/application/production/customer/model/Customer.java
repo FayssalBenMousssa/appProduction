@@ -1,5 +1,6 @@
 package dev.fenix.application.production.customer.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.fenix.application.business.model.Company;
 import dev.fenix.application.core.model.Address;
 import dev.fenix.application.core.model.Contact;
@@ -9,6 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -40,6 +46,21 @@ public class Customer extends Company {
   @JoinTable(name = "cust__customer_price", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "price_id"))
   private List<Price> prices;
 
+
+  //@OneToMany(mappedBy="customer" ,cascade = CascadeType.PERSIST ,  fetch = FetchType.EAGER)
+
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @Fetch(value = FetchMode.SUBSELECT)
+  @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
+  @JoinColumn(name = "customer_id") // parent's foreign key
+  @JsonManagedReference(value = "customer_staff")
+
+  private Set<CustomerStaff> customerStaff;
+
+
+
+
+  @LazyCollection(LazyCollectionOption.FALSE)
   @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "category_price_id", referencedColumnName = "id")
   private CategoryPrice categoryPrice;
@@ -56,7 +77,8 @@ public class Customer extends Company {
       customerJSON.put("socialReason", this.getSocialReason());
       customerJSON.put("ice", this.getIce());
 
-      customerJSON.put( "categoryPrice" , this.categoryPrice.toJson());
+      if (this.getCategoryPrice() != null)
+      customerJSON.put( "categoryPrice" , this.getCategoryPrice().toJson());
 
       if (this.getContacts() != null) {
         JSONArray contacts = new JSONArray();
@@ -67,6 +89,18 @@ public class Customer extends Company {
         }
         customerJSON.put("contacts", contacts);
       }
+
+
+      if (this.getCustomerStaff() != null) {
+        JSONArray customerStaffJson = new JSONArray();
+        for (CustomerStaff customerStaff : this.getCustomerStaff()) {
+          if (customerStaff.isActive()) {
+            customerStaffJson.put(customerStaff.toJson());
+          }
+        }
+        customerJSON.put("customerStaff", customerStaffJson);
+      }
+
       // customerJSON.put("address", this.getAddress().toJson());
       if (this.getAddresses() != null) {
         JSONArray addresses = new JSONArray();

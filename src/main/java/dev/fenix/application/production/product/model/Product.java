@@ -312,7 +312,19 @@ public class Product {
     return productJSON;
   }
 
+  public JSONObject toLabelJson() {
+    JSONObject productJSON = new JSONObject();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
+    try {
+      productJSON.put("id", this.getId());
+      productJSON.put("name", this.getName());
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return productJSON;
+  }
 
 }
 

@@ -42,6 +42,7 @@ public class Route {
   @Column(name = "icon")
   private String icon;
 
+  @Column(name = "css_class")
   private String cssClass;
 
   @Column(name = "order_num")

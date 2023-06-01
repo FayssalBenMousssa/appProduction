@@ -1,5 +1,7 @@
 package dev.fenix.application.api.security;
 
+import dev.fenix.application.business.model.Enterprise;
+import dev.fenix.application.business.repository.EnterpriseRepository;
 import dev.fenix.application.person.model.Person;
 import dev.fenix.application.person.repository.PersonRepository;
 import dev.fenix.application.security.exception.UserFoundException;
@@ -18,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +33,7 @@ import java.util.Set;
 
 @RestController()
 @RequestMapping("/api/security/")
+
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserResource {
@@ -42,6 +47,9 @@ public class UserResource {
     private RoleRepository roleRepository;
     @Autowired
     private ActionRepository actionRepository;
+
+    @Autowired
+    private EnterpriseRepository enterpriseRepository;
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
@@ -132,7 +140,10 @@ public class UserResource {
         Iterable<Person> people = personRepository.findPersons(true);
         if (people != null) {
             people.forEach(person -> {
-                jArray.put(person.toSmallJsonUser());
+                if (person.getUserAccount() != null) {
+                    jArray.put(person.toSmallJsonUser());
+                }
+
             });
             return new ResponseEntity<>(jArray.toString(), HttpStatus.OK);
         }
@@ -171,6 +182,7 @@ public class UserResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> readByUsername(@PathVariable("username") String username
             , @RequestParam(required = false) boolean optimise
+            ,@RequestParam(required = false) boolean first_login
     ) {
         User user = userRepository.findOneByUserName(username);
         if (user == null) {
@@ -178,6 +190,8 @@ public class UserResource {
         } else {
             if (optimise) {
                 return ResponseEntity.ok(user.getPerson().toSmallJsonUser().toString());
+            } else if (first_login) {
+                return ResponseEntity.ok(user.getPerson().loginJson().toString());
             }
             return ResponseEntity.ok(user.getPerson().toJson().toString());
         }
@@ -262,8 +276,36 @@ public class UserResource {
         return new ResponseEntity<>("BAD_REQUEST", HttpStatus.BAD_REQUEST);
     }
 
+
+    @RequestMapping(
+            value = "user/enterprise/select",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+
+    public ResponseEntity<?> setLogInEnterprise(@RequestBody Enterprise enterprise, HttpServletRequest request) {
+        User user = this.getCurrentUser();
+        Enterprise localEnterprise = this.enterpriseRepository.getOne(enterprise.getId());
+
+        boolean isInUserEnterprises = user.getEnterprises().contains(localEnterprise);
+
+
+        log.info("user != null" + (user != null));
+        log.info("localEnterprise " + (localEnterprise != null));
+        log.info("isInUserEnterprises " + isInUserEnterprises);
+
+        if (user != null && localEnterprise != null &&   user.hasEnterprise(localEnterprise)){
+            user.setLogInEnterprise(localEnterprise);
+            userRepository.save(user);
+            return new ResponseEntity<>(user.getPerson().toJson().toString(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("BAD_REQUEST", HttpStatus.BAD_REQUEST);
+    }
+
     public boolean changePassword(String oldPassword, String newPassword, String email) {
         User user = userRepository.findByEmailIgnoreCase(email);
+
 
         if (user == null){
             return false;
@@ -276,5 +318,12 @@ public class UserResource {
         }
 
         return false;
+    }
+
+    private User getCurrentUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = userDetails.getUsername();
+        User user = userRepository.findOneByUserName(username);
+        return user;
     }
 }

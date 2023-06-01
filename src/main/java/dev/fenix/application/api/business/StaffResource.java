@@ -49,7 +49,7 @@ public class StaffResource {
 
     Iterable<Staff> staffs = staffService.getAllStaffs(page, size, sort, query);
     for (Staff staff : staffs) {
-      jArray.put(staff.toJson());
+      jArray.put(staff.toSmallJson());
     }
     JSONObject response = new JSONObject();
     try {

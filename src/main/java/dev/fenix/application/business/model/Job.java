@@ -25,6 +25,10 @@ public class Job {
   @NotNull(message = "Please enter the name")
   private String name;
 
+  @NotNull(message = "Please enter the code")
+  @Column(unique = true, length = 32)
+  private String code;
+
   private Boolean active;
 
   @CreationTimestamp
@@ -47,6 +51,7 @@ public class Job {
     try {
       jobJSON.put("id", this.getId());
       jobJSON.put("name", this.getName());
+      jobJSON.put("code", this.getCode());
       if (this.getModifyDate() != null) {
         jobJSON.put("modifyDate", formatter.format(this.getModifyDate()));
       }

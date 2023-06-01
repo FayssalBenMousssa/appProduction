@@ -43,8 +43,10 @@ public class MetaData {
 
 
 
-
+  @Column(name = "data_source")
   private String dataSource;
+
+  @Column(name = "default_value")
   private String defaultValue;
 
   @Column(name = "create_date")

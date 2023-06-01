@@ -35,6 +35,7 @@ public class Company {
   private String code;
 
   @NotNull(message = "Please enter the socialReason")
+  @Column(name = "social_reason")
   private String socialReason;
 
   private String telephone;
@@ -87,7 +88,7 @@ public class Company {
       if (this.getContacts() != null) {
         JSONArray contacts = new JSONArray();
         for (Contact contact : this.getContacts()) {
-          if (contact.getActive()) {
+          if (contact != null && contact.getActive()) {
             contacts.put(contact.toJson());
           }
         }

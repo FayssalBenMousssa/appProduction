@@ -69,16 +69,12 @@ public class IndexResource {
     jObject.put("Total space", String.format("%.2f GB", (double)root.getTotalSpace() /1073741824));
     jObject.put("Free space", String.format("%.2f GB",  (double)root.getFreeSpace() /1073741824));
     jObject.put("Usable space", String.format("%.2f GB",   (double)root.getUsableSpace() /1073741824));
-
     MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
+
     jObject.put("Initial memory", String.format("%.2f GB", (double)memoryMXBean.getHeapMemoryUsage().getInit() /1073741824));
     jObject.put("Used heap memory", String.format("%.2f GB",(double)memoryMXBean.getHeapMemoryUsage().getUsed() /1073741824));
     jObject.put("Max heap memory", String.format("%.2f GB", (double)memoryMXBean.getHeapMemoryUsage().getMax() /1073741824));
     jObject.put("Committed memory", String.format("%.2f GB", (double)memoryMXBean.getHeapMemoryUsage().getCommitted() /1073741824));
-
-
-
-
 
     return ResponseEntity.ok(jObject.toString());
   }

@@ -16,18 +16,16 @@ public interface PersonRepository extends PagingAndSortingRepository<Person, Lon
 
  // @Query(" from Person as person join person.user  where person.id = ?1")
   Person getPersonById(Long id);
-
   Person save(Person person);
-
   void delete(Person person);
-
   @Query("SELECT p FROM Person p ")
   Optional<Person> findActivePersons(Boolean active);
-
  @Query("SELECT person FROM Person person ")
  List<Person> findPersons(Boolean active);
-
   User getUserAccountById(Integer id);
-
   Page<Person> findAllByOrderByIdDesc(Pageable pageable);
+
+ Person findByUserAccount_UserNameAndUserAccount_ActiveTrue(String userName);
+
+
 }

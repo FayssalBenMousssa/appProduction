@@ -46,6 +46,7 @@ public class PaymentCustomer {
     private String code;
 
     private String label;
+    @Column(name = "number_value")
     private String numberValue;
     private String beneficiary;
     private String transmitter;

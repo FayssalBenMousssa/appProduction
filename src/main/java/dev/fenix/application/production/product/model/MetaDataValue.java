@@ -63,7 +63,10 @@ public class MetaDataValue {
     try {
       metaDataValueJSON.put("id", this.getId());
       metaDataValueJSON.put("value", this.getValue());
-      metaDataValueJSON.put("metadata", this.getMetadata().toJson());
+      if (this.getMetadata() != null) {
+        metaDataValueJSON.put("metadata", this.getMetadata().toJson());
+      }
+
       metaDataValueJSON.put("active", this.isActive());
 
     } catch (JSONException e) {

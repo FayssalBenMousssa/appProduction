@@ -20,124 +20,136 @@ import java.util.Map;
 
 @Service
 public class ProductService {
-  @Autowired private ProductRepository productRepository;
-  @Autowired private ProductTypeRepository productTypeRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private ProductTypeRepository productTypeRepository;
 
-  private static final Logger log = LoggerFactory.getLogger(ProductService.class);
-  private int count = 0;
-  private int countAll = 0;
-  private Page<Product> pagedResult;
+    private static final Logger log = LoggerFactory.getLogger(ProductService.class);
+    private int count = 0;
+    private int countAll = 0;
+    private Page<Product> pagedResult;
 
-  /**
-   * get list of products
-   *
-   * @param pageNo page number
-   * @param pageSize page size
-   * @param sortBy list of sort & direction
-   * @param query list of query to filter data
-   */
-  public List<Product> getAllProducts(Integer pageNo, Integer pageSize, String[] sortBy, String[] query) {
-
-
-    //// Order
-    List<Sort.Order> orders = new ArrayList<Sort.Order>();
-    if (sortBy[0].contains(",")) {
-      // will sort more than 2 columns
-      //log.trace("we will sort more than 2 columns ");
-      for (String sortOrder : sortBy) {
-        // sortOrder="column, direction"
-
-        String[] _sort = sortOrder.split(",");
-        //log.trace("sortOrder : " + _sort[1] + " " + _sort[0]);
-        orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
-      }
-    } else {
-      // sort=[column, direction]
-      orders.add(new Sort.Order(getSortDirection(sortBy[1]), sortBy[0]));
-    }
-
-    //// filters
-    Map<String, String> filters = getFilters(query);
-    Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(orders));
-    List<Product> filteringProducts = new ArrayList<Product>();
-    countAll = productRepository.countByActiveTrue();
-    //log.info(countAll + " products active in DB");
-    if (filters != null && filters.size() != 0 ) {
-      return loadProducts(filters,paging );
-    } else {
-      return loadProducts(paging);
-    }
-  }
+    /**
+     * get list of products
+     *
+     * @param pageNo   page number
+     * @param pageSize page size
+     * @param sortBy   list of sort & direction
+     * @param query    list of query to filter data
+     */
+    public List<Product> getAllProducts(Integer pageNo, Integer pageSize, String[] sortBy, String[] query) {
 
 
-  // public List<Document> loadDocuments(Pageable paging, Category documentCategory)
-  public List<Product> loadProducts(Map<String, String> filters , Pageable paging ) {
-     if  (filters.containsKey("name")  && filters.containsKey("type_product") ){
-       ProductType productType = productTypeRepository.findOneByCode(filters.get("type_product"));
-       pagedResult = productRepository.findAllByNameContainsAndActiveTrueAndProductType(filters.get("name") ,productType, paging);
-       count = productRepository.countByNameContainsAndActiveTrueAndProductType(filters.get("name") , productType);
+        //// Order
+        List<Sort.Order> orders = new ArrayList<Sort.Order>();
+        if (sortBy[0].contains(",")) {
+            // will sort more than 2 columns
+            //log.trace("we will sort more than 2 columns ");
+            for (String sortOrder : sortBy) {
+                // sortOrder="column, direction"
 
-    }else if  (filters.containsKey("type_product")  ) {
-       ProductType productType = productTypeRepository.findOneByCode(filters.get("type_product"));
-       pagedResult = productRepository.findByActiveTrueAndProductType(productType, paging);
-       count = productRepository.countByActiveTrueAndProductType(productType);
-     }
-    else if  (filters.containsKey("name")  ) {
-      pagedResult = productRepository.findAllByNameContainsAndActiveTrue(filters.get("name"), paging);
-      count = productRepository.countByNameContainsAndActiveTrue(filters.get("name"));
-    }
-    pagedResult = productRepository.findByActiveTrue(paging);
-    count = productRepository.countByActiveTrue();
-    return pagedResult.getContent();
-  }
-
-  public List<Product> loadProducts(Pageable paging ) {
-    pagedResult = productRepository.findByActiveTrue(paging);
-    count = productRepository.countByActiveTrue();
-    return pagedResult.getContent();
-  }
-
-  private Sort.Direction getSortDirection(String direction) {
-    //log.trace("ProductService.getSortDirection method accessed");
-    if (direction.equals("asc")) {
-      return Sort.Direction.ASC;
-    } else if (direction.equals("desc")) {
-      return Sort.Direction.DESC;
-    }
-    return Sort.Direction.ASC;
-  }
-
-  private Map<String, String> getFilters(String[] query) {
-    //log.trace("ProductService.getFilters method accessed");
-    if (query != null && query[0].contains(":")) {
-      Map<String, String> hashMap = new HashMap<String, String>();
-      for (String keyValue : query) {
-        String[] _filter = keyValue.split(":");
-        if (_filter.length > 1) {
-          hashMap.put(_filter[0], _filter[1]);
-          //log.info("Filter found : " + _filter[0] + ":" + _filter[1]);
+                String[] _sort = sortOrder.split(",");
+                //log.trace("sortOrder : " + _sort[1] + " " + _sort[0]);
+                orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
+            }
+        } else {
+            // sort=[column, direction]
+            orders.add(new Sort.Order(getSortDirection(sortBy[1]), sortBy[0]));
         }
-      }
-      return hashMap;
-    } else {
-      //log.info("No filter found");
-      return null;
+
+        //// filters
+        Map<String, String> filters = getFilters(query);
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(orders));
+        List<Product> filteringProducts = new ArrayList<Product>();
+        countAll = productRepository.countByActiveTrue();
+        //log.info(countAll + " products active in DB");
+        if (filters != null && filters.size() != 0) {
+            return loadProducts(filters, paging);
+        } else {
+            return loadProducts(paging);
+        }
     }
-  }
 
-  public int getCount() {
-    return count;
-  }
 
-  public void setCount(int count) {
-    this.count = count;
-  }
+    // public List<Document> loadDocuments(Pageable paging, Category documentCategory)
+    public List<Product> loadProducts(Map<String, String> filters, Pageable paging) {
+        filters.forEach((s, s2) -> log.info(s + " " + s2));
 
-  public int getCountAll() {
-    return countAll;
-  }
+        if (filters.containsKey("name") && filters.containsKey("type_product")) {
+            log.info("name");
+            log.info("type_product");
+            ProductType productType = productTypeRepository.findOneByCode(filters.get("type_product"));
+            log.info(productType.getName());
+            pagedResult = productRepository.findAllByNameContainsAndActiveTrueAndProductType(filters.get("name"), productType, paging);
+            count = productRepository.countByNameContainsAndActiveTrueAndProductType(filters.get("name"), productType);
+            return pagedResult.getContent();
 
-  public void setCountAll(int countAll) {
-    this.countAll = countAll;
-  }
+        } else if (filters.containsKey("type_product")) {
+            log.info("type_product");
+            ProductType productType = productTypeRepository.findOneByCode(filters.get("type_product"));
+            log.info(productType.getName());
+            pagedResult = productRepository.findByActiveTrueAndProductType(productType, paging);
+            count = productRepository.countByActiveTrueAndProductType(productType);
+            return pagedResult.getContent();
+        } else if (filters.containsKey("name")) {
+            log.info("name");
+            pagedResult = productRepository.findAllByNameContainsAndActiveTrue(filters.get("name"), paging);
+            count = productRepository.countByNameContainsAndActiveTrue(filters.get("name"));
+            return pagedResult.getContent();
+        }
+        pagedResult = productRepository.findByActiveTrue(paging);
+        count = productRepository.countByActiveTrue();
+        return pagedResult.getContent();
+    }
+
+    public List<Product> loadProducts(Pageable paging) {
+        pagedResult = productRepository.findByActiveTrue(paging);
+        count = productRepository.countByActiveTrue();
+        return pagedResult.getContent();
+    }
+
+    private Sort.Direction getSortDirection(String direction) {
+        //log.trace("ProductService.getSortDirection method accessed");
+        if (direction.equals("asc")) {
+            return Sort.Direction.ASC;
+        } else if (direction.equals("desc")) {
+            return Sort.Direction.DESC;
+        }
+        return Sort.Direction.ASC;
+    }
+
+    private Map<String, String> getFilters(String[] query) {
+        //log.trace("ProductService.getFilters method accessed");
+        if (query != null && query[0].contains(":")) {
+            Map<String, String> hashMap = new HashMap<String, String>();
+            for (String keyValue : query) {
+                String[] _filter = keyValue.split(":");
+                if (_filter.length > 1) {
+                    hashMap.put(_filter[0], _filter[1]);
+                    //log.info("Filter found : " + _filter[0] + ":" + _filter[1]);
+                }
+            }
+            return hashMap;
+        } else {
+            //log.info("No filter found");
+            return null;
+        }
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getCountAll() {
+        return countAll;
+    }
+
+    public void setCountAll(int countAll) {
+        this.countAll = countAll;
+    }
 }

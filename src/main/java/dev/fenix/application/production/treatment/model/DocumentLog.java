@@ -38,6 +38,8 @@ public class DocumentLog {
   private Document document;
 
 
+
+  @Column(name = "user_name")
   private String userName;
 
   private String message;

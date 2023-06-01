@@ -1,5 +1,6 @@
 package dev.fenix.application.production.customer.repository;
 
+import dev.fenix.application.person.model.Person;
 import dev.fenix.application.production.customer.model.Customer;
 import dev.fenix.application.production.customer.model.CustomerClassification;
 import org.springframework.data.domain.Page;
@@ -20,9 +21,10 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
   Page<Customer> findByActiveTrue(Pageable paging);
 
-  Page<Customer> findAllBySocialReasonContainingAndActiveTrue(String socialReason, Pageable paging);
-  //
-  Page<Customer> findAllByAndActiveTrue(String socialReason, Pageable paging);
+  Page<Customer> findByCustomerStaff_Staff_PersonAndCustomerStaff_ActiveTrue(Person person, Pageable pageable);
+  int countByCustomerStaff_Staff_PersonAndCustomerStaff_ActiveTrue(Person person);
+
+
 
     Customer findOneById(Long idCustomer);
 }

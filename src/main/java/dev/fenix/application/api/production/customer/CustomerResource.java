@@ -5,7 +5,6 @@ import dev.fenix.application.production.customer.model.Customer;
 import dev.fenix.application.production.customer.repository.CustomerRepository;
 import dev.fenix.application.production.customer.service.CustomerService;
 import javassist.NotFoundException;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,15 +45,15 @@ public class CustomerResource {
       @RequestParam(defaultValue = "0") Integer page,
       @RequestParam(defaultValue = "200") Integer size,
       @RequestParam(defaultValue = "id,desc") String[] sort,
-      @RequestParam(required = false) String[] query)
-      throws InterruptedException {
-    //log.trace(
+      @RequestParam(required = false) String[] query) throws InterruptedException {
+
+
+
+
+
 
     JSONArray jArray = new JSONArray();
-    // Iterable<Customer> customers = customerRepository.findAll();
-
     Iterable<Customer> customers = customerService.getAllCustomers(page, size, sort, query);
-
     for (Customer customer : customers) {
       jArray.put(customer.toJson());
     }
@@ -63,7 +62,6 @@ public class CustomerResource {
       response.put("results", jArray);
       response.put("count", jArray.length());
       response.put("total", customerService.getCountAll());
-
       return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     } catch (JSONException e) {
       e.printStackTrace();
