@@ -1,4 +1,4 @@
-package dev.fenix.application.api.application;
+package dev.fenix.application.app;
 
 import dev.fenix.application.app.model.Intervention;
 import dev.fenix.application.app.model.Response;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -56,8 +57,44 @@ public class InterventionResource {
             @RequestParam(required = false) String[] query)
             throws InterruptedException {
         JSONArray jArray = new JSONArray();
-        Pageable paging = PageRequest.of(page, size);
+        Sort sorts = Sort.by("id").descending();
+        Pageable paging = PageRequest.of(page, size , sorts );
+
         Page pageData = interventionRepository.findAll(paging);
+        List<Intervention> data = pageData.getContent();
+        for (Intervention intervention : data) {
+            jArray.put(intervention.toJson());
+        }
+        JSONObject response = new JSONObject();
+        try {
+            response.put("results", jArray);
+            response.put("count", jArray.length());
+            response.put("total", pageData.getTotalElements());
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+
+
+
+    @RequestMapping(
+            value = "/user",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity indexUser(
+            HttpServletRequest request,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "200") Integer size,
+            @RequestParam(defaultValue = "id,asc") String[] sort,
+            @RequestParam(required = false) String[] query)
+            throws InterruptedException {
+        JSONArray jArray = new JSONArray();
+        Sort sorts = Sort.by("id").descending();
+        Pageable paging = PageRequest.of(page, size , sorts );
+        Page pageData = interventionRepository.findByUser(this.getCurrentUser(),paging);
         List<Intervention> data = pageData.getContent();
         for (Intervention intervention : data) {
             jArray.put(intervention.toJson());

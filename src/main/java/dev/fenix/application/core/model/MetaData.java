@@ -35,12 +35,14 @@ public class MetaData {
 
   private String position;
 
+  @Column(columnDefinition = "int(1) default 1")
+  private int ranking;
+
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean required;
-
 
 
   @Column(name = "data_source")
@@ -75,6 +77,7 @@ public class MetaData {
       metadataJson.put("name", this.getName());
       metadataJson.put("code", this.getCode());
       metadataJson.put("type", this.getType());
+      metadataJson.put("ranking", this.getRanking());
       metadataJson.put("required", this.isRequired());
       if (this.getDefaultValue() != null) {
         metadataJson.put("defaultValue", this.getDefaultValue());

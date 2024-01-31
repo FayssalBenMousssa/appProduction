@@ -196,7 +196,7 @@ public class SecurityConfiguration {
           .csrf()
           .disable()
           .authorizeRequests()
-          .antMatchers("/api/authenticate", "/api/security/adduser" , "/api/product/download/**")
+          .antMatchers("/api/authenticate", "/api/security/adduser", "/api/product/images/**")
           .permitAll()
           .antMatchers("/api/**")
           .authenticated()

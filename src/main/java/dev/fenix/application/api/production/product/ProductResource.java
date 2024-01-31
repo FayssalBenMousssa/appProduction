@@ -1,6 +1,8 @@
 package dev.fenix.application.api.production.product;
 
 import dev.fenix.application.app.model.ResponseData;
+import dev.fenix.application.configuration.database.DBContextHolder;
+import dev.fenix.application.configuration.database.DBEnum;
 import dev.fenix.application.production.customer.model.Customer;
 import dev.fenix.application.production.customer.repository.CustomerRepository;
 import dev.fenix.application.production.product.model.Price;
@@ -74,6 +76,9 @@ public class ProductResource {
   public ResponseEntity uploadDelete( @RequestParam("id") String id)  {
     try {
       ProductAttachment  attachment  = attachmentRepository.getOne(id) ;
+
+
+
       attachment.setActive(false);
       attachment =  attachmentRepository.save(attachment);
       return    ResponseEntity.ok(attachment.getId());
@@ -88,6 +93,13 @@ public class ProductResource {
   public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) throws Exception {
     ProductAttachment attachment;
     attachment = attachmentService.getAttachment(fileId);
+
+    log.info("=====================================");
+    log.info(attachment.getFileName());
+    log.info(attachment.getFileType());
+    log.info(String.valueOf(attachment.getData().length));
+    log.info("=====================================");
+
     return ResponseEntity.ok()
         .contentType(MediaType.parseMediaType(attachment.getFileType()))
         .header(
@@ -96,12 +108,26 @@ public class ProductResource {
         .body(new ByteArrayResource(attachment.getData()));
   }
 
+
+  @GetMapping("/images/{fileId}")
+  public ResponseEntity<byte[]> publicImage(@PathVariable String fileId) throws Exception {
+    DBContextHolder.setCurrentDb(DBEnum.CANELIA);
+    ProductAttachment attachment;
+    attachment = attachmentService.getAttachment(fileId);
+    String filename = attachment.getFileName();
+    String extension = filename.substring(filename.lastIndexOf(".") + 1);
+    MediaType mediaType = MediaType.parseMediaType("image/" + extension);
+    return ResponseEntity.ok()
+            .contentType(mediaType)
+            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + filename)
+            .body(attachment.getData());
+  }
+
   @RequestMapping(
       value = {"/", ""},
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public String index() {
-
     //log.trace("ProductResource.index/ method accessed");
     return JSONObject.quote("Api :" + this.getClass().getSimpleName());
   }
@@ -113,7 +139,7 @@ public class ProductResource {
   public ResponseEntity<String> index(
       HttpServletRequest request,
       @RequestParam(defaultValue = "0") Integer page,
-      @RequestParam(defaultValue = "200") Integer size,
+      @RequestParam(defaultValue = "1000") Integer size,
       @RequestParam(defaultValue = "name,asc") String[] sort,
       @RequestParam(required = false) String[] query)
       throws InterruptedException {

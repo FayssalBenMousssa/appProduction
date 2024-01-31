@@ -1,4 +1,4 @@
-package dev.fenix.application.api.accounting;
+package dev.fenix.application.accounting;
 
 import dev.fenix.application.accounting.model.AccountingEntry;
 import dev.fenix.application.accounting.model.Letter;
@@ -30,7 +30,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @RestController()
 @RequestMapping("/api/customer/account")
@@ -93,7 +96,7 @@ public class CustomerAccountResource {
             Double periodicBalanceDocumentDebit = accountingEntryRepository.periodicBalanceDocumentDebit(company, startDate ,endDate);
             Double periodicBalancePaymentCredit = accountingEntryRepository.periodicBalancePaymentCredit(company, startDate ,endDate);
 
-            List<Status> workFlow = Arrays.asList(Status.APPROVED);
+            List<Status> workFlow = List.of(Status.APPROVED);
             Double saleNotCashed = accountingEntryRepository.saleNotCashed(company, workFlow);
 
             JSONObject response = new JSONObject();

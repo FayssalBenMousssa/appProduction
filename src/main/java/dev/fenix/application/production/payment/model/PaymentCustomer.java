@@ -101,7 +101,7 @@ public class PaymentCustomer {
                 paymentCustomerJSON.put("paymentMethod", this.getPaymentMethod().toJson());
             }
             if (this.getPaymentMethod() != null) {
-                paymentCustomerJSON.put("paymentStatus", this.getPaymentMethod().toJson());
+                paymentCustomerJSON.put("paymentStatus", this.getPaymentStatus().toJson());
             }
 
             paymentCustomerJSON.put("montant", this.getMontant());

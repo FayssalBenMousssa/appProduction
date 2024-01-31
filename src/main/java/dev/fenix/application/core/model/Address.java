@@ -38,6 +38,14 @@ public class Address {
   @NotNull(message = "Please enter the country")
   private String country;
 
+  @Column(name = "position_gps")
+  private String positionGps;
+
+  @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+  @NotNull(message = "Please enter the country")
+  @JoinColumn(name = "id_address_type")
+  private AddressType addressType;
+
   @Column(columnDefinition = "tinyint(1) default 1")
   private boolean active;
 
@@ -51,6 +59,9 @@ public class Address {
       addresstJSON.put("zipCode", this.getZipCode());
       addresstJSON.put("city", this.getCity());
       addresstJSON.put("country", this.getCountry());
+      addresstJSON.put("positionGps", this.getPositionGps());
+      if (this.getAddressType() != null)
+      addresstJSON.put("addressType", this.getAddressType().toJson());
       addresstJSON.put("active", this.isActive());
 
     } catch (JSONException e) {

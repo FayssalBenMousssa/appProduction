@@ -10,10 +10,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface PaymentCustomerRepository extends JpaRepository<PaymentCustomer, Long> {
     Iterable<PaymentCustomer> findByActiveTrue();
+
+    List<PaymentCustomer> findByCodeContainsAndActiveTrue(String code);
+
+
+
 
     PaymentCustomer findTopByOrderByIdDesc();
 
@@ -54,6 +60,8 @@ public interface PaymentCustomerRepository extends JpaRepository<PaymentCustomer
     Page<PaymentCustomer> findByActiveTrueAndPaymentDateBetweenAndPaymentMethod(Date startDate, Date endDate, PaymentMethod paymentMethod, Pageable paging);
 
     int countByActiveTrueAndPaymentDateBetweenAndPaymentMethod(Date startDate, Date endDate, PaymentMethod paymentMethod);
+
+
 
     /* */
 

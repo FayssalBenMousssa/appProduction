@@ -1,11 +1,10 @@
 package dev.fenix.application.api.production.treatment;
 
-import dev.fenix.application.business.repository.CompanyRepository;
+import dev.fenix.application.core.model.MetaData;
+import dev.fenix.application.core.repository.MetaDataRepository;
 import dev.fenix.application.production.treatment.model.*;
 import dev.fenix.application.production.treatment.repository.DocumentLogRepository;
-import dev.fenix.application.production.treatment.repository.DocumentProductRepository;
 import dev.fenix.application.production.treatment.repository.DocumentRepository;
-import dev.fenix.application.production.treatment.repository.TypeRepository;
 import dev.fenix.application.production.treatment.service.DocumentService;
 import dev.fenix.application.security.model.User;
 import dev.fenix.application.security.repository.UserRepository;
@@ -16,18 +15,21 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.ParseException;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 @RestController()
 @RequestMapping("/api/document")
@@ -36,19 +38,18 @@ public class DocumentResource {
 
     @Autowired
     private DocumentRepository documentRepository;
-    @Autowired
-    private TypeRepository documentTypeRepository;
 
-    @Autowired
-    private DocumentProductRepository documentProductRepository;
+
     @Autowired
     private DocumentService documentService;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private CompanyRepository companyRepository;
+
     @Autowired
     private DocumentLogRepository documentLogRepository;
+
+    @Autowired
+    private MetaDataRepository metaDataRepository;
 
     @RequestMapping(value = {"/", ""}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String index() {
@@ -69,7 +70,6 @@ public class DocumentResource {
             @RequestParam(defaultValue = "false") boolean toInvoice,
             @RequestParam(required = false) String[] query)
             throws InterruptedException, UnsupportedEncodingException {
-
 
 
         long startTime = System.nanoTime();
@@ -104,13 +104,68 @@ public class DocumentResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
-            throws NotFoundException {
+            throws NotFoundException, JSONException, ParseException {
         //log.trace("DocumentResource.get method accessed");
         Document document =
                 documentRepository
                         .findById(id)
                         .orElseThrow(() -> new NotFoundException("Document  not found"));
+
+
+        // Run the saving process asynchronously
+        CompletableFuture.runAsync(() -> {
+            runSync(document);
+
+        });
+
+
         return new ResponseEntity<>(document.toJson().toString(), HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            value = "/business_folder/get/{value}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getBusinessFolder(HttpServletRequest request, @PathVariable String value)
+            throws NotFoundException {
+        //log.trace("DocumentResource.get method accessed");
+        String code = "code_affaire";
+        List<Document> documents = documentRepository.findByActiveTrueAndType_MetaData_CodeAndDocumentDataValues_Value(code, value);
+
+        JSONArray jArray = new JSONArray();
+        for (Document document : documents) {
+            jArray.put(document.toSmallJson());
+        }
+        return new ResponseEntity<>(jArray.toString(), HttpStatus.OK);
+    }
+
+
+    @RequestMapping(
+            value = "/related/get/{id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getRelated(HttpServletRequest request, @PathVariable Long id)
+            throws NotFoundException {
+        //log.trace("DocumentResource.get method accessed");
+        Document document =
+                documentRepository.findById(id)
+                        .orElseThrow(() -> new NotFoundException("Document  not found"));
+
+        Set<Document> relatedDocs = new HashSet<Document>();
+        for (Document relatedDoc : document.getRelated()) {
+            // log.error(relatedDoc.getName());
+            Document newRelatedDoc = documentRepository.findById(relatedDoc.getId()).orElseThrow(() -> new NotFoundException("Document  not found"));
+            relatedDocs.add(newRelatedDoc);
+
+        }
+        document.setRelated(relatedDocs);
+        // Pause for 5 seconds before returning the response
+       /* try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+        return new ResponseEntity<>(document.toJsonRelated().toString(), HttpStatus.OK);
     }
 
     @RequestMapping(
@@ -139,21 +194,98 @@ public class DocumentResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> save(@Valid @RequestBody Document document, HttpServletRequest request) {
-        //log.trace("DocumentResource.save method accessed");
         try {
             document.setName(document.getType().getName() + " " + this.getNewCode(document.getType()));
-            document.setCode(this.getNewCode(document.getType()));
+            if (document.getCode() == null) {
+                document.setCode(this.getNewCode(document.getType()));
+            }
             document.setActive(true);
             document.setLogs(getDocumentLogs(document, Action.ADD, null));
+            this.setCodeBuz(document);
             Document savedDocument = documentRepository.save(document);
 
-            this.changeStatusRelated(document);
 
+            // Run the saving process asynchronously
+            CompletableFuture.runAsync(() -> {
+                runSync(savedDocument);
+
+            });
+
+
+            this.changeStatusRelated(document);
             return new ResponseEntity<>(savedDocument.toJson().toString(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public void runSync(Document savedDocument) {
+        try {
+            log.info(" IsSynchronised : " + savedDocument.getIsSynchronised().toString());
+            if(!savedDocument.getIsSynchronised()){
+
+
+            log.info("Sending request to other server");
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            Map<String, Object> data = new HashMap<>();
+
+            log.info(documentService.toOldJSON(savedDocument));
+
+
+            /*data.put("data", documentService.toOldJSON(savedDocument));
+            HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(data, headers);
+            ResponseEntity<String> response = restTemplate.postForEntity("http://192.168.3.3/api/azure", requestEntity, String.class);
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                log.error("Error response from other server: " + response.getStatusCode());
+                return;
+            }
+            String responseBody = response.getBody();
+            log.info(responseBody);*/
+        }
+
+        } catch (Exception e) {
+            log.error("Error sending request to other server: " + e.getMessage());
+        }
+    }
+
+
+    public Document setCodeBuz(Document document) {
+
+        String targetCode = "code_affaire";
+        if (document.getType().getMetaData() != null) {
+
+
+            for (MetaData metaDta : document.getType().getMetaData()) {
+                if (metaDta.getCode().equals(targetCode)) {
+                    log.info("find metaDta! " + metaDta.getCode());
+                    DocumentDataValue documentDataValue = new DocumentDataValue();
+                    documentDataValue.setMetaData(metaDta);
+                    documentDataValue.setActive(true);
+                    documentDataValue.setValue(document.getCode());
+                    List<DocumentDataValue> metaDataValue = document.getDocumentDataValues();
+                    if (metaDataValue == null) {
+                        metaDataValue = new ArrayList<>();
+                    }
+                    for (DocumentDataValue dataValue : metaDataValue) {
+                        MetaData metaData = metaDataRepository.getOne(dataValue.getMetaData().getId());
+                        log.info("metaData : " + metaDta.getCode());
+                        if (metaData.getCode().equals(targetCode)) {
+                            log.info("CodeBuz is exist ! " + metaDta.getCode());
+                            document.setDocumentDataValues(metaDataValue);
+                            return document;
+                        }
+                    }
+                    metaDataValue.add(documentDataValue);
+                    document.setDocumentDataValues(metaDataValue);
+
+                    break; // No need to continue searching after finding the target code
+                }
+            }
+        }
+        return document;
     }
 
 
@@ -253,7 +385,7 @@ public class DocumentResource {
 
 
     public void changeStatusRelated(Document document) {
-        if (document.getRelated().size() > 0) {
+        if (document.getRelated() != null && document.getRelated().size() > 0) {
             document.getRelated().forEach(doc -> {
                 Document updateDoc = documentRepository.getOne(doc.getId());
                 updateDoc.setStatus(doc.getStatus());
@@ -261,6 +393,7 @@ public class DocumentResource {
                 documentRepository.save(updateDoc);
             });
         }
+
     }
 
     public void activateStatusRelated(Document document) {

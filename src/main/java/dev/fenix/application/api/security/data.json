@@ -1,14 +1,31 @@
 {
-  "firstName":"fayssal",
-  "lastName":"benmoussa",
-  "gender":"MALE",
-  "fullName":"benmoussa fayssal",
-  "id":5,
-  "birthDate":"1985-03-17T15:46:50",
-  "user":{
-    "UserName":"fenix",
-    "userpassword" : "123456",
-    "id":10,
-    "email":"fayssal.note@gmail.com"
-  }
+  "settings": [],
+  "UserName": "ali alami",
+  "roles": [
+    {
+      "role": "Administrateur systeme",
+      "name": "ROLE_ADMIN",
+      "id": 1
+    }
+  ],
+  "active": true,
+  "id": 22600,
+  "enterprises": [
+    {
+      "code": "FC",
+      "id": 2,
+      "socialReason": "Frais caprices"
+    },
+    {
+      "code": "OVO",
+      "id": 3,
+      "socialReason": "Ovofrais"
+    },
+    {
+      "code": "CANELIA",
+      "id": 1,
+      "socialReason": "Canelia"
+    }
+  ],
+  "email": "ali.alami@gmail.com"
 }

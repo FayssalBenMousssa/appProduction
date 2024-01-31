@@ -15,7 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @Cacheable(value="twenty-second-cache", key = "'UserInCache'+#userId")*/
   List<User> findAll();
 
-  User getUserById(Integer id);
 
   @Query("SELECT u FROM User u WHERE u.email = ?1")
   User findByEmail(String email);
@@ -26,4 +25,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   User findOneByEmail(String email);
   User findByEmailIgnoreCase(String email);
+
+
+
 }

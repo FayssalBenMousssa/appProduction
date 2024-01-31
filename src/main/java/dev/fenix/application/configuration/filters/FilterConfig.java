@@ -1,6 +1,5 @@
-package dev.fenix.application.configuration;
+package dev.fenix.application.configuration.filters;
 
-import dev.fenix.application.configuration.filters.DatabaseFilter;
 import dev.fenix.application.security.repository.UserRepository;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +32,8 @@ public class FilterConfig {
         registrationBean.addUrlPatterns("/api/vendor/*");
         registrationBean.addUrlPatterns("/api/payment/*");
         registrationBean.addUrlPatterns("/api/document/*");
+
+        registrationBean.addUrlPatterns("/api/security/username/");
         registrationBean.setOrder(1);
         return registrationBean;
     }

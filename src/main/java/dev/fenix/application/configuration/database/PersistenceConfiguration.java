@@ -102,15 +102,15 @@ public class PersistenceConfiguration {
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        //  properties.setProperty("hibernate.show_sql", "true");
-        // properties.setProperty("hibernate.format_sql", "true");
+       properties.setProperty("hibernate.show_sql", "false");
+        properties.setProperty("hibernate.format_sql", "false");
 
         properties.put("hibernate.ddl-auto", true);
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+
 
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("spring.jpa.open-in-view", "false");
-       // properties.setProperty("spring.jpa.hibernate.naming-strategy", "org.hibernate.cfg.ImprovedNamingStrategy");
 
         properties.setProperty("hibernate.enable_lazy_load_no_trans", "true");
         properties.setProperty("hibernate.event.merge.entity_copy_observer", "allow");

@@ -25,11 +25,8 @@ public class IndexController {
       @RequestParam(value = "id", required = false) Long id, Map<String, Object> model) {
     ApplicationData data = new ApplicationData();
     var mav = new ModelAndView();
-
     mav.addObject("data", data);
-
     mav.setViewName("index/index");
-
     return mav;
   }
 }

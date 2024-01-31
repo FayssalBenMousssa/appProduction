@@ -1,8 +1,12 @@
-package dev.fenix.application.api.business;
+package dev.fenix.application.business;
 
 import dev.fenix.application.business.model.Staff;
 import dev.fenix.application.business.repository.StaffRepository;
 import dev.fenix.application.business.service.StaffService;
+import dev.fenix.application.configuration.database.DBContextHolder;
+import dev.fenix.application.configuration.database.DBEnum;
+import dev.fenix.application.person.model.Person;
+import dev.fenix.application.person.repository.PersonRepository;
 import javassist.NotFoundException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +29,9 @@ public class StaffResource {
 
   @Autowired private StaffRepository staffRepository;
   @Autowired private StaffService staffService;
+
+  @Autowired
+  private PersonRepository personRepository;
 
   @RequestMapping(
       value = {"/", ""},
@@ -69,7 +76,15 @@ public class StaffResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> save(@Valid @RequestBody Staff staff, HttpServletRequest request) {
+
+    DBEnum db = DBContextHolder.getCurrentDb();
+    DBContextHolder.setCurrentDb(DBEnum.MAIN);
+    Person person =  personRepository.getPersonById(staff.getPerson().getId());
+    int globalId = person.getGlobalId();
     staff.setActive(true);
+    DBContextHolder.setCurrentDb(db);
+    Person dbPerson = personRepository.findByGlobalId(globalId);
+    staff.setPerson(dbPerson);
     Staff savedStaff = staffRepository.save(staff);
     return ResponseEntity.ok(savedStaff.toJson().toString());
   }
@@ -94,7 +109,14 @@ public class StaffResource {
   public ResponseEntity<?> update(@Valid @RequestBody Staff staff, HttpServletRequest request) {
     try {
       staff.setActive(true);
+      DBContextHolder.setCurrentDb(DBEnum.MAIN);
       Staff updatedStaff = staffRepository.save(staff);
+      DBContextHolder.setCurrentDb(DBEnum.OVOFRAIS);
+      staffRepository.save(staff);
+      DBContextHolder.setCurrentDb(DBEnum.FRAISCAPRICES);
+      staffRepository.save(staff);
+      DBContextHolder.setCurrentDb(DBEnum.CANELIA);
+      staffRepository.save(staff);
       return new ResponseEntity<>(updatedStaff.toJson().toString(), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
@@ -111,7 +133,14 @@ public class StaffResource {
     try {
       Staff staff = staffRepository.getOne(id);
       staff.setActive(false);
+      DBContextHolder.setCurrentDb(DBEnum.MAIN);
       Staff deletedStaff = staffRepository.save(staff);
+      DBContextHolder.setCurrentDb(DBEnum.OVOFRAIS);
+      staffRepository.save(staff);
+      DBContextHolder.setCurrentDb(DBEnum.FRAISCAPRICES);
+      staffRepository.save(staff);
+      DBContextHolder.setCurrentDb(DBEnum.CANELIA);
+      staffRepository.save(staff);
       return ResponseEntity.ok(deletedStaff.toJson().toString());
     } catch (Exception e) {
       e.printStackTrace();

@@ -41,21 +41,26 @@ public class ProductService {
     public List<Product> getAllProducts(Integer pageNo, Integer pageSize, String[] sortBy, String[] query) {
 
 
+
         //// Order
         List<Sort.Order> orders = new ArrayList<Sort.Order>();
         if (sortBy[0].contains(",")) {
             // will sort more than 2 columns
-            //log.trace("we will sort more than 2 columns ");
+            log.trace("we will sort more than 2 columns ");
+
             for (String sortOrder : sortBy) {
                 // sortOrder="column, direction"
 
                 String[] _sort = sortOrder.split(",");
                 //log.trace("sortOrder : " + _sort[1] + " " + _sort[0]);
                 orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
+                log.trace("we will sort      sort=[ " + _sort[1] + " " +  _sort[0] +"]");
             }
         } else {
             // sort=[column, direction]
             orders.add(new Sort.Order(getSortDirection(sortBy[1]), sortBy[0]));
+            log.trace("we will sort      sort=[ " + sortBy[1] +  sortBy[0] +"]");
+
         }
 
         //// filters

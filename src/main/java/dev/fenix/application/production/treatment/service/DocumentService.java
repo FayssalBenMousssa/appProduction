@@ -2,16 +2,18 @@ package dev.fenix.application.production.treatment.service;
 
 import dev.fenix.application.business.model.Company;
 import dev.fenix.application.business.repository.CompanyRepository;
-import dev.fenix.application.production.treatment.model.Category;
-import dev.fenix.application.production.treatment.model.Document;
-import dev.fenix.application.production.treatment.model.Status;
-import dev.fenix.application.production.treatment.model.Type;
+import dev.fenix.application.production.payment.model.PaymentCustomer;
+import dev.fenix.application.production.payment.repository.PaymentCustomerRepository;
+import dev.fenix.application.production.treatment.model.*;
 import dev.fenix.application.production.treatment.repository.CategoryRepository;
 import dev.fenix.application.production.treatment.repository.DocumentRepository;
 import dev.fenix.application.production.treatment.repository.TypeRepository;
 import dev.fenix.application.security.model.Role;
 import dev.fenix.application.security.model.User;
 import dev.fenix.application.security.repository.AccessDocumentsRepository;
+import dev.fenix.application.security.repository.UserRepository;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -39,6 +43,14 @@ public class DocumentService {
 
     @Autowired
     private AccessDocumentsRepository accessDocumentsRepository;
+
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PaymentCustomerRepository paymentCustomerRepository;
+
     private static final Logger log = LoggerFactory.getLogger(DocumentService.class);
     private int count = 0;
     private int countAll = 0;
@@ -74,7 +86,7 @@ public class DocumentService {
                 });
 
 
-        // typeList.forEach(type1 -> //log.info("Type : " + type1.getName() ));
+
 
 
         //// Order
@@ -166,6 +178,7 @@ public class DocumentService {
         return pagedResult.getContent();
     }
 
+
     public List<Document> loadDocuments(Pageable paging, Category documentCategory) {
 
 
@@ -201,8 +214,6 @@ public class DocumentService {
             //log.info("all active documents ... category && filterStatus: " + documentCategory.getName() + " code : " + filters.get("code"));
         } else if (filters.containsKey("companyId") && filters.containsKey("filterStatus")) {
             Company source = companyRepository.findOneById(Long.valueOf(filters.get("companyId")));
-
-
             /////
             pagedResult = documentRepository.loadDocuments_findByActiveTrueAndTypeCategoryAndSourceAndStatusInAndAccessIn(documentCategory, source, workFlow, accessList, paging);
             count = documentRepository.loadDocuments_countByActiveTrueAndTypeCategoryAndSourceAndStatusInAndAccessIn(documentCategory, source, workFlow, accessList);
@@ -220,6 +231,7 @@ public class DocumentService {
 
             //log.info("all active documents ... category : " + documentCategory.getName() + " company: " + source.getSocialReason());
         } else if (filters.containsKey("filterStatus")) {
+            // accessList is null for me
             pagedResult = documentRepository.findByActiveTrueAndTypeCategoryAndStatusInAndAccessIn(documentCategory, workFlow, accessList, paging);
             count = documentRepository.countByActiveTrueAndTypeCategoryAndStatusInAndAccessIn(documentCategory, workFlow, accessList);
             //log.info("all active documents  .. category : " + documentCategory.getName() + " with filterStatus ");
@@ -322,5 +334,129 @@ public class DocumentService {
 
     public void setCountAll(int countAll) {
         this.countAll = countAll;
+    }
+
+
+
+    public String toOldJSON(Document doc) throws JSONException, ParseException {
+        JSONObject document = new JSONObject();
+
+        document.put("CLIENT_ID", doc.getDestination().getId());
+        document.put("CLIENT_INTITULE", doc.getDestination().getSocialReason());
+        document.put("DEPOT_ID", null);
+        document.put("DOC_ACTIVE", 1);
+        document.put("DOC_ID", null);
+        document.put("DOC_AD_LIVRAISON", "DOC_AD_LIVRAISON");
+        document.put("DOC_DATE", doc.getDate());
+        document.put("DOC_DATE_UPDATE", doc.getDate());
+        document.put("DOC_ETAT", null);
+        document.put("DOC_JUSQU", doc.getDate());
+        document.put("DOC_LIVRAISON", null);
+        document.put("DOC_NOTES", doc.getName());
+        document.put("DOC_NUMERO", null);
+        document.put("DOC_OBJET", doc.getCode());
+        document.put("DOC_PAIEMENT", "DOC_PAIEMENT");
+        document.put("DOC_PIECE_JOINTE", "DOC_PIECE_JOINTE");
+        document.put("DOC_REFERENCE", doc.getCode());
+        document.put("DOC_REF_EXT", "DOC_REF_EXT");
+        document.put("DOC_REGLEMENT", null);
+        document.put("DOC_STATUT", null);
+        document.put("DOC_TITRE", doc.getName());
+        if(Objects.equals(doc.getType().getCode(), "bon_livraison")){
+            document.put("ID_DOC_TYPE", 19);
+        }
+
+        if(doc.getLogs() != null) {
+
+            String userName = doc.getLogs().get(0).getUserName();
+            User user = userRepository.findOneByUserName(userName);
+            if(user != null) {
+                document.put("ID_USER", user.getId());
+                document.put("LIVREUR_ID", user.getId());
+                document.put("RESPONSABLE_ID",  user.getId());
+            }
+
+
+        }
+
+
+
+
+        if(doc.getDocumentDataValues() != null) {
+            for (DocumentDataValue documentDataValue : doc.getDocumentDataValues()) {
+                if(Objects.equals(documentDataValue.getMetaData().getCode(), "position_gps")){
+                    document.put("POSITION", documentDataValue.getValue());
+                }
+            }
+        }
+        document.put("TYPE_LIBELLE", doc.getType().getName());
+        document.put("DOC_AB", null);
+        document.put("ID_PROJECT", null);
+        document.put("STE", "STE");
+        document.put("CLIENT", doc.getDestination().getId());
+        document.put("DOC_UPDATE", "DOC_UPDATE");
+
+        JSONObject articles = new JSONObject();
+
+        for (DocumentProduct docProduct : doc.getDocumentProduct()) {
+            JSONObject line = new JSONObject();
+            line.put("DOC_ARTICLES_ID", docProduct.getId());
+            line.put("DOC_ID", doc.getId());
+            line.put("ARTICLE_ID", docProduct.getProduct().getId());
+            line.put("ART_TVA", docProduct.getTax());
+            line.put("A_TVA_VALEUR", docProduct.getTax()/100);
+            line.put("ART_REM", 0);
+            line.put("ART_QTE", docProduct.getQuantity());
+            line.put("ART_PRIX_FINAL", docProduct.getPrice());
+            line.put("ART_EXPIRATION", 0);
+            line.put("ART_DATE", doc.getDate());
+            line.put("ART_DATA", null);
+            line.put("ART_ACTIVE",1);
+            articles.put(String.valueOf(docProduct.getId()), line);
+        }
+
+      List<PaymentCustomer> payments = paymentCustomerRepository.findByCodeContainsAndActiveTrue(doc.getCode());
+        JSONObject listPayments = new JSONObject();
+        if(payments != null) {
+            for (PaymentCustomer payment:payments) {
+
+                JSONObject reg = new JSONObject();
+                reg.put("REG_ID", payment.getId());
+                reg.put("DOC_ID", doc.getId());
+                reg.put("REG_MONTANT", payment.getMontant());
+                reg.put("REG_LEBELLE", payment.getCustomer().getSocialReason());
+
+
+
+                Date date;
+                SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd_HHmmss");
+                date = df.parse(String.valueOf(payment.getPaymentDate()));
+                String REG_DATE = new SimpleDateFormat("yyyy-MM-dd").format(date);
+
+                reg.put("REG_DATE", REG_DATE);
+
+                /*if (reglement.getCHEQUE_ID() != 0) {
+                    JSONObject cheque = new JSONObject();
+                    cheque.put("CHEQUE_ID", reglement.getCHEQUE().getCHEQUE_ID());
+                    cheque.put("CHEQUE_LIBELLE", reglement.getCHEQUE().getCHEQUE_LIBELLE());
+                    cheque.put("CHEQUE_MONTANT", reglement.getCHEQUE().getCHEQUE_MONTANT());
+                    cheque.put("CHEQUE_NUM", reglement.getCHEQUE().getCHEQUE_NUM());
+                    cheque.put("CHEQUE_ECHEANCE", reglement.getCHEQUE().getCHEQUE_ECHEANCE());
+                    cheque.put("CHEQUE_TIREUR", reglement.getCHEQUE().getCHEQUE_TIREUR());
+                    cheque.put("CHEQUE_DATE", REG_DATE);
+                    cheque.put("CHEQUE_TIRE", reglement.getCHEQUE().getCHEQUE_TIRE());
+                    reg.put("CHEQUE", cheque);
+                }*/
+
+                listPayments.put(String.valueOf(payment.getId()), reg);
+
+
+            }
+        }
+
+        document.put("reglements", listPayments);
+        document.put("articles", articles);
+        return document.toString();
+
     }
 }

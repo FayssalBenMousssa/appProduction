@@ -111,9 +111,15 @@ public class Price {
         try {
             priceJSON.put("id", this.getId());
             priceJSON.put("name", this.getName());
-            if (this.getCategory() != null)
+            if (this.getCategory() != null){
                 priceJSON.put("category", this.getCategory().toJson());
-            priceJSON.put("period", this.getPeriod().toJson());
+            }
+
+            if (this.getPeriod() != null){
+                priceJSON.put("period", this.getPeriod().toJson());
+            }
+
+
             priceJSON.put("tax", this.getTax().toJson());
             priceJSON.put("value", this.getValue());
             priceJSON.put("maxQte", this.getMaxQte());

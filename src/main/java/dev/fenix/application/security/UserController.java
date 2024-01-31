@@ -43,8 +43,7 @@ public class UserController {
     Page<Person> page = personRepository.findAllByOrderByIdDesc(pageable);
     model.addAttribute("page", page);
 
-    // //log.info(data.getAuth().getAuthorities().toString());
-    // //log.info(String.valueOf(data.getAuth().isAuthenticated()));
+
 
     return "security/index";
   }
@@ -161,11 +160,8 @@ public class UserController {
     /*.orElseThrow(() -> new IllegalArgumentException("Invalid  person Id:" + id));*/
     person.getUserAccount().setActive(!person.getUserAccount().isActive());
     Date date = new Date();
-
     person.getUserAccount().setModifyDate(date);
-
     personRepository.save(person);
-
     return "redirect:/security/index";
   }
 }

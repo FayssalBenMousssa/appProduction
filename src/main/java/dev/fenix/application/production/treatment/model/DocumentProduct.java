@@ -80,6 +80,10 @@ public class DocumentProduct {
     private float quantity;
 
 
+    // @NotNull(message = "Please enter the abbreviation")
+    private String description;
+
+
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id", referencedColumnName = "id" , updatable = false)
     // @JsonBackReference(value = "document-product")
@@ -117,8 +121,10 @@ public class DocumentProduct {
             documentProductJSON.put("id", this.getId());
             documentProductJSON.put("quantity", this.getQuantity());
 
+            documentProductJSON.put("description", this.getDescription());
 
-          //  if(this.getSiUnit() != null)
+
+            if(this.getSiUnit() != null)
             documentProductJSON.put("siUnit", this.getSiUnit().toJson());
 
 
@@ -145,9 +151,14 @@ public class DocumentProduct {
                 documentProductJSON.put("createDate", formatter.format(this.getCreateDate()));
             }
             documentProductJSON.put("active", this.isActive());
+
             if (this.getProduct() != null) {
                 documentProductJSON.put("product", this.getProduct().toJson());
             }
+/// toLabelJson
+
+              //  documentProductJSON.put("product_name", this.getProduct().getName());
+
 
             if (this.getFormula() != null) {
                 documentProductJSON.put("formula", this.getFormula().toJson());

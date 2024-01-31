@@ -6,6 +6,7 @@ import dev.fenix.application.core.model.Contact;
 import dev.fenix.application.security.model.User;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +14,7 @@ import org.json.JSONObject;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -22,17 +24,15 @@ import java.util.Set;
 @Table(name = "bz__enterprise")
 @DiscriminatorValue("OUR")
 public class Enterprise extends Company {
-  @ManyToMany
-  @JoinTable(name = "bz__enterprise_users",
-          joinColumns = @JoinColumn(name = "enterprise_id"),
-          inverseJoinColumns = @JoinColumn(name = "users_id"))
-  private Set<User> users = new LinkedHashSet<>();
+
 
 
   @Enumerated(EnumType.STRING)
   @Column(name = "enterprise_database")
   private DBEnum enterpriseDatabase;
 
+  @ManyToMany(mappedBy = "enterprises")
+  private Set<User> users = new LinkedHashSet<>();
 
 
   public JSONObject toJson() {
@@ -95,8 +95,16 @@ public class Enterprise extends Company {
   }
 
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    Enterprise that = (Enterprise) o;
+    return getId() != null && Objects.equals(getId(), that.getId());
+  }
 
-
-
-
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
+  }
 }

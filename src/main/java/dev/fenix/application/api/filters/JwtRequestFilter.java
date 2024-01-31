@@ -2,6 +2,7 @@ package dev.fenix.application.api.filters;
 
 import dev.fenix.application.api.security.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +18,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@Order(1)
 public class JwtRequestFilter extends OncePerRequestFilter {
   @Autowired private UserDetailsService userDetailsService;
 
   @Autowired private JwtUtil jwtUtil;
+
+  public JwtRequestFilter() {
+    System.out.println("----------> JwtRequestFilter");
+  }
 
   @Override
   protected void doFilterInternal(

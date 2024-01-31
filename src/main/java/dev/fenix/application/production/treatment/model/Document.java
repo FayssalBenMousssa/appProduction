@@ -41,7 +41,7 @@ public class Document {
   @NotNull(message = "Please enter the name")
   private String name;
 
-  @Column(length = 12)
+  @Column(length = 30)
   private String code;
 
   @NotNull(message = "Please enter the type")
@@ -136,6 +136,10 @@ public class Document {
   @JsonBackReference(value = "document-customer")
   private LetteringCustomer letteringCustomer;
 
+
+  @Column(name = "is_synchronised", columnDefinition = "boolean default false")
+  private Boolean isSynchronised;
+
   @PrePersist
   @PreUpdate
   @PreRemove
@@ -151,6 +155,8 @@ public class Document {
     }
     return total;
   }
+
+
 
   public List<String> getDifferent(Document newDocument) {
     List<String> difference = new ArrayList<String>();
@@ -198,6 +204,68 @@ public class Document {
         }
         documentJSON.put("relatedTo", relatedToDocumentsList);
       }
+
+      if (this.getDocumentProduct() != null) {
+        JSONArray documentProductsList = new JSONArray();
+        for (DocumentProduct documentProduct : this.getDocumentProduct()) {
+          if (documentProduct != null && documentProduct.isActive()) {
+            documentProductsList.put(documentProduct.toJson());
+          }
+        }
+        documentJSON.put("documentProduct", documentProductsList);
+      }
+
+      if (this.getDocumentDataValues() != null) {
+        JSONArray documentDataValues = new JSONArray();
+        for (DocumentDataValue documentDataValue : this.getDocumentDataValues()) {
+          if (documentDataValue != null && documentDataValue.isActive()) {
+            documentDataValues.put(documentDataValue.toJson());
+          }
+        }
+        documentJSON.put("documentDataValues", documentDataValues);
+      }
+
+      if (this.getDate() != null) {
+        documentJSON.put("date", formatter.format(this.getDate()));
+      }
+
+      if (this.getModifyDate() != null) {
+        documentJSON.put("modifyDate", formatter.format(this.getModifyDate()));
+      }
+      if (this.getCreateDate() != null) {
+        documentJSON.put("createDate", formatter.format(this.getCreateDate()));
+      }
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return documentJSON;
+  }
+
+
+  public JSONObject toJsonRelated() {
+    JSONObject documentJSON = new JSONObject();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssZ");
+    try {
+      documentJSON.put("id", this.getId());
+      documentJSON.put("name", this.getName());
+      documentJSON.put("code", this.getCode());
+      documentJSON.put("active", this.isActive());
+      documentJSON.put("status", this.getStatus());
+      documentJSON.put("type", this.getType().toJson());
+      documentJSON.put("source", this.getSource().toJson());
+      documentJSON.put("destination", this.getDestination().toJson());
+
+      if (this.getRelated() != null) {
+        JSONArray relatedDocumentsList = new JSONArray();
+        for (Document document : this.getRelated()) {
+          if (document != null && document.isActive()) {
+            relatedDocumentsList.put(document.toJson());
+          }
+        }
+        documentJSON.put("related", relatedDocumentsList);
+      }
+
+
 
       if (this.getDocumentProduct() != null) {
         JSONArray documentProductsList = new JSONArray();
@@ -328,4 +396,14 @@ public class Document {
     }
     return differenceJSON;
   }
+
+  public void updateRelatedDoc(Document oldRelatedDoc, Document newRelatedDoc) {
+    related.remove(oldRelatedDoc);
+    related.add(newRelatedDoc);
+  }
+
+
+
+
+
 }

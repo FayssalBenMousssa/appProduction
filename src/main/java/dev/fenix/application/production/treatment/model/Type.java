@@ -18,9 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Getter
@@ -80,6 +78,9 @@ public class Type {
   @Column(name = "has_batch",columnDefinition = "tinyint(1) default 1")
   private boolean hasBatch;
 
+  @Column(name = "has_product_description",columnDefinition = "tinyint(1) default 0")
+  private boolean hasProductDescription;
+
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "create_date", updatable = false)
@@ -138,8 +139,11 @@ public class Type {
   @Column(name = "code_editable",columnDefinition="int(1) default 0")
   private boolean codeEditable;
 
+    @OneToMany(mappedBy = "type", orphanRemoval = true)
+    private Set<PrintModel> printModels = new LinkedHashSet<>();
 
-  public JSONObject toJson() {
+
+    public JSONObject toJson() {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     JSONObject typeJSON = new JSONObject();
     try {
@@ -154,6 +158,7 @@ public class Type {
       typeJSON.put("inProductions",this.getInProductions());
       typeJSON.put("inStock",this.getInStock());
       typeJSON.put("inSales",this.getInSales());
+      typeJSON.put("hasProductDescription",this.isHasProductDescription());
       typeJSON.put("hasPrice",this.isHasPrice());
       typeJSON.put("hasFormula",this.isHasFormula());
       typeJSON.put("hasBatch",this.isHasBatch());

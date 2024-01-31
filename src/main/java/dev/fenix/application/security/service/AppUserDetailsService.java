@@ -1,5 +1,7 @@
 package dev.fenix.application.security.service;
 
+import dev.fenix.application.configuration.database.DBContextHolder;
+import dev.fenix.application.configuration.database.DBEnum;
 import dev.fenix.application.security.model.AppUserDetails;
 import dev.fenix.application.security.model.User;
 import dev.fenix.application.security.repository.UserRepository;
@@ -18,6 +20,9 @@ public class AppUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+    DBContextHolder.getCurrentDb();
+
+    DBContextHolder.setCurrentDb(DBEnum.MAIN);
     Optional<User> user = userRepository.findByUserName(userName);
     user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + userName));
     return user.map(AppUserDetails::new).get();

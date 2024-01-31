@@ -46,7 +46,7 @@ public class TypeResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> get(HttpServletRequest request, @PathVariable Long id)
       throws NotFoundException {
-    //log.trace("ProductResource.get method accessed");
+    log.trace("ProductResource.get method accessed" + id);
     Type Type =
         typeRepository.findById(id).orElseThrow(() -> new NotFoundException("Type  not found"));
     return new ResponseEntity<>(Type.toJson().toString(), HttpStatus.OK);

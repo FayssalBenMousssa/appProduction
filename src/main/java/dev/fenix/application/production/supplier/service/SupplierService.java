@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class SupplierService {
@@ -66,18 +69,15 @@ public class SupplierService {
       for (Map.Entry<String, String> entry : filters.entrySet()) {
         String key = entry.getKey();
         String value = entry.getValue();
-        switch (key) {
-          case "social_reason":
-            filteringSuppliers.addAll(
-                supplierRepository
-                    .findAllBySocialReasonContainsAndActiveTrue(value, paging)
-                    .getContent());
-            count = supplierRepository.countBySocialReasonContainsAndActiveTrue(value);
-            //log.info(count + " Suppliers by name [" + value + "] for all types");
-            break;
-          default:
-            //log.info("value not in list of search !");
-        }
+          //log.info("value not in list of search !");
+          if ("social_reason".equals(key)) {
+              filteringSuppliers.addAll(
+                      supplierRepository
+                              .findAllBySocialReasonContainsAndActiveTrue(value, paging)
+                              .getContent());
+              count = supplierRepository.countBySocialReasonContainsAndActiveTrue(value);
+              //log.info(count + " Suppliers by name [" + value + "] for all types");
+          }
       }
       pagedResult = new PageImpl<>(filteringSuppliers, paging, pageSize);
       return pagedResult.getContent();

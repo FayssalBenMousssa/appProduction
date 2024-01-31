@@ -6,6 +6,7 @@ import dev.fenix.application.business.model.Enterprise;
 import dev.fenix.application.person.model.Person;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.ColumnTransformer;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +30,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Long id;
 
     @NotBlank(message = "userName is mandatory")
@@ -51,6 +53,7 @@ public class User {
     private boolean active;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+
     @JoinTable(
             name = "sc__user_role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -60,7 +63,7 @@ public class User {
 
     @Valid
     @JsonBackReference(value = "user-account")
-    @OneToOne(mappedBy = "userAccount", cascade = {CascadeType.ALL})
+    @OneToOne(mappedBy = "userAccount", cascade = {CascadeType.ALL} , fetch = FetchType.EAGER)
     private Person person;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -85,11 +88,15 @@ public class User {
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany
+    @JoinTable(name = "bz__enterprise_users",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "enterprises_id"))
     private Set<Enterprise> enterprises = new LinkedHashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "log_in_enterprise_id")
+    @JoinColumn(name = "log_in_enterprise_id" )
+    @ColumnDefault("1")
     private Enterprise logInEnterprise;
 
 /*

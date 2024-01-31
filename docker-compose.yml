@@ -33,6 +33,20 @@ services:
       SPRING_DATASOURCE_JDBC-URL: jdbc:mysql://mysql-db:3306/application_main?autoReconnect=true&useSSL=false
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: "Fenix1985"
+
+      APP.DATASOURCE.CANELIA.JDBC-URL: jdbc:mysql://mysql-db:3306/application_canelia?autoReconnect=true&useSSL=false
+      APP.DATASOURCE.CANELIA.USERNAME: root
+      APP.DATASOURCE.CANELIA.PASSWORD: "Fenix1985"
+
+      APP.DATASOURCE.OVOFRAIS.JDBC-URL: jdbc:mysql://mysql-db:3306/application_ovofrais?autoReconnect=true&useSSL=false
+      APP.DATASOURCE.OVOFRAIS.USERNAME: root
+      APP.DATASOURCE.OVOFRAIS.PASSWORD: "Fenix1985"
+
+      APP.DATASOURCE.FRAISCAPRICES.JDBC-URL: jdbc:mysql://mysql-db:3306/application_fraiscaprices?autoReconnect=true&useSSL=false
+      APP.DATASOURCE.FRAISCAPRICES.USERNAME: root
+      APP.DATASOURCE.FRAISCAPRICES.PASSWORD: "Fenix1985"
+
+
     build:
       context: "./"
       dockerfile: "Dockerfile"

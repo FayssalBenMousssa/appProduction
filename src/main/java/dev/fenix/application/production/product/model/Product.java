@@ -111,6 +111,13 @@ public class Product {
   @JsonManagedReference(value = "prices")
   private List<Price> prices = new ArrayList<>();
 
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @Fetch(value = FetchMode.SUBSELECT)
+  @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true) // javax.persistent.CascadeType
+  @JoinColumn(name = "product_id") // parent's foreign key
+  @JsonManagedReference(value = "freeProducts")
+  private List<FreeProduct> freeProducts = new ArrayList<>();
+
 
 
   @CreationTimestamp
@@ -196,6 +203,17 @@ public class Product {
         }
         productJSON.put("prices", pricesList);
       }
+
+      if (this.getFreeProducts() != null && this.getFreeProducts().size() > 0) {
+        JSONArray freeProductsList = new JSONArray();
+        for (FreeProduct freeProduct : this.getFreeProducts()) {
+          if (freeProduct.isActive()) {
+            freeProductsList.put(freeProduct.toJson());
+          }
+        }
+        productJSON.put("freeProducts", freeProductsList);
+      }
+
 
       if (this.getProductType() != null) {
         productJSON.put("productType", this.getProductType().toJson());

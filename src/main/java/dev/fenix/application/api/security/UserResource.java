@@ -2,6 +2,9 @@ package dev.fenix.application.api.security;
 
 import dev.fenix.application.business.model.Enterprise;
 import dev.fenix.application.business.repository.EnterpriseRepository;
+import dev.fenix.application.business.repository.StaffRepository;
+import dev.fenix.application.configuration.database.DBContextHolder;
+import dev.fenix.application.configuration.database.DBEnum;
 import dev.fenix.application.person.model.Person;
 import dev.fenix.application.person.repository.PersonRepository;
 import dev.fenix.application.security.exception.UserFoundException;
@@ -29,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 @RestController()
@@ -47,6 +51,9 @@ public class UserResource {
     private RoleRepository roleRepository;
     @Autowired
     private ActionRepository actionRepository;
+
+    @Autowired
+    private StaffRepository staffRepository;
 
     @Autowired
     private EnterpriseRepository enterpriseRepository;
@@ -134,7 +141,7 @@ public class UserResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> authorisation(HttpServletRequest request) throws InterruptedException {
-
+        DBContextHolder.setCurrentDb(DBEnum.MAIN);
         /// TimeUnit.SECONDS.sleep(5);
         JSONArray jArray = new JSONArray();
         Iterable<Person> people = personRepository.findPersons(true);
@@ -142,6 +149,8 @@ public class UserResource {
             people.forEach(person -> {
                 if (person.getUserAccount() != null) {
                     jArray.put(person.toSmallJsonUser());
+                    log.info(DBContextHolder.getCurrentDb().toString());
+                    log.info(person.getFullName() + " " + person.getUserAccount().getEnterprises().size());
                 }
 
             });
@@ -160,6 +169,21 @@ public class UserResource {
     public String status(HttpServletRequest request) {
 
         return "Yes";
+
+    }
+
+    @RequestMapping(
+            value = "/user/selected_db",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String>  selectedDb(HttpServletRequest request) {
+      User user = this.getCurrentUser();
+
+        if (user == null) {
+            throw new RuntimeException("Invalid user " );
+        } else {
+            return ResponseEntity.ok(user.getLogInEnterprise().toJson().toString());
+        }
     }
 
     @RequestMapping(
@@ -182,16 +206,28 @@ public class UserResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> readByUsername(@PathVariable("username") String username
             , @RequestParam(required = false) boolean optimise
-            ,@RequestParam(required = false) boolean first_login
+            , @RequestParam(required = false) boolean first_login
     ) {
         User user = userRepository.findOneByUserName(username);
+        int globalId =  user.getPerson().getGlobalId();
+
         if (user == null) {
-            throw new RuntimeException("Invalid  person Id : " + username);
+            throw new RuntimeException("Invalid  person username : " + username);
+
+
+
         } else {
+
+            if(user.getEnterprises().size() == 1) {
+                user.setLogInEnterprise(user.getEnterprises().iterator().next());
+               DBContextHolder.setCurrentDb(user.getLogInEnterprise().getEnterpriseDatabase());
+            }
             if (optimise) {
                 return ResponseEntity.ok(user.getPerson().toSmallJsonUser().toString());
             } else if (first_login) {
-                return ResponseEntity.ok(user.getPerson().loginJson().toString());
+                DBContextHolder.setCurrentDb(DBEnum.CANELIA);
+                Person person = personRepository.findByGlobalId(globalId);
+                return ResponseEntity.ok(person.loginJson().toString());
             }
             return ResponseEntity.ok(user.getPerson().toJson().toString());
         }
@@ -202,8 +238,10 @@ public class UserResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<?> createUser(
-            @Valid @RequestBody Person person, HttpServletRequest request) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody Person person, HttpServletRequest request) {
+
+
+        DBContextHolder.setCurrentDb(DBEnum.MAIN);
 
         if (person.getUserAccount() == null) {
             throw new RuntimeException("user is mandatory");
@@ -219,10 +257,28 @@ public class UserResource {
             throw new UserFoundException(
                     "There is already a person registered with " + person.getUserAccount().getEmail());
         }
+
+        Random random = new Random();
+        int randomNumber = random.nextInt(1000000);
+
+        person.setGlobalId(randomNumber);
+
+        DBContextHolder.setCurrentDb(DBEnum.MAIN);
         person.getUserAccount().CryptPassword();
         Person savedPerson = personRepository.save(person);
+
+        DBContextHolder.setCurrentDb(DBEnum.OVOFRAIS);
+        personRepository.save(person);
+
+        DBContextHolder.setCurrentDb(DBEnum.FRAISCAPRICES);
+        personRepository.save(person);
+
+        DBContextHolder.setCurrentDb(DBEnum.CANELIA);
+        personRepository.save(person);
+
         return ResponseEntity.ok(savedPerson.toJson().toString());
     }
+
 
 
     @RequestMapping(
@@ -232,9 +288,57 @@ public class UserResource {
     @ResponseBody
     public ResponseEntity<?> userStatus(@RequestBody Person person, HttpServletRequest request) {
         if (person != null) {
+            DBContextHolder.setCurrentDb(DBEnum.MAIN);
             person = personRepository.getPersonById(person.getId());
+            int globalId = person.getGlobalId();
             person.getUserAccount().setActive(!person.getUserAccount().isActive());
-            Person savedPerson = personRepository.save(person);
+            personRepository.save(person);
+
+            DBContextHolder.setCurrentDb(DBEnum.OVOFRAIS);
+            Person ovoPerson = personRepository.findByGlobalId(globalId);
+            ovoPerson.getUserAccount().setActive(!ovoPerson.getUserAccount().isActive());
+            personRepository.save(ovoPerson);
+
+
+            DBContextHolder.setCurrentDb(DBEnum.FRAISCAPRICES);
+            Person fcPerson = personRepository.findByGlobalId(globalId);
+            fcPerson.getUserAccount().setActive(!fcPerson.getUserAccount().isActive());
+            personRepository.save(fcPerson);
+
+
+
+            DBContextHolder.setCurrentDb(DBEnum.CANELIA);
+            Person caPerson = personRepository.findByGlobalId(globalId);
+            caPerson.getUserAccount().setActive(!caPerson.getUserAccount().isActive());
+            personRepository.save(caPerson);
+
+            return ResponseEntity.ok(caPerson.toSmallJsonUser().toString());
+
+        }
+        return new ResponseEntity<>("BAD_REQUEST", HttpStatus.BAD_REQUEST);
+    }
+
+
+    @RequestMapping(
+            value = "user/staff",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> userStaff(@RequestBody Person person, HttpServletRequest request) {
+        if (person != null) {
+            Person personDB = personRepository.getPersonById(person.getId());
+
+            personDB.setStaffs(person.getStaffs());
+
+            Person savedPerson = personRepository.save(personDB);
+            DBContextHolder.setCurrentDb(DBEnum.OVOFRAIS);
+            personRepository.save(personDB);
+            DBContextHolder.setCurrentDb(DBEnum.FRAISCAPRICES);
+            personRepository.save(personDB);
+            DBContextHolder.setCurrentDb(DBEnum.CANELIA);
+            personRepository.save(personDB);
+
+
             return ResponseEntity.ok(savedPerson.toSmallJsonUser().toString());
 
         }
@@ -243,9 +347,9 @@ public class UserResource {
 
     @PostMapping("/user/changePassword")
     public ResponseEntity changePasswordUser(
-                                         @RequestParam("oldPassword") String oldPassword,
-                                         @RequestParam("newPassword") String newPassword,
-                                         @RequestParam("email") String email) {
+            @RequestParam("oldPassword") String oldPassword,
+            @RequestParam("newPassword") String newPassword,
+            @RequestParam("email") String email) {
         if (this.changePassword(oldPassword, newPassword, email)) {
             return new ResponseEntity<>("change_password.valid", HttpStatus.OK);
         } else {
@@ -260,19 +364,85 @@ public class UserResource {
     @ResponseBody
     public ResponseEntity<?> userUpdateRoles(@RequestBody Person person, HttpServletRequest request) {
         if (person != null & person.getUserAccount() != null) {
-
             Set<Role> roles = person.getUserAccount().getRoles();
             Set<Role> db_roles = new HashSet<>();
             for (Role role : roles) {
                 role = roleRepository.getOne(role.getId());
                 db_roles.add(role);
             }
+            DBContextHolder.setCurrentDb(DBEnum.MAIN);
             person = personRepository.getPersonById(person.getId());
-            person.getUserAccount().setRoles(db_roles);
+            int globalId = person.getGlobalId();
 
-            Person savedPerson = personRepository.save(person);
-            return new ResponseEntity<>(savedPerson.toSmallJsonUser().toString(), HttpStatus.OK);
+            DBContextHolder.setCurrentDb(DBEnum.MAIN);
+            Person mainPerson = personRepository.findByGlobalId(globalId);
+            mainPerson.getUserAccount().setRoles(db_roles);
+            personRepository.save(mainPerson);
+
+            DBContextHolder.setCurrentDb(DBEnum.OVOFRAIS);
+            Person ovoPerson = personRepository.findByGlobalId(globalId);
+            ovoPerson.getUserAccount().setRoles(db_roles);
+            personRepository.save(ovoPerson);
+
+            DBContextHolder.setCurrentDb(DBEnum.FRAISCAPRICES);
+            Person fcPerson = personRepository.findByGlobalId(globalId);
+            fcPerson.getUserAccount().setRoles(db_roles);
+            personRepository.save(fcPerson);
+
+            DBContextHolder.setCurrentDb(DBEnum.CANELIA);
+            Person caPerson = personRepository.findByGlobalId(globalId);
+            caPerson.getUserAccount().setRoles(db_roles);
+            personRepository.save(caPerson);
+
+
+            return new ResponseEntity<>(caPerson.toSmallJsonUser().toString(), HttpStatus.OK);
         }
+        return new ResponseEntity<>("BAD_REQUEST", HttpStatus.BAD_REQUEST);
+    }
+
+
+    @RequestMapping(
+            value = "user/enterprise/update",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> userUpdateEnterprises(@RequestBody User user, HttpServletRequest request) {
+
+        if (user.getId() != null) {
+            User dbUser = userRepository.findOneByUserName(user.getUserName());
+            int globalId = dbUser.getPerson().getGlobalId();
+
+            Set<Enterprise> enterprises = user.getEnterprises();
+
+
+            DBContextHolder.setCurrentDb(DBEnum.MAIN);
+            Person mainPerson = personRepository.findByGlobalId(globalId);
+            mainPerson.getUserAccount().setEnterprises(enterprises);
+            personRepository.save(mainPerson);
+
+            DBContextHolder.setCurrentDb(DBEnum.OVOFRAIS);
+            Person ovoPerson = personRepository.findByGlobalId(globalId);
+            ovoPerson.getUserAccount().setEnterprises(enterprises);
+            personRepository.save(ovoPerson);
+
+
+            DBContextHolder.setCurrentDb(DBEnum.FRAISCAPRICES);
+            Person fcPerson = personRepository.findByGlobalId(globalId);
+            fcPerson.getUserAccount().setEnterprises(enterprises);
+            personRepository.save(fcPerson);
+
+
+
+            DBContextHolder.setCurrentDb(DBEnum.CANELIA);
+            Person caPerson = personRepository.findByGlobalId(globalId);
+            caPerson.getUserAccount().setEnterprises(enterprises);
+            personRepository.save(caPerson);
+
+
+            return new ResponseEntity<>(caPerson.toSmallJson().toString(), HttpStatus.OK);
+        }
+
+
         return new ResponseEntity<>("BAD_REQUEST", HttpStatus.BAD_REQUEST);
     }
 
@@ -284,19 +454,59 @@ public class UserResource {
     @ResponseBody
 
     public ResponseEntity<?> setLogInEnterprise(@RequestBody Enterprise enterprise, HttpServletRequest request) {
+
+        DBContextHolder.setCurrentDb(DBEnum.MAIN);
         User user = this.getCurrentUser();
         Enterprise localEnterprise = this.enterpriseRepository.getOne(enterprise.getId());
+        if (user != null && localEnterprise != null && user.hasEnterprise(localEnterprise)) {
+        int globalId = user.getPerson().getGlobalId();
 
-        boolean isInUserEnterprises = user.getEnterprises().contains(localEnterprise);
+        user.setLogInEnterprise(localEnterprise);
 
 
-        log.info("user != null" + (user != null));
-        log.info("localEnterprise " + (localEnterprise != null));
-        log.info("isInUserEnterprises " + isInUserEnterprises);
+        Person mainPerson = personRepository.findByGlobalId(globalId);
+        if (mainPerson != null && mainPerson.getUserAccount() != null ) {
+            mainPerson.getUserAccount().setLogInEnterprise(localEnterprise);
+            personRepository.save(mainPerson);
+        }
 
-        if (user != null && localEnterprise != null &&   user.hasEnterprise(localEnterprise)){
-            user.setLogInEnterprise(localEnterprise);
-            userRepository.save(user);
+
+        DBContextHolder.setCurrentDb(DBEnum.OVOFRAIS);
+        Person ovoPerson = personRepository.findByGlobalId(globalId);
+        if(ovoPerson != null &&  ovoPerson.getUserAccount() != null ) {
+            ovoPerson.getUserAccount().setLogInEnterprise(localEnterprise);
+            personRepository.save(ovoPerson);
+        }
+
+
+
+        DBContextHolder.setCurrentDb(DBEnum.FRAISCAPRICES);
+        Person fcPerson = personRepository.findByGlobalId(globalId);
+        if(fcPerson!=null && fcPerson.getUserAccount() != null ) {
+            fcPerson.getUserAccount().setLogInEnterprise(localEnterprise);
+            personRepository.save(fcPerson);
+        }
+
+
+
+
+        DBContextHolder.setCurrentDb(DBEnum.CANELIA);
+        Person caPerson = personRepository.findByGlobalId(globalId);
+            if(caPerson!=null && caPerson.getUserAccount() != null) {
+                caPerson.getUserAccount().setLogInEnterprise(localEnterprise);
+                personRepository.save(caPerson);
+            }
+
+
+
+
+        // boolean isInUserEnterprises = user.getEnterprises().contains(localEnterprise);
+
+
+        // log.info("isInUserEnterprises " + isInUserEnterprises);
+
+
+
             return new ResponseEntity<>(user.getPerson().toJson().toString(), HttpStatus.OK);
         }
 
@@ -305,14 +515,13 @@ public class UserResource {
 
     public boolean changePassword(String oldPassword, String newPassword, String email) {
         User user = userRepository.findByEmailIgnoreCase(email);
-
-
-        if (user == null){
+        if (user == null) {
             return false;
         }
-        boolean passwordIsOk = passwordEncoder.matches(oldPassword, user.getPassword() );
+        boolean passwordIsOk = passwordEncoder.matches(oldPassword, user.getPassword());
         if (passwordIsOk) {
             user.setPassword(passwordEncoder.encode(newPassword));
+
             userRepository.save(user);
             return true;
         }

@@ -47,6 +47,10 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
   Page<Document> findAllByCodeContainsAndActiveTrueAndTypeCategoryAndStatusInAndAccessIn(String code, Category documentCategory, List<Status> workFlow, List<String> accessList, Pageable paging);
   int countByCodeContainsAndActiveTrueAndTypeCategoryAndStatusInAndAccessIn(String code, Category documentCategory, List<Status> workFlow, List<String> accessList);
 
+  List<Document> findByActiveTrueAndType_MetaData_CodeAndDocumentDataValues_Value(String code, String value);
+
+
+
   Page<Document> findAllByCodeContainsAndActiveTrueAndTypeCategoryAndAccessIn(String code, Category documentCategory, List<String> accessList, Pageable paging);
   int countByCodeContainsAndActiveTrueAndTypeCategoryAndAccessIn(String code, Category documentCategory, List<String> accessList);
 

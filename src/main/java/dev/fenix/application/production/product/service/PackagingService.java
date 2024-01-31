@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class PackagingService {
@@ -68,16 +71,13 @@ public class PackagingService {
       for (Map.Entry<String, String> entry : filters.entrySet()) {
         String key = entry.getKey();
         String value = entry.getValue();
-        switch (key) {
-          case "name":
-            filteringPackagings.addAll(
-                packagingRepository.findAllByNameContainsAndActiveTrue(value, paging).getContent());
-            count = packagingRepository.countByNameContainsAndActiveTrue(value);
-            //log.info(count + " Products by name [" + value + "] for all types");
-            break;
-          default:
-            //log.info("value not in list of search !");
-        }
+          //log.info("value not in list of search !");
+          if ("name".equals(key)) {
+              filteringPackagings.addAll(
+                      packagingRepository.findAllByNameContainsAndActiveTrue(value, paging).getContent());
+              count = packagingRepository.countByNameContainsAndActiveTrue(value);
+              //log.info(count + " Products by name [" + value + "] for all types");
+          }
       }
       pagedResult = new PageImpl<>(filteringPackagings, paging, pageSize);
       return pagedResult.getContent();

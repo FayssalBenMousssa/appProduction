@@ -114,19 +114,22 @@ public class Classification {
                     parent.put("imageUrl", this.getImageUrl());
                 }
 
-                if (this.getParent().getParent() != null) {
+                if (this.getParent().getParent()!= null ) {
                     JSONObject grandParent = new JSONObject();
                     grandParent.put("id", this.getParent().getParent().getId());
                     grandParent.put("name", this.getParent().getParent().getName());
                     grandParent.put("code", this.getParent().getParent().getCode());
                     grandParent.put("level", this.getParent().getParent().getLevel());
-                    grandParent.put("type", this.getParent().getParent().getType().toJson());
+                    if(this.getParent().getParent().getType()!= null) {
+                        grandParent.put("type", this.getParent().getParent().getType().toJson());
+                    }
                     grandParent.put("active", this.getParent().getParent().isActive());
                     parent.put("parent", grandParent);
-                    if (this.getImageUrl() != null) {
+                    if (this.getImageUrl()!= null) {
                         grandParent.put("imageUrl", this.getParent().getParent().getImageUrl());
                     }
                 }
+
 
                 classificationJSON.put("parent", parent);
             }

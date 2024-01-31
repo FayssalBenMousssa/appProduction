@@ -1,9 +1,12 @@
 package dev.fenix.application.api.production.customer;
 
 
+import dev.fenix.application.business.model.Staff;
 import dev.fenix.application.production.customer.model.Customer;
 import dev.fenix.application.production.customer.repository.CustomerRepository;
 import dev.fenix.application.production.customer.service.CustomerService;
+import dev.fenix.application.security.model.User;
+import dev.fenix.application.security.repository.UserRepository;
 import javassist.NotFoundException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,13 +14,19 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Date;
 
 @RestController()
 @RequestMapping("/api/customer")
@@ -26,6 +35,9 @@ public class CustomerResource {
 
   @Autowired private CustomerRepository customerRepository;
   @Autowired private CustomerService customerService;
+  @Autowired private UserRepository userRepository;
+
+
 
   @RequestMapping(
       value = {"/", ""},
@@ -46,13 +58,9 @@ public class CustomerResource {
       @RequestParam(defaultValue = "200") Integer size,
       @RequestParam(defaultValue = "id,desc") String[] sort,
       @RequestParam(required = false) String[] query) throws InterruptedException {
-
-
-
-
-
-
     JSONArray jArray = new JSONArray();
+
+
     Iterable<Customer> customers = customerService.getAllCustomers(page, size, sort, query);
     for (Customer customer : customers) {
       jArray.put(customer.toJson());
@@ -68,6 +76,44 @@ public class CustomerResource {
     }
     return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
   }
+
+  @RequestMapping(
+          value = "/index/user",
+          method = RequestMethod.GET,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> indexUser(
+          HttpServletRequest request,
+          @RequestParam(required = false) Long type,
+          @RequestParam(defaultValue = "0") Integer page,
+          @RequestParam(defaultValue = "1000") Integer size,
+          @RequestParam(defaultValue = "id,desc") String[] sort,
+          @RequestParam(required = false) String[] query) throws InterruptedException {
+    JSONArray jArray = new JSONArray();
+    // Iterable<Customer> customers = customerService.getAllCustomers(page, size, sort, query);
+    User user = this.getCurrentUser();
+    Staff staff = user.getPerson().getStaffs().get(0);
+    Pageable paging = PageRequest.of(page, size);
+    Page<Customer> customerPage = customerRepository.findByCustomerStaff_Staff_IdAndCustomerStaff_StartDateBeforeAndCustomerStaff_EndDateNullOrCustomerStaff_EndDateAfter( staff.getId(), new Date(), new Date(), paging);
+
+    for (Customer customer : customerPage) {
+
+      System.out.println(customer.getSocialReason());
+      jArray.put(customer.toJson());
+    }
+    JSONObject response = new JSONObject();
+    try {
+      response.put("results", jArray);
+      response.put("count", jArray.length());
+      response.put("total", customerPage.getTotalElements());
+      return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+  }
+
+
+
 
   @RequestMapping(
       value = "/save",
@@ -133,5 +179,13 @@ public class CustomerResource {
       e.printStackTrace();
       return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+  }
+
+
+  private User getCurrentUser() {
+    UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    String username = userDetails.getUsername();
+    User user = userRepository.findOneByUserName(username);
+    return user;
   }
 }
