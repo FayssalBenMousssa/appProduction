@@ -79,26 +79,26 @@ public class ProductService {
 
     // public List<Document> loadDocuments(Pageable paging, Category documentCategory)
     public List<Product> loadProducts(Map<String, String> filters, Pageable paging) {
-        filters.forEach((s, s2) -> log.info(s + " " + s2));
+        filters.forEach((s, s2) ->// documents + " " + s2));
 
         if (filters.containsKey("name") && filters.containsKey("type_product")) {
-            log.info("name");
-            log.info("type_product");
+           // document"name");
+           // document"type_product");
             ProductType productType = productTypeRepository.findOneByCode(filters.get("type_product"));
-            log.info(productType.getName());
+           // documentproductType.getName());
             pagedResult = productRepository.findAllByNameContainsAndActiveTrueAndProductType(filters.get("name"), productType, paging);
             count = productRepository.countByNameContainsAndActiveTrueAndProductType(filters.get("name"), productType);
             return pagedResult.getContent();
 
         } else if (filters.containsKey("type_product")) {
-            log.info("type_product");
+           // document"type_product");
             ProductType productType = productTypeRepository.findOneByCode(filters.get("type_product"));
-            log.info(productType.getName());
+           // documentproductType.getName());
             pagedResult = productRepository.findByActiveTrueAndProductType(productType, paging);
             count = productRepository.countByActiveTrueAndProductType(productType);
             return pagedResult.getContent();
         } else if (filters.containsKey("name")) {
-            log.info("name");
+           // document"name");
             pagedResult = productRepository.findAllByNameContainsAndActiveTrue(filters.get("name"), paging);
             count = productRepository.countByNameContainsAndActiveTrue(filters.get("name"));
             return pagedResult.getContent();

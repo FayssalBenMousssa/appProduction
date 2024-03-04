@@ -150,12 +150,12 @@ public class InterventionResource {
             Intervention localIntervention = interventionRepository.getOne(intervention.getId());
             for (Response response : intervention.getResponses()) {
                 if (response.getUser() == null) {
-                 log.info(response.toJson().toString());
+                // documentresponse.toJson().toString());
                     response.setUser(this.getCurrentUser());
                     localIntervention.getResponses().add(response);
                 }
             }
-            log.info(localIntervention.toJson().toString());
+           // documentlocalIntervention.toJson().toString());
            // localIntervention.setResponses(intervention.getResponses());
             localIntervention.setInterventionStatuses(intervention.getInterventionStatuses());
 

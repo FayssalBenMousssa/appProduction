@@ -62,7 +62,7 @@ public class ProductResource {
     attachment = attachmentService.saveAttachment(file , product , attachmentType);
     String downloadURL  = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/product/download/").path(attachment.getId()).toUriString();
 /// && (file.getContentType() == "image/png" || file.getContentType() == "image/jpeg" ||  file.getContentType() == "image/jpg"   )
-   // log.info(file.getContentType());
+   //// documentfile.getContentType());
     if (attachmentType.equals("productImage")   && (file.getContentType().equals("image/png") || file.getContentType().equals("image/jpeg") || file.getContentType().equals("image/jpg") )) {
       product.setImageUrl(attachment.getId());
       productRepository.save(product);
@@ -94,11 +94,11 @@ public class ProductResource {
     ProductAttachment attachment;
     attachment = attachmentService.getAttachment(fileId);
 
-    log.info("=====================================");
-    log.info(attachment.getFileName());
-    log.info(attachment.getFileType());
-    log.info(String.valueOf(attachment.getData().length));
-    log.info("=====================================");
+   // document"=====================================");
+   // documentattachment.getFileName());
+   // documentattachment.getFileType());
+   // documentString.valueOf(attachment.getData().length));
+   // document"=====================================");
 
     return ResponseEntity.ok()
         .contentType(MediaType.parseMediaType(attachment.getFileType()))

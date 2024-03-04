@@ -1,0 +1,49 @@
+{
+  "DOC_PIECE_JOINTE": "DOC_PIECE_JOINTE",
+  "DOC_TITRE": "Bon de livraison BL.0000090",
+  "DOC_NOTES": "Bon de livraison BL.0000090",
+  "DOC_UPDATE": "DOC_UPDATE",
+  "DOC_PAIEMENT": "DOC_PAIEMENT",
+  "STE": "STE",
+  "CLIENT_INTITULE": "buffalo .tetouan",
+  "RESPONSABLE_ID": 1009,
+  "DOC_ACTIVE": 0,
+  "POSITION": "33.5960284,-7.638663",
+  "ID_DOC_TYPE": 19,
+  "CLIENT_ID": 33356,
+  "LIVREUR_ID": 1009,
+  "DOC_OBJET": "BL.001088.000011",
+  "reglements": {
+    "29040": {
+      "DOC_ID": 29035,
+      "REG_DATE": "2024-02-13",
+      "REG_MONTANT": 342,
+      "REG_ID": 29040,
+      "REG_LEBELLE": "buffalo .tetouan"
+    }
+  },
+  "DOC_AD_LIVRAISON": "DOC_AD_LIVRAISON",
+  "DOC_JUSQU": "2024-02-13",
+  "DOC_REF_EXT": "DOC_REF_EXT",
+  "DOC_REFERENCE": "BL.001088.000011",
+  "DOC_DATE_UPDATE": "2024-02-13",
+  "CLIENT": 33356,
+  "TYPE_LIBELLE": "Bon de livraison",
+  "ID_USER": 1009,
+  "articles": {
+    "29038": {
+      "DOC_ID": 29035,
+      "ART_REM": 0,
+      "DOC_ARTICLES_ID": 29038,
+      "ART_ACTIVE": 0,
+      "ART_PRIX_FINAL": 68.4,
+      "ART_DATE": "2024-02-13",
+      "ART_QTE": 5,
+      "ARTICLE_ID": 207,
+      "A_TVA_VALEUR": 0.002,
+      "ART_EXPIRATION": 0,
+      "ART_TVA": 0.2
+    }
+  },
+  "DOC_DATE": "2024-02-13"
+}

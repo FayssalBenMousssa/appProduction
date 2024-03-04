@@ -338,19 +338,27 @@ public class DocumentService {
 
 
 
-    public String toOldJSON(Document doc) throws JSONException, ParseException {
+    public String toOldJSON(Document doc , User user ,  List<PaymentCustomer> payments) throws JSONException, ParseException {
         JSONObject document = new JSONObject();
 
         document.put("CLIENT_ID", doc.getDestination().getId());
         document.put("CLIENT_INTITULE", doc.getDestination().getSocialReason());
         document.put("DEPOT_ID", null);
-        document.put("DOC_ACTIVE", 1);
+        document.put("DOC_ACTIVE", 0);
         document.put("DOC_ID", null);
         document.put("DOC_AD_LIVRAISON", "DOC_AD_LIVRAISON");
-        document.put("DOC_DATE", doc.getDate());
-        document.put("DOC_DATE_UPDATE", doc.getDate());
+
+
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String DOC_DATE = dateFormat.format( doc.getDate());
+
+        document.put("DOC_DATE", DOC_DATE);
+
+
+        document.put("DOC_DATE_UPDATE", DOC_DATE);
         document.put("DOC_ETAT", null);
-        document.put("DOC_JUSQU", doc.getDate());
+        document.put("DOC_JUSQU", DOC_DATE);
         document.put("DOC_LIVRAISON", null);
         document.put("DOC_NOTES", doc.getName());
         document.put("DOC_NUMERO", null);
@@ -362,26 +370,22 @@ public class DocumentService {
         document.put("DOC_REGLEMENT", null);
         document.put("DOC_STATUT", null);
         document.put("DOC_TITRE", doc.getName());
+        document.put("STE", "STE");
         if(Objects.equals(doc.getType().getCode(), "bon_livraison")){
             document.put("ID_DOC_TYPE", 19);
+        } else if(Objects.equals(doc.getType().getCode(), "prepa_bon_charge")) {
+            document.put("ID_DOC_TYPE", 4);
+            document.put("STE", 1);
         }
 
         if(doc.getLogs() != null) {
-
-            String userName = doc.getLogs().get(0).getUserName();
-            User user = userRepository.findOneByUserName(userName);
             if(user != null) {
                 document.put("ID_USER", user.getId());
                 document.put("LIVREUR_ID", user.getId());
                 document.put("RESPONSABLE_ID",  user.getId());
             }
 
-
         }
-
-
-
-
         if(doc.getDocumentDataValues() != null) {
             for (DocumentDataValue documentDataValue : doc.getDocumentDataValues()) {
                 if(Objects.equals(documentDataValue.getMetaData().getCode(), "position_gps")){
@@ -392,7 +396,7 @@ public class DocumentService {
         document.put("TYPE_LIBELLE", doc.getType().getName());
         document.put("DOC_AB", null);
         document.put("ID_PROJECT", null);
-        document.put("STE", "STE");
+
         document.put("CLIENT", doc.getDestination().getId());
         document.put("DOC_UPDATE", "DOC_UPDATE");
 
@@ -404,18 +408,19 @@ public class DocumentService {
             line.put("DOC_ID", doc.getId());
             line.put("ARTICLE_ID", docProduct.getProduct().getId());
             line.put("ART_TVA", docProduct.getTax());
-            line.put("A_TVA_VALEUR", docProduct.getTax()/100);
+            line.put("A_TVA_VALEUR", docProduct.getTax());
             line.put("ART_REM", 0);
             line.put("ART_QTE", docProduct.getQuantity());
-            line.put("ART_PRIX_FINAL", docProduct.getPrice());
+            line.put("ART_PRIX_FINAL", docProduct.getPrice() / (1 + docProduct.getTax()));
             line.put("ART_EXPIRATION", 0);
-            line.put("ART_DATE", doc.getDate());
+            line.put("ART_DATE", DOC_DATE);
             line.put("ART_DATA", null);
-            line.put("ART_ACTIVE",1);
+            line.put("ART_ACTIVE",0);
+         //   log.error(line.toString());
             articles.put(String.valueOf(docProduct.getId()), line);
         }
 
-      List<PaymentCustomer> payments = paymentCustomerRepository.findByCodeContainsAndActiveTrue(doc.getCode());
+
         JSONObject listPayments = new JSONObject();
         if(payments != null) {
             for (PaymentCustomer payment:payments) {
@@ -424,15 +429,18 @@ public class DocumentService {
                 reg.put("REG_ID", payment.getId());
                 reg.put("DOC_ID", doc.getId());
                 reg.put("REG_MONTANT", payment.getMontant());
-                reg.put("REG_LEBELLE", payment.getCustomer().getSocialReason());
+                reg.put("REG_LEBELLE", payment.getCode() + " " + payment.getCustomer().getSocialReason());
+
+                if(Objects.equals(payment.getPaymentMethod().getCode(), "ESP")){
+                    reg.put("REG_MODE_ID", 9);
+                } else if (Objects.equals(payment.getPaymentMethod().getCode(), "CHQ")) {
+                    reg.put("REG_MODE_ID", 10);
+                }else {
+                    reg.put("REG_MODE_ID", 9);
+                }
 
 
-
-                Date date;
-                SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd_HHmmss");
-                date = df.parse(String.valueOf(payment.getPaymentDate()));
-                String REG_DATE = new SimpleDateFormat("yyyy-MM-dd").format(date);
-
+                String REG_DATE = dateFormat.format(payment.getPaymentDate());
                 reg.put("REG_DATE", REG_DATE);
 
                 /*if (reglement.getCHEQUE_ID() != 0) {
@@ -447,10 +455,7 @@ public class DocumentService {
                     cheque.put("CHEQUE_TIRE", reglement.getCHEQUE().getCHEQUE_TIRE());
                     reg.put("CHEQUE", cheque);
                 }*/
-
                 listPayments.put(String.valueOf(payment.getId()), reg);
-
-
             }
         }
 

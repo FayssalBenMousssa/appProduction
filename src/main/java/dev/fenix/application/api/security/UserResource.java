@@ -149,8 +149,8 @@ public class UserResource {
             people.forEach(person -> {
                 if (person.getUserAccount() != null) {
                     jArray.put(person.toSmallJsonUser());
-                    log.info(DBContextHolder.getCurrentDb().toString());
-                    log.info(person.getFullName() + " " + person.getUserAccount().getEnterprises().size());
+                   // documentDBContextHolder.getCurrentDb().toString());
+                   // documentperson.getFullName() + " " + person.getUserAccount().getEnterprises().size());
                 }
 
             });
@@ -503,7 +503,7 @@ public class UserResource {
         // boolean isInUserEnterprises = user.getEnterprises().contains(localEnterprise);
 
 
-        // log.info("isInUserEnterprises " + isInUserEnterprises);
+        //// document"isInUserEnterprises " + isInUserEnterprises);
 
 
 

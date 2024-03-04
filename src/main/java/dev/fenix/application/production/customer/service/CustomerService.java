@@ -79,7 +79,7 @@ public class CustomerService {
   }
 
   public List<Customer> loadCustomers(Map<String, String> filters, Pageable paging){
-    log.info("loadCustomers");
+   // document"loadCustomers");
     if (filters.containsKey("social_reason") && filters.containsKey("user_customers")  ) {
       //log.info("code :  companyId  : filterStatus");
     } else if (filters.containsKey("social_reason")  ) {
@@ -89,7 +89,7 @@ public class CustomerService {
 
     }else if ( filters.containsKey("user_customers")) {
 
-      log.info("user_customers");
+     // document"user_customers");
 
       UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       String username = userDetails.getUsername();

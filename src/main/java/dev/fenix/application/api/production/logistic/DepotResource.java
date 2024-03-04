@@ -1,6 +1,5 @@
 package dev.fenix.application.api.production.logistic;
 
-import dev.fenix.application.configuration.database.DBEnum;
 import dev.fenix.application.production.logistic.model.Depot;
 import dev.fenix.application.production.logistic.repository.DepotRepository;
 import javassist.NotFoundException;
@@ -54,7 +53,7 @@ public class DepotResource {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public ResponseEntity<?> save(@Valid @RequestBody Depot depot, HttpServletRequest request) {
-    log.info("DB" + DBEnum.CANELIA);
+   // document"DB" + DBEnum.CANELIA);
 
     depot.setActive(true);
     Depot savedDepot = depotRepository.save(depot);
@@ -80,7 +79,7 @@ public class DepotResource {
   @ResponseBody
   public ResponseEntity<?> update(@Valid @RequestBody Depot depot, HttpServletRequest request) {
     try {
-      log.info("DB" + DBEnum.CANELIA);
+     // document"DB" + DBEnum.CANELIA);
      // DBContextHolder.setCurrentDb(DBTypeEnum.CANELIA);
 
       depot.setActive(true);

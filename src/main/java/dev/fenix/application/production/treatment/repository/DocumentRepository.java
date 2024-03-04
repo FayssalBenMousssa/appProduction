@@ -19,6 +19,21 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
   int countByActiveTrue();
   int countByActiveTrueAndType(Type type);
   Document findTopByOrderByIdDesc();
+
+
+
+
+
+
+  @Query("select d from Document d where lower(d.code) like lower(concat('%', :code, '%')) and d.active = true")
+  List<Document> findByCodeLikeIgnoreCaseAndActiveTrue(@Param("code") String code);
+
+   List<Document> findByActiveTrueAndIsSynchronisedFalseAndType_CodeLike(String code);
+
+
+
+
+
   int countByType(Type type);
   int countByActiveTrueAndTypeCategory(Category category);
   Page<Document> findAll(Pageable sortedByName);

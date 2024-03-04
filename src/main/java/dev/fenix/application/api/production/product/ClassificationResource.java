@@ -53,7 +53,7 @@ public class ClassificationResource {
       // NotFoundException("Classification  not found"));
       classifications = classificationRepository.findByActiveTrueAndLevel(level);
     } else if (type_product != null) {
-     log.info("classificationRepository ");
+    // document"classificationRepository ");
       classifications = classificationRepository.findByActiveTrueAndType_CodeContains(type_product);
     }else {
       classifications = classificationRepository.findByActiveTrue();

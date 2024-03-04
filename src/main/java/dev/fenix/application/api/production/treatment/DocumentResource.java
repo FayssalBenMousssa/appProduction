@@ -1,12 +1,18 @@
 package dev.fenix.application.api.production.treatment;
 
+import dev.fenix.application.configuration.database.DBContextHolder;
+import dev.fenix.application.configuration.database.DBEnum;
 import dev.fenix.application.core.model.MetaData;
 import dev.fenix.application.core.repository.MetaDataRepository;
+import dev.fenix.application.production.payment.model.PaymentCustomer;
+import dev.fenix.application.production.payment.repository.PaymentCustomerRepository;
 import dev.fenix.application.production.treatment.model.*;
 import dev.fenix.application.production.treatment.repository.DocumentLogRepository;
 import dev.fenix.application.production.treatment.repository.DocumentRepository;
 import dev.fenix.application.production.treatment.service.DocumentService;
+import dev.fenix.application.security.model.Setting;
 import dev.fenix.application.security.model.User;
+import dev.fenix.application.security.repository.SettingRepository;
 import dev.fenix.application.security.repository.UserRepository;
 import javassist.NotFoundException;
 import org.json.JSONArray;
@@ -14,11 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -29,27 +31,33 @@ import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 @RestController()
 @RequestMapping("/api/document")
 public class DocumentResource {
     private static final Logger log = LoggerFactory.getLogger(DocumentResource.class);
 
-    @Autowired
-    private DocumentRepository documentRepository;
+    private final DocumentRepository documentRepository;
 
 
-    @Autowired
-    private DocumentService documentService;
-    @Autowired
-    private UserRepository userRepository;
+    private final DocumentService documentService;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private DocumentLogRepository documentLogRepository;
+    private final SettingRepository settingRepository;
 
-    @Autowired
-    private MetaDataRepository metaDataRepository;
+    private final DocumentLogRepository documentLogRepository;
+    private final PaymentCustomerRepository paymentCustomerRepository;
+    private final MetaDataRepository metaDataRepository;
+
+    public DocumentResource(DocumentRepository documentRepository, DocumentService documentService, UserRepository userRepository, SettingRepository settingRepository, DocumentLogRepository documentLogRepository, MetaDataRepository metaDataRepository, PaymentCustomerRepository paymentCustomerRepository) {
+        this.documentRepository = documentRepository;
+        this.documentService = documentService;
+        this.userRepository = userRepository;
+        this.settingRepository = settingRepository;
+        this.documentLogRepository = documentLogRepository;
+        this.metaDataRepository = metaDataRepository;
+        this.paymentCustomerRepository = paymentCustomerRepository;
+    }
 
     @RequestMapping(value = {"/", ""}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String index() {
@@ -112,15 +120,79 @@ public class DocumentResource {
                         .orElseThrow(() -> new NotFoundException("Document  not found"));
 
 
-        // Run the saving process asynchronously
-        CompletableFuture.runAsync(() -> {
-            runSync(document);
 
-        });
+
 
 
         return new ResponseEntity<>(document.toJson().toString(), HttpStatus.OK);
     }
+
+    public void updateUserSequence(Document savedDocument) {
+        User user = this.getCurrentUser();
+        if (user.getSettings()!= null && user.getSettings().size() > 0) {
+            String[] parts = savedDocument.getCode().split("\\.");
+            String lastPart = parts[2];
+            int sequenceNumber = Integer.parseInt(lastPart);
+           // document"Updating user sequence for document with code: " + savedDocument.getCode());
+            for (Setting setting : user.getSettings()) {
+                String settingName = setting.getName();
+               // document"Checking setting with name: " + settingName);
+                if (Objects.equals(savedDocument.getType().getCode(), "bon_livraison") && settingName.equals("sequence_bon_livraison")) {
+                   // document"Updating sequence_bon_livraison setting with last part: " + lastPart);
+                    setting.setValue(String.valueOf(sequenceNumber));
+                } else if (Objects.equals(savedDocument.getType().getCode(), "bon_transfert") && settingName.equals("sequence_bon_transfert")) {
+                   // document"Updating sequence_bon_transfert setting with last part: " + lastPart);
+                    setting.setValue(String.valueOf(sequenceNumber));
+                } else if (Objects.equals(savedDocument.getType().getCode(), "prepa_bon_charge") && settingName.equals("sequence_prepa_bon_charge")) {
+                   // document"Updating sequence_prepa_bon_charge setting with last part: " + lastPart);
+                    setting.setValue(String.valueOf(sequenceNumber));
+                }
+            }
+           // document"Saving updated settings for user: " + user.getId());
+            settingRepository.saveAll(user.getSettings());
+           // document"Settings saved successfully");
+        }
+    }
+
+
+
+
+    public void runSyncDocument(Document savedDocument) {
+        try {
+           // document"runSync method called with document ID " + savedDocument.getId() + " and code " + savedDocument.getCode());
+            if (!savedDocument.getIsSynchronised()) {
+               // document"Document is not yet synchronized");
+               // document"Sending request to other server");
+                RestTemplate restTemplate = new RestTemplate();
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                Map<String, Object> data = new HashMap<>();
+                DocumentService documentService = new DocumentService();
+                String userName = savedDocument.getLogs().get(0).getUserName();
+                User user = userRepository.findOneByUserName(userName);
+                List<PaymentCustomer> payments = this.paymentCustomerRepository.findByCodeContainsAndActiveTrue(savedDocument.getCode());
+                data.put("data", documentService.toOldJSON(savedDocument, user, payments));
+                HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(data, headers);
+               // http://192.168.3.3:75/
+                // http://105.155.251.128:75/
+                ResponseEntity<String> response = restTemplate.postForEntity("http://105.155.251.128/api/azure", requestEntity, String.class);
+                if (!response.getStatusCode().is2xxSuccessful()) {
+                    log.error("Error response from other server: " + response.getStatusCode());
+                    return;
+                }
+                String responseBody = response.getBody();
+               // document"Received response from other server: " + responseBody);
+                savedDocument.setIsSynchronised(true);
+                documentRepository.save(savedDocument);
+               // document"Document with ID " + savedDocument.getId() + " and code " + savedDocument.getCode() + " updated to isSynchronised = true");
+            } else {
+               // document"Document with ID " + savedDocument.getId() + " and code " + savedDocument.getCode() + " already has isSynchronised = true");
+            }
+        } catch (Exception e) {
+            log.error("Error sending request to other server: " + e.getMessage());
+        }
+    }
+
 
     @RequestMapping(
             value = "/business_folder/get/{value}",
@@ -195,23 +267,21 @@ public class DocumentResource {
     @ResponseBody
     public ResponseEntity<?> save(@Valid @RequestBody Document document, HttpServletRequest request) {
         try {
-            document.setName(document.getType().getName() + " " + this.getNewCode(document.getType()));
+
             if (document.getCode() == null) {
                 document.setCode(this.getNewCode(document.getType()));
+                document.setName(document.getType().getName() + " " + this.getNewCode(document.getType()));
             }
+
             document.setActive(true);
+            document.setIsSynchronised(false);
             document.setLogs(getDocumentLogs(document, Action.ADD, null));
             this.setCodeBuz(document);
             Document savedDocument = documentRepository.save(document);
-
-
-            // Run the saving process asynchronously
-            CompletableFuture.runAsync(() -> {
-                runSync(savedDocument);
-
-            });
-
-
+            if(DBContextHolder.getCurrentDb() == DBEnum.CANELIA){
+                runSyncDocument(savedDocument);
+                updateUserSequence(document);
+            }
             this.changeStatusRelated(document);
             return new ResponseEntity<>(savedDocument.toJson().toString(), HttpStatus.OK);
         } catch (Exception e) {
@@ -220,47 +290,14 @@ public class DocumentResource {
         }
     }
 
-    public void runSync(Document savedDocument) {
-        try {
-            log.info(" IsSynchronised : " + savedDocument.getIsSynchronised().toString());
-            if(!savedDocument.getIsSynchronised()){
-
-
-            log.info("Sending request to other server");
-            RestTemplate restTemplate = new RestTemplate();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            Map<String, Object> data = new HashMap<>();
-
-            log.info(documentService.toOldJSON(savedDocument));
-
-
-            /*data.put("data", documentService.toOldJSON(savedDocument));
-            HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(data, headers);
-            ResponseEntity<String> response = restTemplate.postForEntity("http://192.168.3.3/api/azure", requestEntity, String.class);
-            if (!response.getStatusCode().is2xxSuccessful()) {
-                log.error("Error response from other server: " + response.getStatusCode());
-                return;
-            }
-            String responseBody = response.getBody();
-            log.info(responseBody);*/
-        }
-
-        } catch (Exception e) {
-            log.error("Error sending request to other server: " + e.getMessage());
-        }
-    }
-
 
     public Document setCodeBuz(Document document) {
 
         String targetCode = "code_affaire";
         if (document.getType().getMetaData() != null) {
-
-
             for (MetaData metaDta : document.getType().getMetaData()) {
                 if (metaDta.getCode().equals(targetCode)) {
-                    log.info("find metaDta! " + metaDta.getCode());
+                   // document"find metaDta! " + metaDta.getCode());
                     DocumentDataValue documentDataValue = new DocumentDataValue();
                     documentDataValue.setMetaData(metaDta);
                     documentDataValue.setActive(true);
@@ -271,9 +308,9 @@ public class DocumentResource {
                     }
                     for (DocumentDataValue dataValue : metaDataValue) {
                         MetaData metaData = metaDataRepository.getOne(dataValue.getMetaData().getId());
-                        log.info("metaData : " + metaDta.getCode());
+                       // document"metaData : " + metaDta.getCode());
                         if (metaData.getCode().equals(targetCode)) {
-                            log.info("CodeBuz is exist ! " + metaDta.getCode());
+                           // document"CodeBuz is exist ! " + metaDta.getCode());
                             document.setDocumentDataValues(metaDataValue);
                             return document;
                         }
@@ -307,6 +344,7 @@ public class DocumentResource {
                     }
                 }
             }
+            document.setIsSynchronised(false);
             Document updatedDocument = documentRepository.save(document);
 
             return new ResponseEntity<>(updatedDocument.toJson().toString(), HttpStatus.OK);
@@ -361,9 +399,7 @@ public class DocumentResource {
         if (action == Action.DELETE || action == Action.EDIT) {
             Document oldDocument = documentRepository.getOne(document.getId());
             logs = oldDocument.getLogs();
-
             String messages = document.getDifferenceJson(oldDocument).toString();
-
             DocumentLog documentLog = new DocumentLog(action, document, messages, this.getCurrentUser().getUserName());
             logs.add(documentLog);
         } else if (action == Action.ADD) {
