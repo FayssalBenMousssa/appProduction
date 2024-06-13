@@ -39,7 +39,7 @@ public class Price {
     private CategoryPrice category;
 
     @NotNull(message = "Please enter the Period")
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.ALL} , fetch = FetchType.EAGER)
     @JoinColumn(name = "period_id", referencedColumnName = "id")
     private Period period;
 
@@ -86,7 +86,10 @@ public class Price {
             if (this.getCategory() != null) {
                 priceJSON.put("category", this.getCategory().toJson());
             }
-            priceJSON.put("period", this.getPeriod().toJson());
+            if (this.getPeriod() != null) {
+                priceJSON.put("period", this.getPeriod().toJson());
+            }
+
             priceJSON.put("tax", this.getTax().toJson());
             priceJSON.put("value", this.getValue());
             priceJSON.put("maxQte", this.getMaxQte());

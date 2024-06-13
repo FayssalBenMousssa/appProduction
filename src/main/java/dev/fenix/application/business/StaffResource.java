@@ -7,6 +7,9 @@ import dev.fenix.application.configuration.database.DBContextHolder;
 import dev.fenix.application.configuration.database.DBEnum;
 import dev.fenix.application.person.model.Person;
 import dev.fenix.application.person.repository.PersonRepository;
+import dev.fenix.application.production.customer.model.Customer;
+import dev.fenix.application.production.customer.model.CustomerStaff;
+import dev.fenix.application.production.customer.repository.CustomerRepository;
 import javassist.NotFoundException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Objects;
 
 @RestController()
 @RequestMapping("/api/staff")
@@ -32,7 +36,8 @@ public class StaffResource {
 
   @Autowired
   private PersonRepository personRepository;
-
+  @Autowired
+  private CustomerRepository customerRepository;
   @RequestMapping(
       value = {"/", ""},
       method = RequestMethod.GET,
@@ -97,8 +102,35 @@ public class StaffResource {
       throws NotFoundException {
     ////log.trace("ProductResource.get method accessed");
     Staff staff =
-        staffRepository.findById(id).orElseThrow(() -> new NotFoundException("Product  not found"));
+        staffRepository.findById(id).orElseThrow(() -> new NotFoundException("staff  not found"));
     return new ResponseEntity<>(staff.toJson().toString(), HttpStatus.OK);
+  }
+
+  @GetMapping("/is_customer/{id}/{id_customer}")
+  public ResponseEntity<Boolean> isCustomer(HttpServletRequest request, @PathVariable Long id, @PathVariable Long id_customer) {
+    try {
+      if (id == null || id_customer == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
+      }
+
+      Staff staff = staffRepository.findById(id)
+              .orElseThrow(() -> new NotFoundException("Staff not found"));
+
+      Customer customer = customerRepository.findById(id_customer)
+              .orElseThrow(() -> new NotFoundException("Customer not found"));
+
+      for (CustomerStaff customerStaff : customer.getCustomerStaff()) {
+        if (Objects.equals(customerStaff.getStaff().getId(), staff.getId())) {
+          return ResponseEntity.ok(true);
+        }
+      }
+
+      return ResponseEntity.ok(false);
+    } catch (NotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+    }
   }
 
   @RequestMapping(

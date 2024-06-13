@@ -22,6 +22,13 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
 
 
+  Document findTopByTypeAndLogs_UserNameOrderByCodeDesc(Type type, String userName);
+
+
+
+
+
+
 
 
 

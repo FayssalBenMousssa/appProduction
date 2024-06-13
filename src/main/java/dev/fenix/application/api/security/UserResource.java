@@ -10,6 +10,7 @@ import dev.fenix.application.person.repository.PersonRepository;
 import dev.fenix.application.security.exception.UserFoundException;
 import dev.fenix.application.security.model.Action;
 import dev.fenix.application.security.model.Role;
+import dev.fenix.application.security.model.Setting;
 import dev.fenix.application.security.model.User;
 import dev.fenix.application.security.repository.ActionRepository;
 import dev.fenix.application.security.repository.RoleRepository;
@@ -149,8 +150,8 @@ public class UserResource {
             people.forEach(person -> {
                 if (person.getUserAccount() != null) {
                     jArray.put(person.toSmallJsonUser());
-                   // documentDBContextHolder.getCurrentDb().toString());
-                   // documentperson.getFullName() + " " + person.getUserAccount().getEnterprises().size());
+                    // documentDBContextHolder.getCurrentDb().toString());
+                    // documentperson.getFullName() + " " + person.getUserAccount().getEnterprises().size());
                 }
 
             });
@@ -176,11 +177,11 @@ public class UserResource {
             value = "/user/selected_db",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String>  selectedDb(HttpServletRequest request) {
-      User user = this.getCurrentUser();
+    public ResponseEntity<String> selectedDb(HttpServletRequest request) {
+        User user = this.getCurrentUser();
 
         if (user == null) {
-            throw new RuntimeException("Invalid user " );
+            throw new RuntimeException("Invalid user ");
         } else {
             return ResponseEntity.ok(user.getLogInEnterprise().toJson().toString());
         }
@@ -209,24 +210,27 @@ public class UserResource {
             , @RequestParam(required = false) boolean first_login
     ) {
         User user = userRepository.findOneByUserName(username);
-        int globalId =  user.getPerson().getGlobalId();
+        int globalId = user.getPerson().getGlobalId();
 
         if (user == null) {
             throw new RuntimeException("Invalid  person username : " + username);
-
-
-
         } else {
 
-            if(user.getEnterprises().size() == 1) {
+            if (user.getEnterprises().size() == 1) {
                 user.setLogInEnterprise(user.getEnterprises().iterator().next());
-               DBContextHolder.setCurrentDb(user.getLogInEnterprise().getEnterpriseDatabase());
+                DBContextHolder.setCurrentDb(user.getLogInEnterprise().getEnterpriseDatabase());
             }
             if (optimise) {
                 return ResponseEntity.ok(user.getPerson().toSmallJsonUser().toString());
             } else if (first_login) {
                 DBContextHolder.setCurrentDb(DBEnum.CANELIA);
                 Person person = personRepository.findByGlobalId(globalId);
+
+                log.info(this.getCurrentUser().getUserName() + " has authenticate ");
+                for (Setting setting : person.getUserAccount().getSettings()) {
+                    log.info( "Setting : " + setting.getName() + "  " + setting.getValue());
+                }
+
                 return ResponseEntity.ok(person.loginJson().toString());
             }
             return ResponseEntity.ok(user.getPerson().toJson().toString());
@@ -280,7 +284,6 @@ public class UserResource {
     }
 
 
-
     @RequestMapping(
             value = "user/status",
             method = RequestMethod.PUT,
@@ -304,7 +307,6 @@ public class UserResource {
             Person fcPerson = personRepository.findByGlobalId(globalId);
             fcPerson.getUserAccount().setActive(!fcPerson.getUserAccount().isActive());
             personRepository.save(fcPerson);
-
 
 
             DBContextHolder.setCurrentDb(DBEnum.CANELIA);
@@ -432,7 +434,6 @@ public class UserResource {
             personRepository.save(fcPerson);
 
 
-
             DBContextHolder.setCurrentDb(DBEnum.CANELIA);
             Person caPerson = personRepository.findByGlobalId(globalId);
             caPerson.getUserAccount().setEnterprises(enterprises);
@@ -459,52 +460,46 @@ public class UserResource {
         User user = this.getCurrentUser();
         Enterprise localEnterprise = this.enterpriseRepository.getOne(enterprise.getId());
         if (user != null && localEnterprise != null && user.hasEnterprise(localEnterprise)) {
-        int globalId = user.getPerson().getGlobalId();
+            int globalId = user.getPerson().getGlobalId();
 
-        user.setLogInEnterprise(localEnterprise);
-
-
-        Person mainPerson = personRepository.findByGlobalId(globalId);
-        if (mainPerson != null && mainPerson.getUserAccount() != null ) {
-            mainPerson.getUserAccount().setLogInEnterprise(localEnterprise);
-            personRepository.save(mainPerson);
-        }
+            user.setLogInEnterprise(localEnterprise);
 
 
-        DBContextHolder.setCurrentDb(DBEnum.OVOFRAIS);
-        Person ovoPerson = personRepository.findByGlobalId(globalId);
-        if(ovoPerson != null &&  ovoPerson.getUserAccount() != null ) {
-            ovoPerson.getUserAccount().setLogInEnterprise(localEnterprise);
-            personRepository.save(ovoPerson);
-        }
+            Person mainPerson = personRepository.findByGlobalId(globalId);
+            if (mainPerson != null && mainPerson.getUserAccount() != null) {
+                mainPerson.getUserAccount().setLogInEnterprise(localEnterprise);
+                personRepository.save(mainPerson);
+            }
 
 
-
-        DBContextHolder.setCurrentDb(DBEnum.FRAISCAPRICES);
-        Person fcPerson = personRepository.findByGlobalId(globalId);
-        if(fcPerson!=null && fcPerson.getUserAccount() != null ) {
-            fcPerson.getUserAccount().setLogInEnterprise(localEnterprise);
-            personRepository.save(fcPerson);
-        }
-
+            DBContextHolder.setCurrentDb(DBEnum.OVOFRAIS);
+            Person ovoPerson = personRepository.findByGlobalId(globalId);
+            if (ovoPerson != null && ovoPerson.getUserAccount() != null) {
+                ovoPerson.getUserAccount().setLogInEnterprise(localEnterprise);
+                personRepository.save(ovoPerson);
+            }
 
 
+            DBContextHolder.setCurrentDb(DBEnum.FRAISCAPRICES);
+            Person fcPerson = personRepository.findByGlobalId(globalId);
+            if (fcPerson != null && fcPerson.getUserAccount() != null) {
+                fcPerson.getUserAccount().setLogInEnterprise(localEnterprise);
+                personRepository.save(fcPerson);
+            }
 
-        DBContextHolder.setCurrentDb(DBEnum.CANELIA);
-        Person caPerson = personRepository.findByGlobalId(globalId);
-            if(caPerson!=null && caPerson.getUserAccount() != null) {
+
+            DBContextHolder.setCurrentDb(DBEnum.CANELIA);
+            Person caPerson = personRepository.findByGlobalId(globalId);
+            if (caPerson != null && caPerson.getUserAccount() != null) {
                 caPerson.getUserAccount().setLogInEnterprise(localEnterprise);
                 personRepository.save(caPerson);
             }
 
 
+            // boolean isInUserEnterprises = user.getEnterprises().contains(localEnterprise);
 
 
-        // boolean isInUserEnterprises = user.getEnterprises().contains(localEnterprise);
-
-
-        //// document"isInUserEnterprises " + isInUserEnterprises);
-
+            //// document"isInUserEnterprises " + isInUserEnterprises);
 
 
             return new ResponseEntity<>(user.getPerson().toJson().toString(), HttpStatus.OK);

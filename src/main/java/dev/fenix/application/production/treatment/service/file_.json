@@ -1,0 +1,41 @@
+{
+  "DOC_PIECE_JOINTE": "DOC_PIECE_JOINTE",
+  "DOC_TITRE": "Bon de livraison : BL.001383.000010",
+  "DOC_NOTES": "Bon de livraison : BL.001383.000010",
+  "DOC_UPDATE": "DOC_UPDATE",
+  "DOC_PAIEMENT": "DOC_PAIEMENT",
+  "STE": "STE",
+  "CLIENT_INTITULE": "cofe shop ain diab.casa",
+  "RESPONSABLE_ID": 1383,
+  "DOC_ACTIVE": 0,
+  "POSITION": "33.5960473,-7.6386725",
+  "ID_DOC_TYPE": 19,
+  "CLIENT_ID": 32936,
+  "LIVREUR_ID": 1383,
+  "DOC_OBJET": "BL.001383.000010",
+  "reglements": {},
+  "DOC_AD_LIVRAISON": "DOC_AD_LIVRAISON",
+  "DOC_JUSQU": "2024-04-22",
+  "DOC_REF_EXT": "DOC_REF_EXT",
+  "DOC_REFERENCE": "BL.001383.000010",
+  "DOC_DATE_UPDATE": "2024-04-22",
+  "CLIENT": 32936,
+  "TYPE_LIBELLE": "Bon de livraison",
+  "ID_USER": 1383,
+  "articles": {
+    "118233": {
+      "DOC_ID": 118230,
+      "ART_REM": 0,
+      "DOC_ARTICLES_ID": 118233,
+      "ART_ACTIVE": 0,
+      "ART_PRIX_FINAL": 10.416666666666668,
+      "ART_DATE": "2024-04-22",
+      "ART_QTE": 5,
+      "ARTICLE_ID": 491,
+      "A_TVA_VALEUR": 0.2,
+      "ART_EXPIRATION": 0,
+      "ART_TVA": 0.2
+    }
+  },
+  "DOC_DATE": "2024-04-22"
+}

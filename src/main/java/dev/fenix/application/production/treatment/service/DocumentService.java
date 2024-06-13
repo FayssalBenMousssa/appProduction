@@ -56,7 +56,7 @@ public class DocumentService {
     private int countAll = 0;
 
     private Page<Document> pagedResult = null;
-    private final List<Status> workFlow = Arrays.asList(Status.INITIATED , Status.APPROVED);
+    private final List<Status> workFlow = Arrays.asList(Status.INITIATED, Status.APPROVED);
     private List<Type> typeList;
     private List<String> accessList;
 
@@ -75,6 +75,7 @@ public class DocumentService {
         typeList = new ArrayList<>();
         accessList = new ArrayList<>();
         Set<Role> userRoles = CurrentUser.getRoles();
+
         //log.info(CurrentUser.getUserName() + " : ");
         userRoles.forEach(
                 role -> {
@@ -84,11 +85,6 @@ public class DocumentService {
                                 accessList.add(accessDocuments.getType().getId() + "_" + accessDocuments.getStatus());
                             });
                 });
-
-
-
-
-
         //// Order
         List<Sort.Order> orders = new ArrayList<Sort.Order>();
         if (sortBy[0].contains(",")) {
@@ -196,7 +192,6 @@ public class DocumentService {
     }
 
 
-
     public List<Document> loadDocuments(Pageable paging, Category documentCategory, Map<String, String> filters) {
         if (filters.containsKey("code") && filters.containsKey("companyId") && filters.containsKey("filterStatus")) {
             Company source = companyRepository.findOneById(Long.valueOf(filters.get("companyId")));
@@ -217,7 +212,7 @@ public class DocumentService {
             /////
             pagedResult = documentRepository.loadDocuments_findByActiveTrueAndTypeCategoryAndSourceAndStatusInAndAccessIn(documentCategory, source, workFlow, accessList, paging);
             count = documentRepository.loadDocuments_countByActiveTrueAndTypeCategoryAndSourceAndStatusInAndAccessIn(documentCategory, source, workFlow, accessList);
-           // count = 100;// documentRepository.countByActiveTrueAndTypeCategoryAndSourceAndStatusInAndAccessIn(documentCategory, source,  workFlow , accessList);
+            // count = 100;// documentRepository.countByActiveTrueAndTypeCategoryAndSourceAndStatusInAndAccessIn(documentCategory, source,  workFlow , accessList);
             //log.info("all active documents ... category && filterStatus: " + documentCategory.getName() + "and source :" + source.getSocialReason());
         } else if (filters.containsKey("code")) {
             pagedResult = documentRepository.findAllByCodeContainsAndActiveTrueAndTypeCategoryAndAccessIn(filters.get("code"), documentCategory, accessList, paging);
@@ -244,14 +239,13 @@ public class DocumentService {
     }
 
 
-
     private List<Document> loadDocumentsToInvoice(Pageable paging, Category documentCategory, Map<String, String> filters) {
         //log.info("load Documents ToInvoice") ;
 
-       // companyId
+        // companyId
         // filterStatus
-        if (   filters != null && filters.containsKey("filterStatus") && filters.containsKey("companyId")) {
-          //   boolean filterStatus = Boolean.parseBoolean(filters.get("filterStatus"));
+        if (filters != null && filters.containsKey("filterStatus") && filters.containsKey("companyId")) {
+            //   boolean filterStatus = Boolean.parseBoolean(filters.get("filterStatus"));
 
             //log.info("companyId : " + filters.get("companyId") );
 
@@ -261,8 +255,8 @@ public class DocumentService {
             count = documentRepository.countDocumentsToInvoice_ByActiveTrueAndTypeToInvoiceTrueAndTypeCategoryAndStatusInAndSourceOrDestinationAndAccessIn(documentCategory, workFlow, company, accessList);
             return pagedResult.getContent();
 
-        } else if (filters != null && filters.containsKey("filterStatus") ) {
-          //  boolean filterStatus = Boolean.parseBoolean(filters.get("filterStatus"));
+        } else if (filters != null && filters.containsKey("filterStatus")) {
+            //  boolean filterStatus = Boolean.parseBoolean(filters.get("filterStatus"));
 
             //log.info("filterStatus : " + filters.get("filterStatus") );
 
@@ -272,7 +266,7 @@ public class DocumentService {
             return pagedResult.getContent();
 
 
-        } else if (filters != null &&  filters.containsKey("companyId")  ) {
+        } else if (filters != null && filters.containsKey("companyId")) {
             //log.info("companyId : " + filters.get("companyId") );
 
             boolean filterStatus = Boolean.parseBoolean(filters.get("filterStatus"));
@@ -282,13 +276,12 @@ public class DocumentService {
             return pagedResult.getContent();
 
 
-        }else {
+        } else {
             //log.info(" else  " + "...... ");
             pagedResult = documentRepository.loadDocumentsToInvoice_ByActiveTrueAndTypeToInvoiceTrueAndTypeCategoryAndStatusInAndAccessIn(documentCategory, workFlow, accessList, paging);
             count = documentRepository.countDocumentsToInvoice_ByActiveTrueAndTypeToInvoiceTrueAndTypeCategoryAndStatusInAndAccessIn(documentCategory, workFlow, accessList);
             return pagedResult.getContent();
         }
-
 
 
     }
@@ -337,8 +330,7 @@ public class DocumentService {
     }
 
 
-
-    public String toOldJSON(Document doc , User user ,  List<PaymentCustomer> payments) throws JSONException, ParseException {
+    public String toOldJSON(Document doc, User user, List<PaymentCustomer> payments) throws JSONException, ParseException {
         JSONObject document = new JSONObject();
 
         document.put("CLIENT_ID", doc.getDestination().getId());
@@ -349,9 +341,8 @@ public class DocumentService {
         document.put("DOC_AD_LIVRAISON", "DOC_AD_LIVRAISON");
 
 
-
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String DOC_DATE = dateFormat.format( doc.getDate());
+        String DOC_DATE = dateFormat.format(doc.getDate());
 
         document.put("DOC_DATE", DOC_DATE);
 
@@ -371,24 +362,25 @@ public class DocumentService {
         document.put("DOC_STATUT", null);
         document.put("DOC_TITRE", doc.getName());
         document.put("STE", "STE");
-        if(Objects.equals(doc.getType().getCode(), "bon_livraison")){
+
+        if (Objects.equals(doc.getType().getCode(), "bon_livraison")) {
             document.put("ID_DOC_TYPE", 19);
-        } else if(Objects.equals(doc.getType().getCode(), "prepa_bon_charge")) {
+        } else if (Objects.equals(doc.getType().getCode(), "prepa_bon_charge")) {
             document.put("ID_DOC_TYPE", 4);
             document.put("STE", 1);
         }
 
-        if(doc.getLogs() != null) {
-            if(user != null) {
+        if (doc.getLogs() != null) {
+            if (user != null) {
                 document.put("ID_USER", user.getId());
                 document.put("LIVREUR_ID", user.getId());
-                document.put("RESPONSABLE_ID",  user.getId());
+                document.put("RESPONSABLE_ID", user.getId());
             }
 
         }
-        if(doc.getDocumentDataValues() != null) {
+        if (doc.getDocumentDataValues() != null) {
             for (DocumentDataValue documentDataValue : doc.getDocumentDataValues()) {
-                if(Objects.equals(documentDataValue.getMetaData().getCode(), "position_gps")){
+                if (Objects.equals(documentDataValue.getMetaData().getCode(), "position_gps")) {
                     document.put("POSITION", documentDataValue.getValue());
                 }
             }
@@ -415,15 +407,15 @@ public class DocumentService {
             line.put("ART_EXPIRATION", 0);
             line.put("ART_DATE", DOC_DATE);
             line.put("ART_DATA", null);
-            line.put("ART_ACTIVE",0);
-         //   log.error(line.toString());
+            line.put("ART_ACTIVE", 0);
+            //   log.error(line.toString());
             articles.put(String.valueOf(docProduct.getId()), line);
         }
 
 
         JSONObject listPayments = new JSONObject();
-        if(payments != null) {
-            for (PaymentCustomer payment:payments) {
+        if (payments != null) {
+            for (PaymentCustomer payment : payments) {
 
                 JSONObject reg = new JSONObject();
                 reg.put("REG_ID", payment.getId());
@@ -431,11 +423,11 @@ public class DocumentService {
                 reg.put("REG_MONTANT", payment.getMontant());
                 reg.put("REG_LEBELLE", payment.getCode() + " " + payment.getCustomer().getSocialReason());
 
-                if(Objects.equals(payment.getPaymentMethod().getCode(), "ESP")){
+                if (Objects.equals(payment.getPaymentMethod().getCode(), "ESP")) {
                     reg.put("REG_MODE_ID", 9);
                 } else if (Objects.equals(payment.getPaymentMethod().getCode(), "CHQ")) {
                     reg.put("REG_MODE_ID", 10);
-                }else {
+                } else {
                     reg.put("REG_MODE_ID", 9);
                 }
 
@@ -443,18 +435,20 @@ public class DocumentService {
                 String REG_DATE = dateFormat.format(payment.getPaymentDate());
                 reg.put("REG_DATE", REG_DATE);
 
-                /*if (reglement.getCHEQUE_ID() != 0) {
+                if (Objects.equals(payment.getPaymentMethod().getCode(), "CHQ")) {
                     JSONObject cheque = new JSONObject();
-                    cheque.put("CHEQUE_ID", reglement.getCHEQUE().getCHEQUE_ID());
-                    cheque.put("CHEQUE_LIBELLE", reglement.getCHEQUE().getCHEQUE_LIBELLE());
-                    cheque.put("CHEQUE_MONTANT", reglement.getCHEQUE().getCHEQUE_MONTANT());
-                    cheque.put("CHEQUE_NUM", reglement.getCHEQUE().getCHEQUE_NUM());
-                    cheque.put("CHEQUE_ECHEANCE", reglement.getCHEQUE().getCHEQUE_ECHEANCE());
-                    cheque.put("CHEQUE_TIREUR", reglement.getCHEQUE().getCHEQUE_TIREUR());
-                    cheque.put("CHEQUE_DATE", REG_DATE);
-                    cheque.put("CHEQUE_TIRE", reglement.getCHEQUE().getCHEQUE_TIRE());
+                    cheque.put("CHEQUE_ID", null);
+                    cheque.put("CHEQUE_LIBELLE", payment.getBank().getName());
+                    cheque.put("CHEQUE_MONTANT", payment.getMontant());
+                    cheque.put("CHEQUE_NUM", payment.getNumberValue());
+                    String CHEQUE_ECHEANCE = dateFormat.format(doc.getDate());
+                    cheque.put("CHEQUE_ECHEANCE", CHEQUE_ECHEANCE);
+                    cheque.put("CHEQUE_TIREUR", payment.getBeneficiary());
+                    String CHEQUE_DATE = dateFormat.format(payment.getPaymentDate());
+                    cheque.put("CHEQUE_DATE", CHEQUE_DATE);
+                    cheque.put("CHEQUE_TIRE", payment.getTransmitter());
                     reg.put("CHEQUE", cheque);
-                }*/
+                }
                 listPayments.put(String.valueOf(payment.getId()), reg);
             }
         }

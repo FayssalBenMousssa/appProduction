@@ -109,7 +109,9 @@ public class Staff {
 
         try {
             staffJSON.put("id", this.getId());
+            if(this.getPerson() != null)
             staffJSON.put("person", this.getPerson().toSmallJson());
+            if(this.getJob() != null)
             staffJSON.put("job", this.getJob().toJson());
             if (this.getStartDate() != null) {
                 staffJSON.put("startDate", formatter.format(this.getStartDate()));

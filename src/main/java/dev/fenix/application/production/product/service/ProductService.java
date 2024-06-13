@@ -46,7 +46,7 @@ public class ProductService {
         List<Sort.Order> orders = new ArrayList<Sort.Order>();
         if (sortBy[0].contains(",")) {
             // will sort more than 2 columns
-            log.trace("we will sort more than 2 columns ");
+           // log.trace("we will sort more than 2 columns ");
 
             for (String sortOrder : sortBy) {
                 // sortOrder="column, direction"
@@ -54,12 +54,12 @@ public class ProductService {
                 String[] _sort = sortOrder.split(",");
                 //log.trace("sortOrder : " + _sort[1] + " " + _sort[0]);
                 orders.add(new Sort.Order(getSortDirection(_sort[1]), _sort[0]));
-                log.trace("we will sort      sort=[ " + _sort[1] + " " +  _sort[0] +"]");
+              //  log.trace("we will sort      sort=[ " + _sort[1] + " " +  _sort[0] +"]");
             }
         } else {
             // sort=[column, direction]
             orders.add(new Sort.Order(getSortDirection(sortBy[1]), sortBy[0]));
-            log.trace("we will sort      sort=[ " + sortBy[1] +  sortBy[0] +"]");
+          //  log.trace("we will sort      sort=[ " + sortBy[1] +  sortBy[0] +"]");
 
         }
 
@@ -79,7 +79,7 @@ public class ProductService {
 
     // public List<Document> loadDocuments(Pageable paging, Category documentCategory)
     public List<Product> loadProducts(Map<String, String> filters, Pageable paging) {
-        filters.forEach((s, s2) ->// documents + " " + s2));
+       // filters.forEach((s, s2) -> log.info(s + " " + s2));
 
         if (filters.containsKey("name") && filters.containsKey("type_product")) {
            // document"name");

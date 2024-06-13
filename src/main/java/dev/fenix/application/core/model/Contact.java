@@ -23,7 +23,6 @@ public class Contact {
 
   @NotNull(message = "Please enter the  name")
   private String name;
-
   private String job;
   private String telephone;
   private String email;

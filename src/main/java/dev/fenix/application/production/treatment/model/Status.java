@@ -27,6 +27,8 @@ public enum Status {
    * be considered complete and nobody actively works on this document.
    */
   SUSPENDED,
+    IN_PROGRESS,
+  TERMINATED,
   /**
    * Work on the document has been stopped before its normal completion. This is a final state in
    * the document workflow. The equivalent task status is ‘Closed’.

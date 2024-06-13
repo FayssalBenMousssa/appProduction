@@ -110,7 +110,7 @@ public class PersistenceConfiguration {
 
 
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
-        properties.setProperty("spring.jpa.open-in-view", "false");
+        properties.setProperty("spring.jpa.open-in-view", "true");
 
         properties.setProperty("hibernate.enable_lazy_load_no_trans", "true");
         properties.setProperty("hibernate.event.merge.entity_copy_observer", "allow");
