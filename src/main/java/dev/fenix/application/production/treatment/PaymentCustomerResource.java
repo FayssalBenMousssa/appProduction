@@ -90,20 +90,24 @@ public class PaymentCustomerResource {
     @ResponseBody
     public ResponseEntity<?> save(@Valid @RequestBody PaymentCustomer paymentCustomer, HttpServletRequest request) {
         paymentCustomer.setActive(true);
-        PaymentCustomer savedPaymentCustomer = paymentCustomerRepository.save(paymentCustomer);
 
+
+        List<PaymentCustomer> dbPaymentCustomer =  paymentCustomerRepository.findByCodeLike(paymentCustomer.getCode());
+
+        if (!dbPaymentCustomer.isEmpty()) {
+            log.warn("PaymentCustomer "+paymentCustomer.getCode()+" is already saved");
+            return ResponseEntity.ok("PaymentCustomer "+paymentCustomer.getCode()+" is already saved");
+        }
+
+        PaymentCustomer savedPaymentCustomer = paymentCustomerRepository.save(paymentCustomer);
         String username = this.getCurrentUser().getUserName();
         log.info("Payment received  from user: {} with code {}", username ,savedPaymentCustomer.getCode());
-
         try {
             updateDocumentIsSynchronised(savedPaymentCustomer);
         } catch (Exception e) {
-            // handle the exception here
-            // you can log the error or return an error response
             log.error(e.getMessage(), e);
         }
         log.info("Payment saved successfully with ID: {}", savedPaymentCustomer.getId());
-
         return ResponseEntity.ok(savedPaymentCustomer.toJson().toString());
     }
 
@@ -136,16 +140,16 @@ public class PaymentCustomerResource {
                         documentRepository.save(document);
                         log.info("Document with ID " + document.getId() + " and code " + document.getCode() + " updated to isSynchronised = false");
                     } else {
-                         log.error("Document with ID " + document.getId() + " and code " + document.getCode() + " already has isSynchronised = false");
+                         log.warn("Document with ID " + document.getId() + " and code " + document.getCode() + " already has isSynchronised = false");
                     }
                 } else {
-                     log.error("No document found with code " + codeWithoutPrefix);
+                     log.warn("No document found with code " + codeWithoutPrefix);
                 }
             }else {
-                 log.error("The documents list is empty.");
+                 log.warn("The documents list is empty.");
             }
         }else {
-            log.error("The documents list is empty.");
+            log.warn("The documents list is empty.");
         }
 
     }

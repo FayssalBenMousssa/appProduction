@@ -422,6 +422,8 @@ public class DocumentService {
                 reg.put("DOC_ID", doc.getId());
                 reg.put("REG_MONTANT", payment.getMontant());
                 reg.put("REG_LEBELLE", payment.getCode() + " " + payment.getCustomer().getSocialReason());
+                reg.put("NUM_REGT", payment.getCode());
+
 
                 if (Objects.equals(payment.getPaymentMethod().getCode(), "ESP")) {
                     reg.put("REG_MODE_ID", 9);

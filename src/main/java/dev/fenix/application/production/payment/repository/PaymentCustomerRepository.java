@@ -18,6 +18,8 @@ public interface PaymentCustomerRepository extends JpaRepository<PaymentCustomer
 
     List<PaymentCustomer> findByCodeContainsAndActiveTrue(String code);
 
+    List<PaymentCustomer> findByCodeLike(String code);
+
 
 
 

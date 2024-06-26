@@ -278,19 +278,16 @@ public class DocumentResource {
             document.setIsSynchronised(false);
             document.setLogs(getDocumentLogs(document, Action.ADD, null));
             this.setCodeBuz(document);
-
-
-
             String username = this.getCurrentUser().getUserName();
             log.info("Document received successfully from user: {}", username);
-
             Document savedDocument = documentRepository.save(document);
+
             try {
                 if(DBContextHolder.getCurrentDb() == DBEnum.CANELIA){
-                    updateUserSequence(document);
+                    updateUserSequence(savedDocument);
                     runSyncDocument(savedDocument);
                 }
-                this.changeStatusRelated(document);
+                this.changeStatusRelated(savedDocument);
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }
